@@ -1,0 +1,11 @@
+{
+    "networks": [
+        {
+            "chainId": 1,
+            "folder": "mainnet"
+        }
+    ],
+    "projects": [
+        "skale-manager"
+    ]
+}
