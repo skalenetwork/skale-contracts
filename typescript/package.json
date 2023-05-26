@@ -1,0 +1,11 @@
+{
+  "name": "@skalenetwork/skale-contracts",
+  "packageManager": "yarn@3.5.1",
+  "scripts": {
+    "compile": "npx tsc"
+  },
+  "devDependencies": {
+    "@tsconfig/recommended": "^1.0.2",
+    "typescript": "^5.0.4"
+  }
+}
