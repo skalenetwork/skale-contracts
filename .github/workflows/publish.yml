@@ -1,0 +1,59 @@
+name: Build and publish
+on:
+  push:
+    branches-ignore:
+      - stable
+      - beta
+      - develop
+  pull_request:
+    types: [closed]
+    branches:
+      - stable
+      - beta
+      - develop
+env:
+  NODE_VERSION: 16
+
+jobs:
+  typescript:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up Node
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+
+    - name: Install project
+      run: yarn
+    
+    - name: Compile typescript
+      run: yarn compile
+
+    - name: Determine version
+      run: |
+        export BRANCH=${GITHUB_REF##*/}
+        echo "BRANCH=$BRANCH" >> $GITHUB_ENV
+        echo "Branch $BRANCH"
+        export VERSION=$(bash ./scripts/calculate_version.sh)
+        echo "VERSION=$VERSION" >> $GITHUB_ENV
+        echo "Version $VERSION"
+        ( test $BRANCH = "stable" && export PRERELEASE=false ) || export PRERELEASE=true
+        echo "PRERELEASE=$PRERELEASE" >> $GITHUB_ENV
+
+    - name: Publish NPM package
+      run: ./scripts/publish_package.sh
+      env:
+        BRANCH: ${{ env.BRANCH }}
+        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+    
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ env.VERSION }}
+        release_name: ${{ env.VERSION }}
+        prerelease: ${{ env.PRERELEASE }}
