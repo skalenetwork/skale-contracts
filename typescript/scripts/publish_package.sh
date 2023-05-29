@@ -28,4 +28,4 @@ fi
 
 echo "Using $VERSION as a new version"
 
-yarn publish --access public --new-version $VERSION --verbose --no-git-tag-version $TAG
+yarn npm publish --access public --new-version $VERSION --verbose --no-git-tag-version $TAG
