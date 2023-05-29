@@ -28,4 +28,8 @@ fi
 
 echo "Using $VERSION as a new version"
 
-yarn npm publish --access public --new-version $VERSION --verbose --no-git-tag-version $TAG
+# write a new version to the package.json
+jq -c ".version = \"$VERSION\"" package.json > package.json.new
+mv package.json.new package.json
+
+yarn npm publish --access public --verbose --no-git-tag-version $TAG
