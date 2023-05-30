@@ -2,8 +2,10 @@
     "extends": "@tsconfig/recommended/tsconfig.json",
 
     "compilerOptions": {
-        "outDir": "./lib",
         "declaration": true,
+        "esModuleInterop": true,
+        "outDir": "./lib",                
+        "sourceMap": true
     },
     "include": ["src"],
     "exclude": ["node_modules"]

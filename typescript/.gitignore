@@ -4,3 +4,7 @@
 !.yarn/releases
 !.yarn/sdks
 !.yarn/versions
+
+lib/
+*.log
+node_modules/
