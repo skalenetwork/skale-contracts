@@ -1,6 +1,7 @@
 {
   "devDependencies": {
     "@tsconfig/recommended": "^1.0.2",
+    "@types/node": "^20.2.5",
     "typescript": "^5.0.4"
   },
   "name": "@skalenetwork/skale-contracts",

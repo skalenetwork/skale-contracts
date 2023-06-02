@@ -30,9 +30,9 @@ export class Metadata {
     }
 
     async download() {
-        if (this.networks === undefined) {
+        if (this._networks === undefined) {
             const metadataResponse = await axios.get(REPOSITORY_URL + METADATA_FILENAME);
-            const metadata: MetadataFile = JSON.parse(metadataResponse.data);
+            const metadata = metadataResponse.data as MetadataFile;
             this._networks = metadata.networks;
         }
     }
