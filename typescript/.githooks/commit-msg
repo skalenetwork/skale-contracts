@@ -2,6 +2,8 @@
 
 set -e
 
+cd typescript
+
 if [[ $(npx cspell -- --no-summary $1 2> /dev/null) ]]
 then
     echo "It looks like you have spell-checking errors in your commit message."

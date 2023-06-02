@@ -4,6 +4,8 @@
 
 set -e
 
+cd typescript
+
 GPG_SIGN_ENABLED=$(git config commit.gpgsign || true)
 if ! [[ "$GPG_SIGN_ENABLED" == "true" ]]
 then
@@ -12,6 +14,6 @@ then
 fi
 
 files=$(git diff --cached --name-only)
-npx cspell -- --no-summary $files
+# npx cspell -- --no-summary $files
 
 yarn fullCheck

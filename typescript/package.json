@@ -11,8 +11,8 @@
     "compile": "npx tsc",
     "cspell": "npx cspell \"**/*\"",
     "fullCheck": "yarn compile && yarn cspell",
-    "hooks": "git config core.hooksPath .githooks || true",
-    "no-hooks": "git config core.hooksPath ../.git/hooks",
+    "hooks": "git config core.hooksPath typescript/.githooks || true",
+    "no-hooks": "git config core.hooksPath .git/hooks",
     "prepare": "yarn compile && yarn hooks"
   },
   "version": "0.0.1",
