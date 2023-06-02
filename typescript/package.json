@@ -2,12 +2,18 @@
   "devDependencies": {
     "@tsconfig/recommended": "^1.0.2",
     "@types/node": "^20.2.5",
+    "cspell": "^6.31.1",
     "typescript": "^5.0.4"
   },
   "name": "@skalenetwork/skale-contracts",
   "packageManager": "yarn@3.5.1",
   "scripts": {
-    "compile": "npx tsc"
+    "compile": "npx tsc",
+    "cspell": "npx cspell \"**/*\"",
+    "fullCheck": "yarn compile && yarn cspell",
+    "hooks": "git config core.hooksPath .githooks || true",
+    "no-hooks": "git config core.hooksPath ../.git/hooks",
+    "prepare": "yarn compile && yarn hooks"
   },
   "version": "0.0.1",
   "dependencies": {
