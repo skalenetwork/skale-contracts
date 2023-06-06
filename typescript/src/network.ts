@@ -14,6 +14,10 @@ export class Network {
         this._skaleContracts = skaleContracts;
     }
 
+    get path() {
+        return this._metadata.path;
+    }
+
     async getProject(name: string) {
         const metadata = this._skaleContracts.metadata;
         await metadata.download();
