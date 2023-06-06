@@ -9,7 +9,7 @@ export class SkaleContracts {
 
     async getNetworks() {
         await this.metadata.download();
-        return this.metadata.networks.map(metadata => new Network(metadata));
+        return this.metadata.networks.map(metadata => new Network(this, metadata));
     }
 
     async getNetworkByChainId(chainId: number) {
@@ -18,7 +18,7 @@ export class SkaleContracts {
         if (networkMetadata === undefined) {
             throw new NetworkNotFoundError(`Network with chainId ${chainId} is unknown`);
         } else {
-            return new Network(networkMetadata);
+            return new Network(this, networkMetadata);
         }
     }
 }
