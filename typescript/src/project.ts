@@ -3,6 +3,7 @@ import { REPOSITORY_URL } from "./domain/constants";
 import { ProjectMetadata } from "./metadata";
 import { Network } from "./network";
 import { Instance, InstanceData } from "./instance";
+import { SkaleManagerInstance } from "./skale-manager/skaleManagerInstance";
 
 class InstanceNotFound extends Error {}
 
@@ -26,7 +27,9 @@ export class Project {
             if (keys.length !== 1) {
                 throw new InstanceNotFound(`Error during parsing data for ${alias}`);
             }
-            return new Instance(this, data[keys[0]])
+            // TODO: replace with a factory
+            // return new Instance(this, data[keys[0]])
+            return new SkaleManagerInstance(this, data[keys[0]])
         }
     }
 

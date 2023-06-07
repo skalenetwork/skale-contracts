@@ -1,3 +1,4 @@
+import { Provider, ethers } from "ethers";
 import { Metadata } from "./metadata";
 import { Network } from "./network";
 
@@ -6,6 +7,11 @@ class NetworkNotFoundError extends Error
 
 export class SkaleContracts {
     metadata = new Metadata();
+    provider: Provider;
+
+    constructor(provider = ethers.getDefaultProvider(ethers.Network.from("mainnet")) ) {
+        this.provider = provider;
+    }
 
     async getNetworks() {
         await this.metadata.download();

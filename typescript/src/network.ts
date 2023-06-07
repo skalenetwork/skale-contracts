@@ -18,6 +18,10 @@ export class Network {
         return this._metadata.path;
     }
 
+    get provider() {
+        return this._skaleContracts.provider;
+    }
+
     async getProject(name: string) {
         const metadata = this._skaleContracts.metadata;
         await metadata.download();
