@@ -498,7 +498,7 @@ __metadata:
   resolution: "@skalenetwork/skale-contracts@workspace:."
   dependencies:
     "@tsconfig/recommended": ^1.0.2
-    "@types/node": ^20.2.5
+    "@types/node": ^20.2.6
     axios: ^1.4.0
     cspell: ^6.31.1
     ethers: ^6.4.2
@@ -520,10 +520,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:^20.2.5":
-  version: 20.2.5
-  resolution: "@types/node@npm:20.2.5"
-  checksum: 38ce7c7e9d76880dc632f71d71e0d5914fcda9d5e9a7095d6c339abda55ca4affb0f2a882aeb29398f8e09d2c5151f0b6586c81c8ccdfe529c34b1ea3337425e
+"@types/node@npm:^20.2.6":
+  version: 20.2.6
+  resolution: "@types/node@npm:20.2.6"
+  checksum: 5222bceb188ca36947ac20b1fdbb39eabb599bb57d46d010182299a959ad38e3a6abc5167d81e685538b1aed1702e62df9a61ac473cafacd6a0a5f73bd627abf
   languageName: node
   linkType: hard
 
