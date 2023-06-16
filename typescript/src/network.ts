@@ -1,3 +1,4 @@
+import { Provider } from "ethers";
 import { NetworkMetadata } from "./metadata";
 import { Project } from "./project";
 import { SkaleContracts } from "./skaleContracts";
@@ -8,9 +9,11 @@ class ProjectNotFoundError extends Error
 export class Network {
     private _metadata: NetworkMetadata;
     private _skaleContracts: SkaleContracts;
+    private _provider: Provider;
 
-    constructor(skaleContracts: SkaleContracts, metadata: NetworkMetadata) {
+    constructor(skaleContracts: SkaleContracts, provider: Provider, metadata: NetworkMetadata) {
         this._metadata = metadata;
+        this._provider = provider;
         this._skaleContracts = skaleContracts;
     }
 
@@ -19,7 +22,7 @@ export class Network {
     }
 
     get provider() {
-        return this._skaleContracts.provider;
+        return this._provider;
     }
 
     async getProject(name: string) {
@@ -30,6 +33,6 @@ export class Network {
             throw new ProjectNotFoundError(`Project with name ${name} is unknown`);
         } else {
             return new Project(this, projectMetadata);
-        }        
+        }
     }
 }
