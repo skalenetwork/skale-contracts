@@ -5,6 +5,10 @@
     "cspell": "^6.31.1",
     "typescript": "^5.0.4"
   },
+  "files": [
+    "lib/**/*"
+  ],
+  "main": "lib/index.js",
   "name": "@skalenetwork/skale-contracts",
   "packageManager": "yarn@3.5.1",
   "scripts": {
@@ -15,6 +19,7 @@
     "no-hooks": "git config core.hooksPath .git/hooks",
     "prepare": "yarn compile && yarn hooks"
   },
+  "types": "lib/index.d.ts",
   "version": "0.0.1",
   "dependencies": {
     "axios": "^1.4.0",
