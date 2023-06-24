@@ -501,7 +501,7 @@ __metadata:
     "@types/node": ^20.2.5
     axios: ^1.4.0
     cspell: ^6.31.1
-    ethers: ^6.4.2
+    ethers: ^6.6.1
     typescript: ^5.0.4
   languageName: unknown
   linkType: soft
@@ -928,9 +928,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ethers@npm:^6.4.2":
-  version: 6.4.2
-  resolution: "ethers@npm:6.4.2"
+"ethers@npm:^6.6.1":
+  version: 6.6.1
+  resolution: "ethers@npm:6.6.1"
   dependencies:
     "@adraffy/ens-normalize": 1.9.2
     "@noble/hashes": 1.1.2
@@ -939,7 +939,7 @@ __metadata:
     aes-js: 4.0.0-beta.5
     tslib: 2.4.0
     ws: 8.5.0
-  checksum: 4bee21e91bae680ad324652b29d92a15ece49baefad7a1f8acb07d33bcdad904baef5a8b8e012be1d0d247ecb33e1ec7bbdc652cee3dcefed432e5c179283ba1
+  checksum: 4e1ddd2cc62de739e1a320dcdc2780cd2caaf4d1c7b4ca77b48a33d2a682395f8e8bde35ad319cd5c87581b26c902209c63c1373ba02cf5a96d8801c4e37ee4b
   languageName: node
   linkType: hard
 
