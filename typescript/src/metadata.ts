@@ -3,7 +3,7 @@ import { METADATA_FILENAME, REPOSITORY_URL } from './domain/constants';
 
 export type NetworkMetadata = {
     name: string;
-    chainId: number;
+    chainId: bigint;
     path: string;
 }
 
@@ -24,7 +24,7 @@ class MetadataIsNotDownloaded extends Error {
 export class Metadata {
     private _networks: NetworkMetadata[] | undefined;
     private _projects: ProjectMetadata[] | undefined;
-    
+
     constructor() {
     }
 

@@ -1,4 +1,4 @@
-import { Contract, ethers } from "ethers";
+import { ethers } from "ethers";
 import { ContractAddress, ContractName, MainContractAddress, SkaleABIFile } from "./domain/types";
 import { Project } from "./project";
 

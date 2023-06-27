@@ -1,4 +1,4 @@
-import { Provider, ethers } from "ethers";
+import { AbstractProvider, Provider, ethers } from "ethers";
 import { Metadata } from "./metadata";
 import { Network } from "./network";
 
@@ -16,7 +16,7 @@ export class SkaleContracts {
             metadata));
     }
 
-    async getNetworkByChainId(chainId: number, provider = ethers.getDefaultProvider(ethers.Network.from(chainId))) {
+    async getNetworkByChainId(chainId: bigint, provider = ethers.getDefaultProvider(ethers.Network.from(chainId))) {
         await this.metadata.download();
         const networkMetadata = this.metadata.networks.find(metadata => metadata.chainId == chainId);
         if (networkMetadata === undefined) {
@@ -24,5 +24,9 @@ export class SkaleContracts {
         } else {
             return new Network(this, provider, networkMetadata);
         }
+    }
+
+    async getNetworkByProvider(provider: AbstractProvider) {
+        return await this.getNetworkByChainId((await provider.getNetwork()).chainId, provider)
     }
 }
