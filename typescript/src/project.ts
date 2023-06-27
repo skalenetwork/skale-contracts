@@ -3,21 +3,22 @@ import { REPOSITORY_URL } from "./domain/constants";
 import { ProjectMetadata } from "./metadata";
 import { Network } from "./network";
 import { Instance, InstanceData } from "./instance";
-import { SkaleManagerInstance } from "./skale-manager/skaleManagerInstance";
+import { MainContractAddress, SkaleABIFile } from "./domain/types";
 
 class InstanceNotFound extends Error {}
 
-export class Project {
+export abstract class Project {
     private _metadata: ProjectMetadata;
     network: Network;
-    
+    abstract githubRepo: string;
+
     constructor(network: Network, metadata: ProjectMetadata) {
         this.network = network;
         this._metadata = metadata;
     }
 
     async getInstance(alias: string) {
-        const url = this.calculateInstanceDataUrl(alias);
+        const url = this.getInstanceDataUrl(alias);
         const response = await axios.get(url);
         if (response.status !== 200) {
             throw new InstanceNotFound(`Can't download data for instance ${alias}`);
@@ -27,13 +28,24 @@ export class Project {
             if (keys.length !== 1) {
                 throw new InstanceNotFound(`Error during parsing data for ${alias}`);
             }
-            // TODO: replace with a factory
-            // return new Instance(this, data[keys[0]])
-            return new SkaleManagerInstance(this, data[keys[0]])
+            return this.createInstance(data[keys[0]]);
         }
     }
 
-    calculateInstanceDataUrl(alias: string) {
+    async downloadAbiFile(version: string) {
+        const response = await axios.get(this.getAbiUrl(version));
+        return JSON.parse(response.data) as SkaleABIFile;
+    }
+
+    getAbiUrl(version: string) {
+        return `${this.githubRepo}releases/download/${version}/${this.getAbiFilename(version)}`;
+    }
+
+    abstract getAbiFilename(version: string): string;
+
+    getInstanceDataUrl(alias: string) {
         return `${REPOSITORY_URL}${this.network.path}/${this._metadata.path}/${alias}.json`;
     }
+
+    abstract createInstance(address: MainContractAddress): Instance;
 }
