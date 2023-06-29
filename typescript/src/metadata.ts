@@ -3,7 +3,7 @@ import { METADATA_FILENAME, REPOSITORY_URL } from './domain/constants';
 
 export type NetworkMetadata = {
     name: string;
-    chainId: bigint;
+    chainId: number;
     path: string;
 }
 

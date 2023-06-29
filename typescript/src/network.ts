@@ -1,7 +1,7 @@
-import { Provider } from "ethers";
 import { NetworkMetadata } from "./metadata";
 import { SkaleContracts } from "./skaleContracts";
 import { projectFactory } from "./projects/factory";
+import { Provider } from "@ethersproject/providers"
 
 export class Network {
     private _metadata: NetworkMetadata;
