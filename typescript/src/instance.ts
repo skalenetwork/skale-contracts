@@ -1,4 +1,4 @@
-import { ethers } from "ethers";
+import { BaseContract, ethers } from "ethers";
 import { ContractAddress, ContractName, MainContractAddress, SkaleABIFile } from "./domain/types";
 import { Project } from "./project";
 
@@ -26,7 +26,7 @@ export abstract class Instance {
     async getContract(name: ContractName) {
         const address = await this.getContractAddress(name);
         const abi = await this.getAbi();
-        return new ethers.Contract(address, abi[name]);
+        return new ethers.Contract(address, abi[name]) as BaseContract;
     }
 
     // protected

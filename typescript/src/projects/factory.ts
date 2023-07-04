@@ -2,7 +2,7 @@ import { Network } from "../network";
 import { Project } from "../project";
 import { SkaleManagerProject } from "./skale-manager/skaleManagerProject";
 
-const skale_manager = "skale-manager";export const projects = {
+export const projects = {
     skaleManager: {
         name: "skale-manager",
         path: "skale-manager"
