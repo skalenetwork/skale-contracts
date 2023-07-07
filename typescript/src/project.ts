@@ -1,7 +1,7 @@
 import axios from "axios";
 import { REPOSITORY_URL } from "./domain/constants";
 import { ProjectMetadata } from "./metadata";
-import { Network } from "./network";
+import { ListedNetwork, Network, NetworkNotFoundError } from "./network";
 import { Instance, InstanceData } from "./instance";
 import { MainContractAddress, SkaleABIFile } from "./domain/types";
 
@@ -44,7 +44,11 @@ export abstract class Project {
     abstract getAbiFilename(version: string): string;
 
     getInstanceDataUrl(alias: string) {
-        return `${REPOSITORY_URL}${this.network.path}/${this._metadata.path}/${alias}.json`;
+        if (this.network instanceof ListedNetwork) {
+            return `${REPOSITORY_URL}${this.network.path}/${this._metadata.path}/${alias}.json`;
+        } else {
+            throw new NetworkNotFoundError(`Network is unknown`);
+        }
     }
 
     abstract createInstance(address: MainContractAddress): Instance;

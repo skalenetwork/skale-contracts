@@ -1,21 +1,10 @@
 import { ethers } from "ethers";
 import { Metadata } from "./metadata";
-import { Network } from "./network";
+import { ListedNetwork, Network } from "./network";
 import { Provider as EthersProvider } from "@ethersproject/providers";
-
-class NetworkNotFoundError extends Error
-{}
 
 export class SkaleContracts {
     metadata = new Metadata();
-
-    async getNetworks() {
-        await this.metadata.download();
-        return this.metadata.networks.map(metadata => new Network(
-            this,
-            ethers.getDefaultProvider(metadata.chainId),
-            metadata));
-    }
 
     async getNetworkByChainId(chainId: number) {
         return this.getNetworkByProvider(ethers.getDefaultProvider(chainId))
@@ -26,9 +15,9 @@ export class SkaleContracts {
         await this.metadata.download();
         const networkMetadata = this.metadata.networks.find(metadata => metadata.chainId == chainId);
         if (networkMetadata === undefined) {
-            throw new NetworkNotFoundError(`Network with chainId ${chainId} is unknown`);
+            return new Network(this, provider);
         } else {
-            return new Network(this, provider, networkMetadata);
+            return new ListedNetwork(this, provider, networkMetadata.path);
         }
     }
 }

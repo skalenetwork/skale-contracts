@@ -1,21 +1,17 @@
-import { NetworkMetadata } from "./metadata";
 import { SkaleContracts } from "./skaleContracts";
 import { projectFactory } from "./projects/factory";
 import { Provider } from "@ethersproject/providers"
 
+export class NetworkNotFoundError extends Error
+{}
+
 export class Network {
-    private _metadata: NetworkMetadata;
     private _skaleContracts: SkaleContracts;
     private _provider: Provider;
 
-    constructor(skaleContracts: SkaleContracts, provider: Provider, metadata: NetworkMetadata) {
-        this._metadata = metadata;
+    constructor(skaleContracts: SkaleContracts, provider: Provider) {
         this._provider = provider;
         this._skaleContracts = skaleContracts;
-    }
-
-    get path() {
-        return this._metadata.path;
     }
 
     get provider() {
@@ -24,5 +20,18 @@ export class Network {
 
     async getProject(name: string) {
         return projectFactory.create(this, name);
+    }
+}
+
+export class ListedNetwork extends Network {
+    private _path;
+
+    constructor(skaleContracts: SkaleContracts, provider: Provider, path: string) {
+        super(skaleContracts, provider);
+        this._path = path;
+    }
+
+    get path() {
+        return this._path;
     }
 }
