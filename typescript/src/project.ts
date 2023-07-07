@@ -41,7 +41,7 @@ export abstract class Project {
 
     async downloadAbiFile(version: string) {
         const response = await axios.get(this.getAbiUrl(version));
-        return JSON.parse(response.data) as SkaleABIFile;
+        return response.data as SkaleABIFile;
     }
 
     getAbiUrl(version: string) {

@@ -26,7 +26,7 @@ export abstract class Instance {
     async getContract(name: ContractName) {
         const address = await this.getContractAddress(name);
         const abi = await this.getAbi();
-        return new ethers.Contract(address, abi[name]) as BaseContract;
+        return new ethers.Contract(address, abi[name], this.provider) as BaseContract;
     }
 
     // protected
@@ -38,6 +38,9 @@ export abstract class Instance {
     private async getVersion() {
         if (this.version === undefined) {
             this.version = await this._getVersion();
+            if (!this.version.includes('-')) {
+                this.version = this.version + '-stable.0';
+            }
         }
         return this.version;
     }
