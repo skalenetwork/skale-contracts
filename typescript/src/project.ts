@@ -4,6 +4,7 @@ import { ProjectMetadata } from "./metadata";
 import { ListedNetwork, Network, NetworkNotFoundError } from "./network";
 import { Instance, InstanceData } from "./instance";
 import { MainContractAddress, SkaleABIFile } from "./domain/types";
+import { ethers } from "ethers";
 
 class InstanceNotFound extends Error {}
 
@@ -17,18 +18,24 @@ export abstract class Project {
         this._metadata = metadata;
     }
 
-    async getInstance(alias: string) {
-        const url = this.getInstanceDataUrl(alias);
-        const response = await axios.get(url);
-        if (response.status !== 200) {
-            throw new InstanceNotFound(`Can't download data for instance ${alias}`);
+    async getInstance(aliasOrAddress: string) {
+        if (ethers.utils.isAddress(aliasOrAddress)) {
+            const address = aliasOrAddress;
+            return this.createInstance(address);
         } else {
-            const data = response.data as InstanceData;
-            const keys = Object.keys(data);
-            if (keys.length !== 1) {
-                throw new InstanceNotFound(`Error during parsing data for ${alias}`);
+            const alias = aliasOrAddress;
+            const url = this.getInstanceDataUrl(alias);
+            const response = await axios.get(url);
+            if (response.status !== 200) {
+                throw new InstanceNotFound(`Can't download data for instance ${alias}`);
+            } else {
+                const data = response.data as InstanceData;
+                const keys = Object.keys(data);
+                if (keys.length !== 1) {
+                    throw new InstanceNotFound(`Error during parsing data for ${alias}`);
+                }
+                return this.createInstance(data[keys[0]]);
             }
-            return this.createInstance(data[keys[0]]);
         }
     }
 
