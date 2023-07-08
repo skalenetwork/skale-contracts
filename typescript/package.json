@@ -1,7 +1,7 @@
 {
   "devDependencies": {
     "@tsconfig/recommended": "^1.0.2",
-    "@types/node": "^20.2.5",
+    "@types/node": "^20.4.1",
     "cspell": "^6.31.1",
     "typescript": "^5.0.4"
   },
