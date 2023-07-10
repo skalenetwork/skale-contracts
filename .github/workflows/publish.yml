@@ -69,7 +69,7 @@ jobs:
 
     defaults:
       run:
-        working-directory: typescript
+        working-directory: python
 
     steps:
     - uses: actions/checkout@v3
