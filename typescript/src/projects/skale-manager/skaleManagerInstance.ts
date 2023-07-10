@@ -17,6 +17,10 @@ const contractManagerAbi = [
 export class SkaleManagerInstance extends Instance {
     skaleManager: Contract;
 
+    customNames = new Map<string, string>([
+        ["BountyV2", "Bounty"]
+    ]);
+
     constructor (project: Project, address: MainContractAddress) {
         super(project, address);
         this.skaleManager = new ethers.Contract(this.address, skaleManagerAbi, this.provider);
@@ -25,9 +29,18 @@ export class SkaleManagerInstance extends Instance {
     async _getVersion() {
         return await this.skaleManager.version() as string;
     }
+
     async getContractAddress(name: ContractName): Promise<ContractAddress> {
         const contractManagerAddress = await this.skaleManager.contractManager() as string;
         const contractManager = new ethers.Contract(contractManagerAddress, contractManagerAbi, this.provider);
-        return await contractManager.getContract(name);
+        return await contractManager.getContract(this._actualName(name));
+    }
+
+    _actualName(name: ContractName) {
+        if (this.customNames.has(name)) {
+            return this.customNames.get(name);
+        } else {
+            return name;
+        }
     }
 }
