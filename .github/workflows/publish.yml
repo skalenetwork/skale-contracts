@@ -12,17 +12,20 @@ on:
       - beta
       - develop
 env:
-  NODE_VERSION: 16
+  NODE_VERSION: 18
+  PYTHON_VERSION: 3.11
 
 jobs:
   typescript:
     runs-on: ubuntu-latest
+
     defaults:
       run:
         working-directory: typescript
+
     steps:
     - uses: actions/checkout@v3
-    
+
     - name: Set up Node
       uses: actions/setup-node@v3
       with:
@@ -30,7 +33,7 @@ jobs:
 
     - name: Install project
       run: yarn
-    
+
     - name: Compile typescript
       run: yarn compile
 
@@ -50,7 +53,7 @@ jobs:
       env:
         BRANCH: ${{ env.BRANCH }}
         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-    
+
     - name: Create Release
       id: create_release
       uses: actions/create-release@v1
@@ -60,3 +63,63 @@ jobs:
         tag_name: ${{ env.VERSION }}
         release_name: ${{ env.VERSION }}
         prerelease: ${{ env.PRERELEASE }}
+
+  python:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: typescript
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Python
+    - uses: actions/setup-python@v4
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
+
+    - name: Install building tools
+      run: pip3 install -r scripts/requirements.txt
+
+    - name: Determine version
+      run: |
+        export BRANCH=${GITHUB_REF##*/}
+        echo "Branch $BRANCH"
+        export VERSION=$(bash ./scripts/calculate_version.sh)
+        echo "VERSION=$VERSION" >> $GITHUB_ENV
+        echo "Version $VERSION"
+        ( test $BRANCH = "stable" && export PRERELEASE=false ) || export PRERELEASE=true
+        echo "PRERELEASE=$PRERELEASE" >> $GITHUB_ENV
+
+    - name: Build pip package
+      env:
+          PYTHONPATH: ./
+          VERSION: ${{ env.VERSION }}
+      run: ./scripts/build_package.sh
+
+    - name: Publish pip package
+      env:
+        PYPI_TOKEN: ${{ secrets.PYPI_TOKEN }}
+      run: |
+        ./scripts/publish_package.sh
+
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ env.VERSION }}
+        release_name: ${{ env.VERSION }}
+        draft: false
+        prerelease: ${{ env.PRERELEASE }}
+
+    - name: Upload Release Assets
+      id: upload-release-assets
+      uses: dwenegar/upload-release-assets@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        release_id: ${{ steps.create_release.outputs.id }}
+        assets_path: dist/
