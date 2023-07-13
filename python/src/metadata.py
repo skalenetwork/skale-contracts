@@ -21,7 +21,10 @@ class MetadataFile:
         file = json.loads(data)
         networks = []
         for network in file['networks']:
-            network.append(NetworkMetadata(**network))
+            networks.append(NetworkMetadata(
+                name=network['name'],
+                chain_id=network['chainId'],
+                path=network['path']))
         return cls(networks)
 
 class Metadata:
