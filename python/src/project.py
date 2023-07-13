@@ -42,7 +42,7 @@ class Project(ABC):
         return f'{self.githubRepo}releases/download/{version}/{self.get_abi_filename(version)}'
 
     @abstractmethod
-    def getAbiFilename(self, version: str) -> str:
+    def get_abi_filename(self, version: str) -> str:
         pass
 
     def get_instance_data_url(self, alias: str):
