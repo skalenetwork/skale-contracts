@@ -21,10 +21,10 @@ class SkaleManagerInstance(Instance):
         }
 
     def _get_version(self):
-        return self.skale_manager.version()
+        return self.skale_manager.functions.version().call()
 
     def get_contract_address(self, name: str):
-        return self.contract_manager.getContract(self._actualName(name))
+        return self.contract_manager.functions.getContract(self._actualName(name)).call()
 
     def _actualName(self, name: str):
         if name in self.customNames:

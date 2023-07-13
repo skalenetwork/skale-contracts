@@ -30,7 +30,7 @@ class Instance(ABC):
 
     def get_abi(self):
         if self._abi is None:
-            self._abi = self._project.download_abi_file(self.version)
+            self._abi = json.loads(self._project.download_abi_file(self.version))
         return self._abi
 
     abi = property(get_abi, None)
@@ -43,8 +43,7 @@ class Instance(ABC):
 
     def get_contract(self, name: str):
         address = self.get_contract_address(name)
-        abi = self.get_abi()
-        return self.w3.eth.contract(address=address, abi=abi)
+        return self.w3.eth.contract(address=address, abi=self.abi[name])
 
     # protected
 

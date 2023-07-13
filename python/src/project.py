@@ -34,7 +34,7 @@ class Project(ABC):
                     raise ValueError(f'Error during parsing data for {alias}')
                 return self.create_instance(list(data.data.values())[0])
 
-    def downloadAbiFile(self, version: str):
+    def download_abi_file(self, version: str):
         response = requests.get(self.get_abi_url(version))
         return response.text
 

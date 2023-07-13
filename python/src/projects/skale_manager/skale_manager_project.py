@@ -11,5 +11,5 @@ class SkaleManagerProject(Project):
     def create_instance(self, address: str) -> Instance:
         return SkaleManagerInstance(self, address)
 
-    def get_abi_filename(version: str):
+    def get_abi_filename(self, version: str):
         return f'skale-manager-{version}-abi.json'
