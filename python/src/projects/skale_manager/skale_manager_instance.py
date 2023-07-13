@@ -13,15 +13,15 @@ CONTRACT_MANAGER_ABI = [
 class SkaleManagerInstance(Instance):
     def __init__(self, project: Project, address: str) -> None:
         super().__init__(project, address)
-        self.skale_manager = self.w3.Contract(address=address, abi=SKALE_MANAGER_ABI)
-        contract_manager_address = self.skaleManager.contractManager()
-        self.contract_manager = self.w3.Contract(address=contract_manager_address, abi=CONTRACT_MANAGER_ABI)
+        self.skale_manager = self.w3.eth.contract(address=address, abi=SKALE_MANAGER_ABI)
+        contract_manager_address = self.skale_manager.functions.contractManager().call()
+        self.contract_manager = self.w3.eth.contract(address=contract_manager_address, abi=CONTRACT_MANAGER_ABI)
         self.customNames = {
             'BountyV2': 'Bounty'
         }
 
     def _get_version(self):
-        return self.skaleManager.version()
+        return self.skale_manager.version()
 
     def get_contract_address(self, name: str):
         return self.contract_manager.getContract(self._actualName(name))

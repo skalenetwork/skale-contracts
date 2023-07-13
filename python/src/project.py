@@ -24,15 +24,15 @@ class Project(ABC):
             return self.createInstance(address)
         else:
             alias = aliasOrAddress
-            url = self.getInstanceDataUrl(alias)
+            url = self.get_instance_data_url(alias)
             response = requests.get(url)
-            if (response.status != 200):
+            if (response.status_code != 200):
                 raise ValueError(f"Can't download data for instance {alias}")
             else:
                 data = InstanceData.from_json(response.text)
-                if not alias in data.data:
+                if len(data.data.values()) != 1:
                     raise ValueError(f'Error during parsing data for {alias}')
-                return self.createInstance(data.data[alias])
+                return self.create_instance(list(data.data.values())[0])
 
     def downloadAbiFile(self, version: str):
         response = requests.get(self.get_abi_url(version))

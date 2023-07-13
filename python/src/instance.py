@@ -6,7 +6,7 @@ import json
 @dataclass
 class InstanceData:
     data: dict[str, str]
-    @staticmethod
+    @classmethod
     def from_json(cls, data: str):
         return cls(data=json.loads(data))
 
@@ -14,15 +14,27 @@ class InstanceData:
 class Instance(ABC):
     def __init__(self, project, address: str) -> None:
         self._project = project
+        self._version = None
+        self._abi = None
         self.address = address
-        self.version = self._get_version()
-        if not '-' in self.version:
-            self.version = self.version + '-stable.0'
-        self.abi = self._project.downloadAbiFile(self.version)
 
     def get_w3(self):
         return self._project.network.w3
 
+    def get_version(self):
+        if self._version is None:
+            self._version = self._get_version()
+            if not '-' in self._version:
+                self._version = self._version + '-stable.0'
+        return self._version
+
+    def get_abi(self):
+        if self._abi is None:
+            self._abi = self._project.download_abi_file(self.version)
+        return self._abi
+
+    abi = property(get_abi, None)
+    version = property(get_version, None)
     w3 = property(get_w3, None)
 
     @abstractmethod
