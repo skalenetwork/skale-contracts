@@ -1,5 +1,5 @@
 from instance import Instance
-from python.src.project import Project
+from project import Project
 
 SKALE_MANAGER_ABI = [
     { "inputs": [], "name": "contractManager", "outputs": [{ "internalType": "contract IContractManager", "name": "", "type": "address" }], "stateMutability": "view", "type": "function" },
