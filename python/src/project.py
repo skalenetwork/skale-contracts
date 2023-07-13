@@ -4,7 +4,6 @@ import requests
 
 from constants import REPOSITORY_URL
 from instance import Instance, InstanceData
-from network import ListedNetwork, Network
 
 
 @dataclass
@@ -14,7 +13,7 @@ class ProjectMetadata:
 
 
 class Project(ABC):
-    def __init__(self, network: Network, metadata: ProjectMetadata) -> None:
+    def __init__(self, network, metadata: ProjectMetadata) -> None:
         super().__init__()
         self.network = network
         self._metadata = metadata
@@ -47,6 +46,7 @@ class Project(ABC):
         pass
 
     def get_instance_data_url(self, alias: str):
+        from network import ListedNetwork
         if isinstance(self.network, ListedNetwork):
             return f'{REPOSITORY_URL}{self.network.path}/{self._metadata.path}/{alias}.json'
         else:

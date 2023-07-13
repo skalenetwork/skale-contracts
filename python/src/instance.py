@@ -2,8 +2,6 @@ from abc import ABC, abstractmethod
 from attr import dataclass
 import json
 
-from project import Project
-
 
 @dataclass
 class InstanceData:
@@ -14,7 +12,7 @@ class InstanceData:
 
 
 class Instance(ABC):
-    def __init__(self, project: Project, address: str) -> None:
+    def __init__(self, project, address: str) -> None:
         self._project = project
         self.address = address
         self.version = self._get_version()
