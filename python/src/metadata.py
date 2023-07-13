@@ -38,7 +38,7 @@ class Metadata:
         metadata = MetadataFile.from_json(metadataResponse.text)
         self.networks = metadata.networks
 
-    def get_network_by_chainId(self, chain_id: int) -> Optional[NetworkMetadata]:
+    def get_network_by_chain_id(self, chain_id: int) -> Optional[NetworkMetadata]:
         for network in self.networks:
             if network.chain_id == chain_id:
                 return network
