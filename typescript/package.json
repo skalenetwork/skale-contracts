@@ -2,7 +2,6 @@
   "devDependencies": {
     "@tsconfig/recommended": "^1.0.2",
     "@types/node": "^20.2.5",
-    "cspell": "^6.31.1",
     "typescript": "^5.0.4"
   },
   "files": [
@@ -13,11 +12,8 @@
   "packageManager": "yarn@3.5.1",
   "scripts": {
     "compile": "npx tsc",
-    "cspell": "npx cspell \"**/*\"",
-    "fullCheck": "yarn compile && yarn cspell",
-    "hooks": "git config core.hooksPath typescript/.githooks || true",
-    "no-hooks": "git config core.hooksPath .git/hooks",
-    "prepare": "yarn compile && yarn hooks"
+    "fullCheck": "yarn compile",
+    "prepare": "yarn compile"
   },
   "types": "lib/index.d.ts",
   "version": "0.0.1",

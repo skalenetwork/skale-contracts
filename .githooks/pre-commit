@@ -4,8 +4,6 @@
 
 set -e
 
-cd typescript
-
 GPG_SIGN_ENABLED=$(git config commit.gpgsign || true)
 if ! [[ "$GPG_SIGN_ENABLED" == "true" ]]
 then

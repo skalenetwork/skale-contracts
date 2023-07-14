@@ -1,0 +1,14 @@
+{
+  "devDependencies": {
+    "cspell": "^6.31.1"
+  },
+  "name": "development",
+  "packageManager": "yarn@3.5.1",
+  "scripts": {
+    "fullCheck": "yarn cspell",
+    "cspell": "npx cspell \"**/*\"",
+    "hooks": "git config core.hooksPath .githooks || true",
+    "no-hooks": "git config core.hooksPath .git/hooks",
+    "prepare": "yarn hooks"
+  }
+}

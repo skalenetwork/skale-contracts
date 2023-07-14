@@ -9,3 +9,6 @@ lib/
 *.log
 node_modules/
 cache
+
+.editorconfig
+.gitattributes

@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+# cSpell:words pypi
+
 set -e
 
 cd "$(dirname "$0")/.."
