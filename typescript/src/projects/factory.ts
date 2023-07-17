@@ -13,7 +13,7 @@ export const projects = {
 };
 
 class ProjectFactory {
-    static create (network: Network, name: string): Project {
+    create (network: Network, name: string): Project {
         if (name === projects.skaleManager.name) {
             return new SkaleManagerProject(
                 network,

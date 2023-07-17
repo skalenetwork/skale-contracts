@@ -1,62 +1,66 @@
-import axios from "axios";
-import { REPOSITORY_URL } from "./domain/constants";
-import { ProjectMetadata } from "./metadata";
-import { ListedNetwork, Network, NetworkNotFoundError } from "./network";
 import { Instance, InstanceData } from "./instance";
+import { ListedNetwork, Network, NetworkNotFoundError } from "./network";
 import { MainContractAddress, SkaleABIFile } from "./domain/types";
+import axios, { HttpStatusCode } from "axios";
+import { InstanceNotFound } from "./domain/errors/instance/instanceNotFound";
+import { ProjectMetadata } from "./metadata";
+import { REPOSITORY_URL } from "./domain/constants";
 import { ethers } from "ethers";
 
-class InstanceNotFound extends Error {}
 
 export abstract class Project {
-    private _metadata: ProjectMetadata;
+    private metadata: ProjectMetadata;
+
     network: Network;
+
     abstract githubRepo: string;
 
-    constructor(network: Network, metadata: ProjectMetadata) {
+    constructor (network: Network, metadata: ProjectMetadata) {
         this.network = network;
-        this._metadata = metadata;
+        this.metadata = metadata;
     }
 
-    async getInstance(aliasOrAddress: string) {
+    getInstance (aliasOrAddress: string) {
         if (ethers.utils.isAddress(aliasOrAddress)) {
-            const address = aliasOrAddress;
-            return this.createInstance(address);
-        } else {
-            const alias = aliasOrAddress;
-            const url = this.getInstanceDataUrl(alias);
-            const response = await axios.get(url);
-            if (response.status !== 200) {
-                throw new InstanceNotFound(`Can't download data for instance ${alias}`);
-            } else {
-                const data = response.data as InstanceData;
-                const keys = Object.keys(data);
-                if (keys.length !== 1) {
-                    throw new InstanceNotFound(`Error during parsing data for ${alias}`);
-                }
-                return this.createInstance(data[keys[0]]);
-            }
+            return this.getInstanceByAddress(aliasOrAddress);
         }
+        return this.getInstanceByAlias(aliasOrAddress);
     }
 
-    async downloadAbiFile(version: string) {
+    async downloadAbiFile (version: string) {
         const response = await axios.get(this.getAbiUrl(version));
         return response.data as SkaleABIFile;
     }
 
-    getAbiUrl(version: string) {
-        return `${this.githubRepo}releases/download/${version}/${this.getAbiFilename(version)}`;
+    getAbiUrl (version: string) {
+        return `${this.githubRepo}releases/download/` +
+            `${version}/${this.getAbiFilename(version)}`;
     }
 
-    abstract static getAbiFilename(version: string): string;
+    abstract getAbiFilename(version: string): string;
 
-    getInstanceDataUrl(alias: string) {
+    getInstanceDataUrl (alias: string) {
         if (this.network instanceof ListedNetwork) {
-            return `${REPOSITORY_URL}${this.network.path}/${this._metadata.path}/${alias}.json`;
-        } else {
-            throw new NetworkNotFoundError(`Network is unknown`);
+            return `${REPOSITORY_URL}${this.network.path}/` +
+                `${this.metadata.path}/${alias}.json`;
         }
+        throw new NetworkNotFoundError("Network is unknown");
     }
 
     abstract createInstance(address: MainContractAddress): Instance;
+
+    // Private
+
+    private getInstanceByAddress (address: string) {
+        return this.createInstance(address);
+    }
+
+    private async getInstanceByAlias (alias: string) {
+        const response = await axios.get(this.getInstanceDataUrl(alias));
+        if (response.status === HttpStatusCode.Ok) {
+            const [address] = Object.values(response.data as InstanceData);
+            return this.createInstance(address);
+        }
+        throw new InstanceNotFound(`Can't download data for instance ${alias}`);
+    }
 }

@@ -12,7 +12,7 @@ export class SkaleManagerProject extends Project {
         );
     }
 
-    static getAbiFilename (version: string) {
+    getAbiFilename (version: string) {
         return `skale-manager-${version}-abi.json`;
     }
 }
