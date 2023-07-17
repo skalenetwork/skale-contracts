@@ -1,4 +1,7 @@
 {
+  "engines": {
+    "node": ">=16.0.0"
+  },
   "devDependencies": {
     "@tsconfig/recommended": "^1.0.2",
     "@types/node": "^20.2.5",
