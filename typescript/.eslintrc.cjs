@@ -9,7 +9,9 @@ module.exports = {
     plugins: ['@typescript-eslint'],
     root: true,
     rules: {
-        "object-curly-spacing": [ "error", "always" ]
+        "object-curly-spacing": [ "error", "always" ],
+        "padded-blocks": [ "error", "never" ],
+        "one-var": ["error", "consecutive"]
     },
     ignorePatterns: [
         "lib/**"
