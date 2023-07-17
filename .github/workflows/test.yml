@@ -1,0 +1,31 @@
+name: Test
+env:
+  NODE_VERSIONS: [14, 16, 18, 19, 20]
+  PYTHON_VERSIONS: [3.7, 3.8, 3.9, 3.10, 3.11]
+
+jobs:
+  typescript:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: ${{ env.NODE_VERSIONS }}
+
+    defaults:
+      run:
+        working-directory: typescript
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Node
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+
+    - name: Install project
+      working-directory: .
+      run: yarn
+
+    - name: Run static checks
+      run: yarn fullChecks
