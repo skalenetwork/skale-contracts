@@ -48,7 +48,7 @@ export abstract class Project {
         return `${this.githubRepo}releases/download/${version}/${this.getAbiFilename(version)}`;
     }
 
-    abstract getAbiFilename(version: string): string;
+    abstract static getAbiFilename(version: string): string;
 
     getInstanceDataUrl(alias: string) {
         if (this.network instanceof ListedNetwork) {
