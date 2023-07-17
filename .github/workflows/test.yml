@@ -3,8 +3,7 @@ name: Test
 on: [push, pull_request]
 
 env:
-  NODE_VERSIONS: [14, 16, 18, 19, 20]
-  PYTHON_VERSIONS: [3.7, 3.8, 3.9, 3.10, 3.11]
+  # PYTHON_VERSIONS: [3.7, 3.8, 3.9, 3.10, 3.11]
 
 jobs:
   typescript:
@@ -12,7 +11,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: ${{ env.NODE_VERSIONS }}
+        node-version: [14, 16, 18, 19, 20]
 
     defaults:
       run:
