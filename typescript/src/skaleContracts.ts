@@ -1,7 +1,7 @@
-
-import { ListedNetwork, Network } from "./network";
 import { Provider as EthersProvider } from "@ethersproject/providers";
+import { ListedNetwork } from "./listedNetwork";
 import { Metadata } from "./metadata";
+import { Network } from "./network";
 import { ethers } from "ethers";
 
 export class SkaleContracts {

@@ -1,12 +1,15 @@
 import { Instance, InstanceData } from "./instance";
-import { ListedNetwork, Network, NetworkNotFoundError } from "./network";
 import { MainContractAddress, SkaleABIFile } from "./domain/types";
 import axios, { HttpStatusCode } from "axios";
 import { InstanceNotFound } from "./domain/errors/instance/instanceNotFound";
+import { ListedNetwork } from "./listedNetwork";
+import { Network } from "./network";
+import {
+    NetworkNotFoundError
+} from "./domain/errors/network/networkNotFoundError";
 import { ProjectMetadata } from "./metadata";
 import { REPOSITORY_URL } from "./domain/constants";
 import { ethers } from "ethers";
-
 
 export abstract class Project {
     protected metadata: ProjectMetadata;
