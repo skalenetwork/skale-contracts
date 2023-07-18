@@ -9,7 +9,7 @@ import { ethers } from "ethers";
 
 
 export abstract class Project {
-    private metadata: ProjectMetadata;
+    protected metadata: ProjectMetadata;
 
     network: Network;
 

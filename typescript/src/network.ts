@@ -1,5 +1,5 @@
 import { SkaleContracts } from "./skaleContracts";
-import { projectFactory } from "./projects/factory";
+import { ProjectFactory } from "./projects/factory";
 import { Provider } from "@ethersproject/providers"
 
 export class NetworkNotFoundError extends Error
@@ -19,7 +19,7 @@ export class Network {
     }
 
     async getProject(name: string) {
-        return projectFactory.create(this, name);
+        return ProjectFactory.create(this, name);
     }
 }
 

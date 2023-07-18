@@ -13,6 +13,6 @@ export class SkaleManagerProject extends Project {
     }
 
     getAbiFilename (version: string) {
-        return `skale-manager-${version}-abi.json`;
+        return `${this.metadata.name}-${version}-abi.json`;
     }
 }

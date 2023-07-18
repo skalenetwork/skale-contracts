@@ -12,8 +12,8 @@ export const projects = {
     }
 };
 
-class ProjectFactory {
-    create (network: Network, name: string): Project {
+export class ProjectFactory {
+    static create (network: Network, name: string): Project {
         if (name === projects.skaleManager.name) {
             return new SkaleManagerProject(
                 network,
@@ -23,5 +23,3 @@ class ProjectFactory {
         throw new ProjectNotFoundError(`Project with name ${name} is unknown`);
     }
 }
-
-export const projectFactory = new ProjectFactory();
