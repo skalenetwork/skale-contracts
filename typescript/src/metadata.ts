@@ -1,5 +1,9 @@
-import axios from 'axios';
-import { METADATA_FILENAME, REPOSITORY_URL } from './domain/constants';
+import { METADATA_FILENAME, REPOSITORY_URL } from "./domain/constants";
+import {
+    MetadataIsNotDownloaded
+} from "./domain/errors/metadata/metadataIsNotDownloaded";
+import axios from "axios";
+
 
 export type NetworkMetadata = {
     name: string;
@@ -17,39 +21,34 @@ type MetadataFile = {
     projects: ProjectMetadata[];
 }
 
-class MetadataIsNotDownloaded extends Error {
-
-}
-
 export class Metadata {
-    private _networks: NetworkMetadata[] | undefined;
-    private _projects: ProjectMetadata[] | undefined;
+    private networksMetadata: NetworkMetadata[] | undefined;
 
-    constructor() {
-    }
+    private projectsMetadata: ProjectMetadata[] | undefined;
 
-    get networks(): NetworkMetadata[] {
-        if (this._networks !== undefined) {
-            return this._networks;
-        } else {
-            throw new MetadataIsNotDownloaded("download() method has to be called");
+    private static NOT_DOWNLOADED_ERROR = "download() method has to be called";
+
+    get networks (): NetworkMetadata[] {
+        if (typeof this.networksMetadata === "undefined") {
+            throw new MetadataIsNotDownloaded(Metadata.NOT_DOWNLOADED_ERROR);
         }
+        return this.networksMetadata;
     }
 
-    get projects(): ProjectMetadata[] {
-        if (this._projects !== undefined) {
-            return this._projects
-        } else {
-            throw new MetadataIsNotDownloaded("download() method has to be called");
+    get projects (): ProjectMetadata[] {
+        if (typeof this.projectsMetadata === "undefined") {
+            throw new MetadataIsNotDownloaded(Metadata.NOT_DOWNLOADED_ERROR);
         }
+        return this.projectsMetadata;
     }
 
-    async download() {
-        if (this._networks === undefined) {
-            const metadataResponse = await axios.get(REPOSITORY_URL + METADATA_FILENAME);
-            const metadata = metadataResponse.data as MetadataFile;
-            this._networks = metadata.networks;
-            this._projects = metadata.projects;
+    async download () {
+        if (typeof this.networksMetadata === "undefined") {
+            const metadata =
+                (await axios.get(REPOSITORY_URL + METADATA_FILENAME)).data as
+                    MetadataFile;
+            this.networksMetadata = metadata.networks;
+            this.projectsMetadata = metadata.projects;
         }
     }
 }
