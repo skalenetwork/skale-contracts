@@ -81,7 +81,7 @@ export class SkaleManagerInstance extends Instance {
         );
     }
 
-    async _getVersion () {
+    async queryVersion () {
         return await this.skaleManager.version() as string;
     }
 
