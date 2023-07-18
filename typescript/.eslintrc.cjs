@@ -14,6 +14,7 @@ module.exports = {
         "one-var": ["error", "consecutive"]
     },
     ignorePatterns: [
-        "lib/**"
+        "lib/**",
+        "debug.ts"
     ]
   };
