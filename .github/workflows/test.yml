@@ -70,7 +70,26 @@ jobs:
       with:
         python-version: ${{ matrix.python-version }}
 
-    - name: Install package
+    - name: Install building tools
+      run: pip3 install -r scripts/requirements.txt
+
+    - name: Determine version
+      run: |
+        export BRANCH=${GITHUB_REF##*/}
+        echo "Branch $BRANCH"
+        export VERSION=$(bash ./scripts/calculate_version.sh)
+        echo "VERSION=$VERSION" >> $GITHUB_ENV
+        echo "Version $VERSION"
+        ( test $BRANCH = "stable" && export PRERELEASE=false ) || export PRERELEASE=true
+        echo "PRERELEASE=$PRERELEASE" >> $GITHUB_ENV
+
+    - name: Build pip package
+      env:
+          PYTHONPATH: ./
+          VERSION: ${{ env.VERSION }}
+      run: ./scripts/build_package.sh
+
+    - name: Install the package
       run: pip3 install -e .
 
     - name: Install tools
