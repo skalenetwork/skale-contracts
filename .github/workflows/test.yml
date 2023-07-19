@@ -71,7 +71,7 @@ jobs:
         python-version: ${{ matrix.python-version }}
 
     - name: Install tools
-      run: pip3 install -r test/requirement.txt
+      run: pip3 install -r test/requirements.txt
 
     - name: Run static checks
       run: scripts/full_check.sh
