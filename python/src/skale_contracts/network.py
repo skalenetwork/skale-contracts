@@ -3,7 +3,7 @@
 from web3 import Web3
 from web3.providers import BaseProvider
 
-from .projects.project_factory import project_factory
+from .projects.project_factory import create_project
 
 
 class Network:
@@ -14,12 +14,16 @@ class Network:
 
     def get_project(self, name: str):
         """Get Project object by it's name"""
-        return project_factory.create(self, name)
+        return create_project(self, name)
 
     @property
     def skale_contracts(self):
         """Get SkaleContracts object associated with the network"""
         return self._skale_contracts
+
+    def has_path(self):
+        """Return True is the network has a path"""
+        return False
 
 
 class ListedNetwork(Network):
@@ -27,3 +31,6 @@ class ListedNetwork(Network):
     def __init__(self, skale_contracts, provider: BaseProvider, path: str):
         super().__init__(skale_contracts, provider)
         self.path = path
+
+    def has_path(self):
+        return True

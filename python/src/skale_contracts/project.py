@@ -6,7 +6,6 @@ import requests
 
 from .constants import REPOSITORY_URL, NETWORK_TIMEOUT
 from .instance import Instance, InstanceData
-from .network import ListedNetwork
 
 
 @dataclass
@@ -59,7 +58,7 @@ class Project(ABC):
 
     def get_instance_data_url(self, alias: str):
         """Get URL of a file containing address for provided alias"""
-        if isinstance(self.network, ListedNetwork):
+        if self.network.has_path():
             return f'{REPOSITORY_URL}{self.network.path}/{self._metadata.path}/{alias}.json'
         raise ValueError('Network is unknown')
 
