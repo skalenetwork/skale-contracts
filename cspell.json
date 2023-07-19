@@ -8,7 +8,8 @@
         "**/venv/**",
         "**/node_modules/**",
         "**/__pycache__/**",
-        "**/requirements.txt"
+        "**/requirements.txt",
+        "**/*.egg-info/**"
     ],
     "dictionaries": ["domain-terms", "libraries", "names", "skale-terms", "solidity"],
     "dictionaryDefinitions": [
