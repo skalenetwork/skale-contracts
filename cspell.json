@@ -7,7 +7,8 @@
         "cspell.json",
         "**/venv/**",
         "**/node_modules/**",
-        "**/__pycache__/**"
+        "**/__pycache__/**",
+        "**/requirements.txt"
     ],
     "dictionaries": ["domain-terms", "libraries", "names", "skale-terms", "solidity"],
     "dictionaryDefinitions": [

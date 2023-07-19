@@ -1,57 +1,68 @@
+"""Contains Project class"""
+
 from abc import ABC, abstractmethod
 from attr import dataclass
 import requests
 
-from constants import REPOSITORY_URL
-from instance import Instance, InstanceData
+from .constants import REPOSITORY_URL, NETWORK_TIMEOUT
+from .instance import Instance, InstanceData
+from .network import ListedNetwork
 
 
 @dataclass
 class ProjectMetadata:
+    """Contains project metadata"""
     name: str
     path: str
 
 
 class Project(ABC):
+    """Represents set of smart contracts known as project"""
+
     def __init__(self, network, metadata: ProjectMetadata) -> None:
         super().__init__()
         self.network = network
         self._metadata = metadata
 
-    def get_instance(self, aliasOrAddress: str):
-        if self.network.w3.is_address(aliasOrAddress):
-            address = aliasOrAddress
-            return self.createInstance(address)
-        else:
-            alias = aliasOrAddress
-            url = self.get_instance_data_url(alias)
-            response = requests.get(url)
-            if (response.status_code != 200):
-                raise ValueError(f"Can't download data for instance {alias}")
-            else:
-                data = InstanceData.from_json(response.text)
-                if len(data.data.values()) != 1:
-                    raise ValueError(f'Error during parsing data for {alias}')
-                return self.create_instance(list(data.data.values())[0])
+    @abstractmethod
+    @property
+    def github_repo(self):
+        """URL of github repo with the project"""
+
+    def get_instance(self, alias_or_address: str):
+        """Create instance object based on alias or address"""
+        if self.network.w3.is_address(alias_or_address):
+            address = alias_or_address
+            return self.create_instance(address)
+        alias = alias_or_address
+        url = self.get_instance_data_url(alias)
+        response = requests.get(url, timeout=NETWORK_TIMEOUT)
+        if response.status_code == 200:
+            data = InstanceData.from_json(response.text)
+            if len(data.data.values()) != 1:
+                raise ValueError(f'Error during parsing data for {alias}')
+            return self.create_instance(list(data.data.values())[0])
+        raise ValueError(f"Can't download data for instance {alias}")
 
     def download_abi_file(self, version: str):
-        response = requests.get(self.get_abi_url(version))
+        """Download file with ABI"""
+        response = requests.get(self.get_abi_url(version), timeout=NETWORK_TIMEOUT)
         return response.text
 
     def get_abi_url(self, version: str):
-        return f'{self.githubRepo}releases/download/{version}/{self.get_abi_filename(version)}'
+        """Calculate URL of ABI file"""
+        return f'{self.github_repo}releases/download/{version}/{self.get_abi_filename(version)}'
 
     @abstractmethod
     def get_abi_filename(self, version: str) -> str:
-        pass
+        """Return name of a file with ABI"""
 
     def get_instance_data_url(self, alias: str):
-        from network import ListedNetwork
+        """Get URL of a file containing address for provided alias"""
         if isinstance(self.network, ListedNetwork):
             return f'{REPOSITORY_URL}{self.network.path}/{self._metadata.path}/{alias}.json'
-        else:
-            raise ValueError('Network is unknown')
+        raise ValueError('Network is unknown')
 
     @abstractmethod
     def create_instance(self, address: str) -> Instance:
-        pass
+        """Create instance object based on known address"""

@@ -6,7 +6,10 @@ from .skale_manager_instance import SkaleManagerInstance
 class SkaleManagerProject(Project):
     def __init__(self, network, metadata: ProjectMetadata) -> None:
         super().__init__(network, metadata)
-        self.githubRepo = 'https://github.com/skalenetwork/skale-manager/'
+
+    @property
+    def github_repo(self):
+        return 'https://github.com/skalenetwork/skale-manager/'
 
     def create_instance(self, address: str) -> Instance:
         return SkaleManagerInstance(self, address)
