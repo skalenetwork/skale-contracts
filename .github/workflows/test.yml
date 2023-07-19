@@ -50,3 +50,28 @@ jobs:
 
     - name: Run static checks
       run: yarn fullCheck
+
+  python:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        python-version: [3.7, 3.8, 3.9, 3.10, 3.11]
+
+    defaults:
+      run:
+        working-directory: python
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install tools
+      run: pip3 install -r test/requirement.txt
+
+    - name: Run static checks
+      run: scripts/full_check.sh

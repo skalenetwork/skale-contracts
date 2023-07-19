@@ -5,7 +5,7 @@
   "name": "development",
   "packageManager": "yarn@3.5.1",
   "scripts": {
-    "fullCheck": "yarn cspell && yarn ./typescript fullCheck",
+    "fullCheck": "yarn cspell && yarn ./typescript fullCheck && python/scripts/full_check.sh",
     "cspell": "npx cspell \"**/*\"",
     "hooks": "git config core.hooksPath .githooks || true",
     "no-hooks": "git config core.hooksPath .git/hooks",
