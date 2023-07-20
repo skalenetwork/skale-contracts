@@ -1,5 +1,6 @@
 """Module for work with SKALE contracts metadata"""
 
+from __future__ import annotations
 from dataclasses import dataclass
 import json
 from typing import Optional
@@ -21,7 +22,7 @@ class MetadataFile:
     networks: list[NetworkMetadata]
 
     @classmethod
-    def from_json(cls, data: str):
+    def from_json(cls, data: str) -> MetadataFile:
         """Create MetadataFile object from json string"""
         file = json.loads(data)
         networks = []
