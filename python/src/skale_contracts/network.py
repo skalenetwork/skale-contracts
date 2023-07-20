@@ -21,16 +21,9 @@ class Network:
         """Get SkaleContracts object associated with the network"""
         return self._skale_contracts
 
-    def has_path(self):
-        """Return True is the network has a path"""
-        return False
-
 
 class ListedNetwork(Network):
     """Network that is listed in the metadata"""
     def __init__(self, skale_contracts, provider: BaseProvider, path: str):
         super().__init__(skale_contracts, provider)
         self.path = path
-
-    def has_path(self):
-        return True

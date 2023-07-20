@@ -7,6 +7,7 @@ import requests
 
 from .constants import REPOSITORY_URL, NETWORK_TIMEOUT
 from .instance import Instance, InstanceData
+from .network import ListedNetwork
 
 if TYPE_CHECKING:
     from .network import Network
@@ -29,12 +30,12 @@ class Project(ABC):
 
     @abstractmethod
     @property
-    def github_repo(self):
+    def github_repo(self) -> str:
         """URL of github repo with the project"""
 
-    def get_instance(self, alias_or_address: str):
+    def get_instance(self, alias_or_address: str) -> Instance:
         """Create instance object based on alias or address"""
-        if self.network.w3.is_address(alias_or_address):
+        if self.network.web3.is_address(alias_or_address):
             address = alias_or_address
             return self.create_instance(address)
         alias = alias_or_address
@@ -47,12 +48,12 @@ class Project(ABC):
             return self.create_instance(list(data.data.values())[0])
         raise ValueError(f"Can't download data for instance {alias}")
 
-    def download_abi_file(self, version: str):
+    def download_abi_file(self, version: str) -> str:
         """Download file with ABI"""
         response = requests.get(self.get_abi_url(version), timeout=NETWORK_TIMEOUT)
         return response.text
 
-    def get_abi_url(self, version: str):
+    def get_abi_url(self, version: str) -> str:
         """Calculate URL of ABI file"""
         return f'{self.github_repo}releases/download/{version}/{self.get_abi_filename(version)}'
 
@@ -60,9 +61,9 @@ class Project(ABC):
     def get_abi_filename(self, version: str) -> str:
         """Return name of a file with ABI"""
 
-    def get_instance_data_url(self, alias: str):
+    def get_instance_data_url(self, alias: str) -> str:
         """Get URL of a file containing address for provided alias"""
-        if self.network.has_path():
+        if isinstance(self.network, ListedNetwork):
             return f'{REPOSITORY_URL}{self.network.path}/{self._metadata.path}/{alias}.json'
         raise ValueError('Network is unknown')
 
