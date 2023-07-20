@@ -1,1 +1,3 @@
+mypy
 pylint
+types-requests

@@ -35,9 +35,9 @@ class SkaleManagerInstance(Instance):
     """Represents instance of skale-manager"""
     def __init__(self, project: Project, address: str) -> None:
         super().__init__(project, address)
-        self.skale_manager = self.w3.eth.contract(address=address, abi=SKALE_MANAGER_ABI)
+        self.skale_manager = self.web3.eth.contract(address=address, abi=SKALE_MANAGER_ABI)
         contract_manager_address = self.skale_manager.functions.contractManager().call()
-        self.contract_manager = self.w3.eth.contract(
+        self.contract_manager = self.web3.eth.contract(
             address=contract_manager_address,
             abi=CONTRACT_MANAGER_ABI
         )

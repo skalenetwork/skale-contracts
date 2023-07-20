@@ -1,11 +1,15 @@
 """Contains Project class"""
-
+from __future__ import annotations
 from abc import ABC, abstractmethod
+from typing import TYPE_CHECKING
 from attr import dataclass
 import requests
 
 from .constants import REPOSITORY_URL, NETWORK_TIMEOUT
 from .instance import Instance, InstanceData
+
+if TYPE_CHECKING:
+    from .network import Network
 
 
 @dataclass
@@ -18,7 +22,7 @@ class ProjectMetadata:
 class Project(ABC):
     """Represents set of smart contracts known as project"""
 
-    def __init__(self, network, metadata: ProjectMetadata) -> None:
+    def __init__(self, network: Network, metadata: ProjectMetadata) -> None:
         super().__init__()
         self.network = network
         self._metadata = metadata
