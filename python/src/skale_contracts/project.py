@@ -10,6 +10,7 @@ from .instance import Instance, InstanceData
 from .network import ListedNetwork
 
 if TYPE_CHECKING:
+    from eth_typing import Address
     from .network import Network
 
 
@@ -68,5 +69,5 @@ class Project(ABC):
         raise ValueError('Network is unknown')
 
     @abstractmethod
-    def create_instance(self, address: str) -> Instance:
+    def create_instance(self, address: Address) -> Instance:
         """Create instance object based on known address"""

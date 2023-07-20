@@ -28,7 +28,7 @@ class InstanceData:
 
 class Instance(ABC):
     """Represents deployed instance of a smart contracts project"""
-    def __init__(self, project: Project, address: str) -> None:
+    def __init__(self, project: Project, address: Address) -> None:
         self._project = project
         self._version: Optional[str] = None
         self._abi: Optional[SkaleAbi] = None
