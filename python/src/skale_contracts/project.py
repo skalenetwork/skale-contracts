@@ -3,6 +3,7 @@ from __future__ import annotations
 from abc import ABC, abstractmethod
 from typing import TYPE_CHECKING
 from attr import dataclass
+from eth_utils.address import to_canonical_address
 import requests
 
 from .constants import REPOSITORY_URL, NETWORK_TIMEOUT
@@ -37,7 +38,7 @@ class Project(ABC):
     def get_instance(self, alias_or_address: str) -> Instance:
         """Create instance object based on alias or address"""
         if self.network.web3.is_address(alias_or_address):
-            address = alias_or_address
+            address = to_canonical_address(alias_or_address)
             return self.create_instance(address)
         alias = alias_or_address
         url = self.get_instance_data_url(alias)
@@ -46,7 +47,8 @@ class Project(ABC):
             data = InstanceData.from_json(response.text)
             if len(data.data.values()) != 1:
                 raise ValueError(f'Error during parsing data for {alias}')
-            return self.create_instance(list(data.data.values())[0])
+            address = to_canonical_address(list(data.data.values())[0])
+            return self.create_instance(address)
         raise ValueError(f"Can't download data for instance {alias}")
 
     def download_abi_file(self, version: str) -> str:
