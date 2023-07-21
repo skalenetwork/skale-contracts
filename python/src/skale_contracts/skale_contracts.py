@@ -1,7 +1,7 @@
 """Contains SkaleContracts class"""
 
 from web3 import Web3
-from web3.providers import BaseProvider
+from web3.providers.base import BaseProvider
 
 from .metadata import Metadata
 from .network import Network, ListedNetwork
@@ -9,7 +9,7 @@ from .network import Network, ListedNetwork
 
 class SkaleContracts:
     """Entry point of the SKALE Contracts library"""
-    def __init__(self):
+    def __init__(self) -> None:
         self.metadata = Metadata()
 
     def get_network_by_provider(self, provider: BaseProvider) -> Network:
