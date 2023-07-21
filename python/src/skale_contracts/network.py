@@ -5,7 +5,7 @@ from typing import TYPE_CHECKING
 from web3 import Web3
 from web3.providers.base import BaseProvider
 
-from .projects.project_factory import create_project
+from .project_factory import create_project
 
 
 if TYPE_CHECKING:
