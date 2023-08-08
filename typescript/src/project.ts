@@ -11,14 +11,17 @@ import { ProjectMetadata } from "./metadata";
 import { REPOSITORY_URL } from "./domain/constants";
 import { ethers } from "ethers";
 
-export abstract class Project {
+export abstract class Project<ContractType, InterfaceType> {
     protected metadata: ProjectMetadata;
 
-    network: Network;
+    network: Network<ContractType, InterfaceType>;
 
     abstract githubRepo: string;
 
-    constructor (network: Network, metadata: ProjectMetadata) {
+    constructor (
+        network: Network<ContractType, InterfaceType>,
+        metadata: ProjectMetadata
+    ) {
         this.network = network;
         this.metadata = metadata;
     }
@@ -32,7 +35,7 @@ export abstract class Project {
 
     async downloadAbiFile (version: string) {
         const response = await axios.get(this.getAbiUrl(version));
-        return response.data as SkaleABIFile;
+        return response.data as SkaleABIFile<InterfaceType>;
     }
 
     getAbiUrl (version: string) {
@@ -50,7 +53,8 @@ export abstract class Project {
         throw new NetworkNotFoundError("Network is unknown");
     }
 
-    abstract createInstance(address: MainContractAddress): Instance;
+    abstract createInstance(address: MainContractAddress):
+        Instance<ContractType, InterfaceType>;
 
     // Private
 

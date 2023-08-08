@@ -1,4 +1,3 @@
-import { BaseContract, ethers } from "ethers";
 import {
     ContractAddress,
     ContractName,
@@ -11,33 +10,35 @@ export type InstanceData = {
     [contractName: string]: MainContractAddress
 }
 
-export abstract class Instance {
-    private project: Project;
+export abstract class Instance<ContractType, InterfaceType> {
+    protected project: Project<ContractType, InterfaceType>;
 
     address: MainContractAddress;
 
-    abi: SkaleABIFile | undefined;
+    abi: SkaleABIFile<InterfaceType> | undefined;
 
     version: string | undefined;
 
-    constructor (project: Project, address: MainContractAddress) {
+    constructor (
+        project: Project<ContractType, InterfaceType>,
+        address: MainContractAddress
+    ) {
         this.project = project;
         this.address = address;
     }
 
-    get provider () {
-        return this.project.network.provider;
+    get adapter () {
+        return this.project.network.adapter;
     }
 
     abstract getContractAddress(name: ContractName): Promise<ContractAddress>;
 
     async getContract (name: ContractName) {
         const abi = await this.getAbi();
-        return new ethers.Contract(
+        return this.adapter.createContract(
             await this.getContractAddress(name),
-            abi[name],
-            this.provider
-        ) as BaseContract;
+            abi[name]
+        );
     }
 
     // Protected

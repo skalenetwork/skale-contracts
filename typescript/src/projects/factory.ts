@@ -12,14 +12,16 @@ export const projects = {
     }
 };
 
-export class ProjectFactory {
-    static create (network: Network, name: string): Project {
+export const createProject =
+    function createProject<ContractType, InterfaceType> (
+        network: Network<ContractType, InterfaceType>,
+        name: string
+    ): Project<ContractType, InterfaceType> {
         if (name === projects.skaleManager.name) {
-            return new SkaleManagerProject(
+            return new SkaleManagerProject<ContractType, InterfaceType>(
                 network,
                 projects.skaleManager
             );
         }
         throw new ProjectNotFoundError(`Project with name ${name} is unknown`);
-    }
-}
+    };

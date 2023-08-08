@@ -1,23 +1,27 @@
-import { ProjectFactory } from "./projects/factory";
-import { Provider } from "@ethersproject/providers";
+import { Adapter } from "./adapter";
 import { SkaleContracts } from "./skaleContracts";
+import { createProject } from "./projects/factory";
 
-export class Network {
-    private skaleContracts: SkaleContracts;
 
-    private networkProvider: Provider;
+export class Network<ContractType, InterfaceType> {
+    private skaleContracts: SkaleContracts<ContractType, InterfaceType>;
 
-    constructor (skaleContracts: SkaleContracts, provider: Provider) {
-        this.networkProvider = provider;
+    private networkAdapter: Adapter<ContractType, InterfaceType>;
+
+    constructor (
+        skaleContracts: SkaleContracts<ContractType, InterfaceType>,
+        adapter: Adapter<ContractType, InterfaceType>
+    ) {
+        this.networkAdapter = adapter;
         this.skaleContracts = skaleContracts;
     }
 
-    get provider () {
-        return this.networkProvider;
+    get adapter () {
+        return this.networkAdapter;
     }
 
     getProject (name: string) {
-        return ProjectFactory.create(
+        return createProject(
             this,
             name
         );

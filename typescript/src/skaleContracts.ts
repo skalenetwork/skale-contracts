@@ -1,30 +1,26 @@
-import { Provider as EthersProvider } from "@ethersproject/providers";
+import { Adapter } from "./adapter";
 import { ListedNetwork } from "./listedNetwork";
 import { Metadata } from "./metadata";
 import { Network } from "./network";
-import { ethers } from "ethers";
 
-export class SkaleContracts {
+
+export class SkaleContracts<ContractType, InterfaceType> {
     metadata = new Metadata();
 
-    getNetworkByChainId (chainId: number) {
-        return this.getNetworkByProvider(ethers.getDefaultProvider(chainId));
-    }
-
-    async getNetworkByProvider (provider: EthersProvider) {
-        const { chainId } = await provider.getNetwork();
+    async getNetworkByAdapter (adapter: Adapter<ContractType, InterfaceType>) {
+        const chainId = await adapter.getChainId();
         await this.metadata.download();
         const networkMetadata = this.metadata.networks.
-            find((metadata) => metadata.chainId === chainId);
+            find((metadata) => BigInt(metadata.chainId) === chainId);
         if (typeof networkMetadata === "undefined") {
             return new Network(
                 this,
-                provider
+                adapter
             );
         }
         return new ListedNetwork(
             this,
-            provider,
+            adapter,
             networkMetadata.path
         );
     }

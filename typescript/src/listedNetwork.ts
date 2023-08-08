@@ -1,18 +1,20 @@
+import { Adapter } from "./adapter";
 import { Network } from "./network";
-import { Provider } from "@ethersproject/providers";
 import { SkaleContracts } from "./skaleContracts";
 
-export class ListedNetwork extends Network {
+
+export class ListedNetwork<ContractType, InterfaceType> extends
+    Network<ContractType, InterfaceType> {
     private pathValue;
 
     constructor (
-        skaleContracts: SkaleContracts,
-        provider: Provider,
+        skaleContracts: SkaleContracts<ContractType, InterfaceType>,
+        adapter: Adapter<ContractType, InterfaceType>,
         path: string
     ) {
         super(
             skaleContracts,
-            provider
+            adapter
         );
         this.pathValue = path;
     }
