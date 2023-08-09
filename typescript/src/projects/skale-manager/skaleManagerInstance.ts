@@ -5,59 +5,38 @@ import {
 import { Instance } from "../../instance";
 
 
-const contractManagerAbi = [
-        {
-            "inputs": [
-                {
-                    "internalType": "string",
-                    "name": "name",
-                    "type": "string"
-                }
-            ],
-            "name": "getContract",
-            "outputs": [
-                {
-                    "internalType": "address",
-                    "name": "contractAddress",
-                    "type": "address"
-                }
-            ],
-            "stateMutability": "view",
-            "type": "function"
-        }
-    ],
-    skaleManagerAbi = [
-        {
-            "inputs": [],
-            "name": "contractManager",
-            "outputs": [
-                {
-                    "internalType": "contract IContractManager",
-                    "name": "",
-                    "type": "address"
-                }
-            ],
-            "stateMutability": "view",
-            "type": "function"
-        },
-        {
-            "constant": true,
-            "inputs": [],
-            "name": "version",
-            "outputs": [
-                {
-                    "name": "",
-                    "type": "string"
-                }
-            ],
-            "payable": false,
-            "stateMutability": "view",
-            "type": "function"
-        }
-    ];
+const skaleManagerAbi = [
+    {
+        "inputs": [],
+        "name": "contractManager",
+        "outputs": [
+            {
+                "internalType": "contract IContractManager",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "constant": true,
+        "inputs": [],
+        "name": "version",
+        "outputs": [
+            {
+                "name": "",
+                "type": "string"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+    }
+];
 
-export class SkaleManagerInstance<ContractType, InterfaceType> extends
-    Instance<ContractType, InterfaceType> {
+export class SkaleManagerInstance<ContractType> extends
+    Instance<ContractType> {
     customNames = new Map<string, string>([
         [
             "BountyV2",
@@ -73,13 +52,16 @@ export class SkaleManagerInstance<ContractType, InterfaceType> extends
     }
 
     async getContractAddress (name: ContractName): Promise<ContractAddress> {
-        const contractManagerAddress = await this.callSkaleManager(
-            "contractManager",
-            []
-        ) as string;
+        const contractManagerAbi =
+                await this.getContractAbi("ContractManager"),
+            contractManagerAddress = await this.callSkaleManager(
+                "contractManager",
+                []
+            ) as string;
+
         return await this.project.network.adapter.makeCall(
             {
-                "abi": contractManagerAbi as InterfaceType,
+                "abi": contractManagerAbi,
                 "address": contractManagerAddress
             },
             {
@@ -101,7 +83,7 @@ export class SkaleManagerInstance<ContractType, InterfaceType> extends
     private callSkaleManager (functionName: string, args: unknown[]) {
         return this.project.network.adapter.makeCall(
             {
-                "abi": skaleManagerAbi as InterfaceType,
+                "abi": skaleManagerAbi,
                 "address": this.address
             },
             {

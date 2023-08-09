@@ -13,12 +13,12 @@ export const projects = {
 };
 
 export const createProject =
-    function createProject<ContractType, InterfaceType> (
-        network: Network<ContractType, InterfaceType>,
+    function createProject<ContractType> (
+        network: Network<ContractType>,
         name: string
-    ): Project<ContractType, InterfaceType> {
+    ): Project<ContractType> {
         if (name === projects.skaleManager.name) {
-            return new SkaleManagerProject<ContractType, InterfaceType>(
+            return new SkaleManagerProject<ContractType>(
                 network,
                 projects.skaleManager
             );

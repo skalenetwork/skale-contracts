@@ -1,10 +1,10 @@
 import { Adapter, ContractData, FunctionCall } from "./adapter";
 import { BaseContract, ethers } from "ethers";
-import { Interface } from "ethers/lib/utils";
+import { Abi } from "./domain/types";
 import { Provider } from "@ethersproject/providers";
 
 
-export class Ethers5Adapter extends Adapter<BaseContract, Interface> {
+export class Ethers5Adapter extends Adapter<BaseContract> {
     provider: Provider;
 
     constructor (provider: Provider) {
@@ -12,24 +12,31 @@ export class Ethers5Adapter extends Adapter<BaseContract, Interface> {
         this.provider = provider;
     }
 
-    createContract (address: string, abi: Interface): ethers.Contract {
+    createContract (address: string, abi: Abi): ethers.Contract {
         return new ethers.Contract(
             address,
-            abi,
+            new ethers.utils.Interface(abi),
             this.provider
         ) as BaseContract;
     }
 
-    makeCall (
-        contract: ContractData<Interface>,
-        target: FunctionCall
+    async makeCall (
+        contract: ContractData,
+        targetFunction: FunctionCall
     ): Promise<unknown> {
-        const contractObject = new ethers.Contract(
-            contract.address,
-            contract.abi,
-            this.provider
-        );
-        return contractObject.functions[target.functionName].call(target.args);
+        const
+            contractInterface = new ethers.utils.Interface(contract.abi),
+            [result] = contractInterface.decodeFunctionResult(
+                targetFunction.functionName,
+                await this.provider.call({
+                    "data": contractInterface.encodeFunctionData(
+                        targetFunction.functionName,
+                        targetFunction.args
+                    ),
+                    "to": contract.address
+                })
+            );
+        return result;
     }
 
     async getChainId (): Promise<bigint> {

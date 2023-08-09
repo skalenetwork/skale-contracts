@@ -3,14 +3,14 @@ import { SkaleContracts } from "./skaleContracts";
 import { createProject } from "./projects/factory";
 
 
-export class Network<ContractType, InterfaceType> {
-    private skaleContracts: SkaleContracts<ContractType, InterfaceType>;
+export class Network<ContractType> {
+    private skaleContracts: SkaleContracts<ContractType>;
 
-    private networkAdapter: Adapter<ContractType, InterfaceType>;
+    private networkAdapter: Adapter<ContractType>;
 
     constructor (
-        skaleContracts: SkaleContracts<ContractType, InterfaceType>,
-        adapter: Adapter<ContractType, InterfaceType>
+        skaleContracts: SkaleContracts<ContractType>,
+        adapter: Adapter<ContractType>
     ) {
         this.networkAdapter = adapter;
         this.skaleContracts = skaleContracts;

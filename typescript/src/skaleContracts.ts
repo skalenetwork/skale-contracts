@@ -4,10 +4,10 @@ import { Metadata } from "./metadata";
 import { Network } from "./network";
 
 
-export class SkaleContracts<ContractType, InterfaceType> {
+export class SkaleContracts<ContractType> {
     metadata = new Metadata();
 
-    async getNetworkByAdapter (adapter: Adapter<ContractType, InterfaceType>) {
+    async getNetworkByAdapter (adapter: Adapter<ContractType>) {
         const chainId = await adapter.getChainId();
         await this.metadata.download();
         const networkMetadata = this.metadata.networks.

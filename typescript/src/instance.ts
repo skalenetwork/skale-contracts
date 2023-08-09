@@ -10,17 +10,17 @@ export type InstanceData = {
     [contractName: string]: MainContractAddress
 }
 
-export abstract class Instance<ContractType, InterfaceType> {
-    protected project: Project<ContractType, InterfaceType>;
+export abstract class Instance<ContractType> {
+    protected project: Project<ContractType>;
 
     address: MainContractAddress;
 
-    abi: SkaleABIFile<InterfaceType> | undefined;
+    abi: SkaleABIFile | undefined;
 
     version: string | undefined;
 
     constructor (
-        project: Project<ContractType, InterfaceType>,
+        project: Project<ContractType>,
         address: MainContractAddress
     ) {
         this.project = project;
@@ -34,16 +34,20 @@ export abstract class Instance<ContractType, InterfaceType> {
     abstract getContractAddress(name: ContractName): Promise<ContractAddress>;
 
     async getContract (name: ContractName) {
-        const abi = await this.getAbi();
         return this.adapter.createContract(
             await this.getContractAddress(name),
-            abi[name]
+            await this.getContractAbi(name)
         );
     }
 
     // Protected
 
-    abstract queryVersion(): Promise<string>;
+    protected abstract queryVersion(): Promise<string>;
+
+    protected async getContractAbi (contractName: string) {
+        const abi = await this.getAbi();
+        return abi[contractName];
+    }
 
     // Private
 

@@ -3,13 +3,13 @@ import { Network } from "./network";
 import { SkaleContracts } from "./skaleContracts";
 
 
-export class ListedNetwork<ContractType, InterfaceType> extends
-    Network<ContractType, InterfaceType> {
+export class ListedNetwork<ContractType> extends
+    Network<ContractType> {
     private pathValue;
 
     constructor (
-        skaleContracts: SkaleContracts<ContractType, InterfaceType>,
-        adapter: Adapter<ContractType, InterfaceType>,
+        skaleContracts: SkaleContracts<ContractType>,
+        adapter: Adapter<ContractType>,
         path: string
     ) {
         super(

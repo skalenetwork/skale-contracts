@@ -1,6 +1,8 @@
-export type ContractData<InterfaceType> = {
+import { Abi } from "./domain/types";
+
+export type ContractData = {
     address: string;
-    abi: InterfaceType
+    abi: Abi;
 }
 
 export type FunctionCall = {
@@ -8,11 +10,11 @@ export type FunctionCall = {
     args: unknown[]
 }
 
-export abstract class Adapter<ContractType, InterfaceType> {
-    abstract createContract(address: string, abi: InterfaceType): ContractType;
+export abstract class Adapter<ContractType> {
+    abstract createContract(address: string, abi: Abi): ContractType;
 
     abstract makeCall(
-        contract: ContractData<InterfaceType>,
+        contract: ContractData,
         target: FunctionCall
     ): Promise<unknown>;
 
