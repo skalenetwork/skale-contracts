@@ -73,7 +73,10 @@ jobs:
       run: yarn ../base
 
     - name: Install project
-      run: yarn
+      # adding of file dependency fixes an issue with symbolic links on GA
+      run: |
+        yarn add --dev @skalenetwork/skale-contracts@file:../base/
+        yarn
 
     - name: Run static checks
       run: yarn fullCheck
