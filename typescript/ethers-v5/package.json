@@ -3,8 +3,8 @@
     "node": ">=16.0.0"
   },
   "devDependencies": {
-    "@skalenetwork/skale-contracts": "portal:../base/",
-    "@types/node": "^20.2.5",
+    "@skalenetwork/skale-contracts": "^0.0.1-main.0",
+    "@types/node": "^20.5.0",
     "@typescript-eslint/eslint-plugin": "^6.0.0",
     "@typescript-eslint/parser": "^6.0.0",
     "eslint": "^8.45.0",
@@ -25,5 +25,8 @@
   "types": "lib/index.d.ts",
   "dependencies": {
     "ethers": "^5.7.2"
+  },
+  "resolutions": {
+    "@skalenetwork/skale-contracts": "portal:../base"
   }
 }
