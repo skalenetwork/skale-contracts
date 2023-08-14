@@ -69,6 +69,9 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
 
+    - name: Install base project
+      run: yarn ../base
+
     - name: Install project
       run: yarn
 
