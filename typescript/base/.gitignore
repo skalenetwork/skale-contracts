@@ -9,6 +9,7 @@ lib/
 *.log
 node_modules/
 cache
+src/debug.ts
 
 .editorconfig
 .gitattributes

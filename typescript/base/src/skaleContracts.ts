@@ -13,12 +13,12 @@ export class SkaleContracts<ContractType> {
         const networkMetadata = this.metadata.networks.
             find((metadata) => BigInt(metadata.chainId) === chainId);
         if (typeof networkMetadata === "undefined") {
-            return new Network(
+            return new Network<ContractType>(
                 this,
                 adapter
             );
         }
-        return new ListedNetwork(
+        return new ListedNetwork<ContractType>(
             this,
             adapter,
             networkMetadata.path

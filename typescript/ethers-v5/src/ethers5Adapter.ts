@@ -1,6 +1,10 @@
-import { Adapter, ContractData, FunctionCall } from "./adapter";
+import {
+    Abi,
+    Adapter,
+    ContractData,
+    FunctionCall
+} from "@skalenetwork/skale-contracts";
 import { BaseContract, ethers } from "ethers";
-import { Abi } from "./domain/types";
 import { Provider } from "@ethersproject/providers";
 
 

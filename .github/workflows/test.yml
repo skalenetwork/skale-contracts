@@ -34,7 +34,32 @@ jobs:
 
     defaults:
       run:
-        working-directory: typescript
+        working-directory: typescript/base
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Node
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+
+    - name: Install project
+      run: yarn
+
+    - name: Run static checks
+      run: yarn fullCheck
+
+  ethers-v5:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [16, 18, 19, 20]
+
+    defaults:
+      run:
+        working-directory: typescript/ethers-v5
 
     steps:
     - uses: actions/checkout@v3

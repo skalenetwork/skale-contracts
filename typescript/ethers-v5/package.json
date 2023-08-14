@@ -1,0 +1,29 @@
+{
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "devDependencies": {
+    "@skalenetwork/skale-contracts": "portal:../base/",
+    "@types/node": "^20.2.5",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "eslint": "^8.45.0",
+    "typescript": "^5.1.6"
+  },
+  "files": [
+    "lib/**/*"
+  ],
+  "main": "lib/index.js",
+  "name": "@skalenetwork/skale-contracts-ethers-v5",
+  "packageManager": "yarn@3.5.1",
+  "scripts": {
+    "compile": "npx tsc",
+    "fullCheck": "yarn compile && yarn eslint",
+    "prepare": "yarn compile",
+    "eslint": "npx eslint ."
+  },
+  "types": "lib/index.d.ts",
+  "dependencies": {
+    "ethers": "^5.7.2"
+  }
+}

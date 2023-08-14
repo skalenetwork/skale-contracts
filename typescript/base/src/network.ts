@@ -21,7 +21,7 @@ export class Network<ContractType> {
     }
 
     getProject (name: string) {
-        return createProject(
+        return createProject<ContractType>(
             this,
             name
         );
