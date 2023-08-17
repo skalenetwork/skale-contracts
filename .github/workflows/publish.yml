@@ -57,7 +57,7 @@ jobs:
     - name: Create Release
       uses: ncipollo/release-action@v1
       with:
-        tag: ${{ env.VERSION }}
+        tag: typescript-${{ env.VERSION }}
         prerelease: ${{ env.PRERELEASE }}
 
   ethers-v5:
@@ -109,7 +109,7 @@ jobs:
     - name: Create Release
       uses: ncipollo/release-action@v1
       with:
-        tag: ${{ env.VERSION }}
+        tag: typescript-ethers-v5-${{ env.VERSION }}
         prerelease: ${{ env.PRERELEASE }}
 
   python:
@@ -155,7 +155,6 @@ jobs:
     - name: Create Release
       uses: ncipollo/release-action@v1
       with:
-        tag: ${{ env.VERSION }}
+        tag: python-${{ env.VERSION }}
         prerelease: ${{ env.PRERELEASE }}
         artifacts: dist
-
