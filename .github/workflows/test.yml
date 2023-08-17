@@ -70,13 +70,12 @@ jobs:
         node-version: ${{ matrix.node-version }}
 
     - name: Install base project
-      run: yarn ../base
+      run: |
+        yarn ../base
+        yarn ../base compile
 
     - name: Install project
-      # adding of file dependency fixes an issue with symbolic links on GA
-      run: |
-        yarn add --dev @skalenetwork/skale-contracts@file:../base/
-        yarn
+      run: yarn
 
     - name: Run static checks
       run: yarn fullCheck
