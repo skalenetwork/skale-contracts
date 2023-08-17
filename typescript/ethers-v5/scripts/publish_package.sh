@@ -39,7 +39,7 @@ jq -c ".version = \"$VERSION\"" package.json > package.json.new
 mv package.json.new package.json
 
 # set reference to the base package
-yarn add @skalenetwork/skale-contracts-ethers-v5@$VERSION
+yarn add @skalenetwork/skale-contracts@$VERSION
 
 yarn config set npmAuthToken "$NODE_AUTH_TOKEN"
 yarn npm publish --access public $TAG
