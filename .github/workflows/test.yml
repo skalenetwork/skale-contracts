@@ -77,7 +77,6 @@ jobs:
     - name: Install project
       # adding of file dependency fixes an issue with symbolic links on GA
       run: |
-        yarn add --dev @skalenetwork/skale-contracts@file:../base/
         yarn
         cat package.json
         ls -a node_modules/
