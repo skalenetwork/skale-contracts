@@ -55,13 +55,9 @@ jobs:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
     - name: Create Release
-      id: create_release
-      uses: actions/create-release@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      uses: ncipollo/release-action@v1
       with:
-        tag_name: ${{ env.VERSION }}
-        release_name: ${{ env.VERSION }}
+        tag: ${{ env.VERSION }}
         prerelease: ${{ env.PRERELEASE }}
 
   ethers-v5:
@@ -82,6 +78,11 @@ jobs:
       with:
         node-version: ${{ env.NODE_VERSION }}
 
+    - name: Install base project
+      run: |
+        yarn ../base
+        yarn ../base compile
+
     - name: Install project
       run: yarn
 
@@ -93,7 +94,7 @@ jobs:
         export BRANCH=${GITHUB_REF##*/}
         echo "BRANCH=$BRANCH" >> $GITHUB_ENV
         echo "Branch $BRANCH"
-        export VERSION=$(bash ./scripts/calculate_version.sh)
+        export VERSION=$(bash ../scripts/calculate_version.sh)
         echo "VERSION=$VERSION" >> $GITHUB_ENV
         echo "Version $VERSION"
         ( test $BRANCH = "stable" && export PRERELEASE=false ) || export PRERELEASE=true
@@ -106,13 +107,9 @@ jobs:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
     - name: Create Release
-      id: create_release
-      uses: actions/create-release@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      uses: ncipollo/release-action@v1
       with:
-        tag_name: ${{ env.VERSION }}
-        release_name: ${{ env.VERSION }}
+        tag: ${{ env.VERSION }}
         prerelease: ${{ env.PRERELEASE }}
 
   python:
@@ -156,21 +153,9 @@ jobs:
         ./scripts/publish_package.sh
 
     - name: Create Release
-      id: create_release
-      uses: actions/create-release@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      uses: ncipollo/release-action@v1
       with:
-        tag_name: ${{ env.VERSION }}
-        release_name: ${{ env.VERSION }}
-        draft: false
+        tag: ${{ env.VERSION }}
         prerelease: ${{ env.PRERELEASE }}
+        artifacts: dist
 
-    - name: Upload Release Assets
-      id: upload-release-assets
-      uses: dwenegar/upload-release-assets@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        release_id: ${{ steps.create_release.outputs.id }}
-        assets_path: dist/
