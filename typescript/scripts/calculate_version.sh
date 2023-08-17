@@ -2,7 +2,7 @@
 
 set -e
 
-VERSION=$(node --print --eval "require('./base/package.json').version")
+VERSION=$(node --print --eval "require('../base/package.json').version")
 USAGE_MSG='Usage: BRANCH=[BRANCH] calculate_version.sh'
 
 if [ -z "$BRANCH" ]
