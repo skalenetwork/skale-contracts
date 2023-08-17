@@ -77,6 +77,10 @@ jobs:
       run: |
         yarn add --dev @skalenetwork/skale-contracts@file:../base/
         yarn
+        cat package.json
+        ls -a node_modules/
+        ls -a node_modules/@skalenetwork
+        ls -a node_modules/@skalenetwork/skale-contracts
 
     - name: Run static checks
       run: yarn fullCheck
