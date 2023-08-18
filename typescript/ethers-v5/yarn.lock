@@ -527,7 +527,6 @@ __metadata:
   resolution: "@skalenetwork/skale-contracts@portal:../base/::locator=%40skalenetwork%2Fskale-contracts-ethers-v5%40workspace%3A."
   dependencies:
     axios: ^1.4.0
-    ethers: ^5.7.2
   languageName: node
   linkType: soft
 

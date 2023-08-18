@@ -9,7 +9,6 @@ import {
 } from "./domain/errors/network/networkNotFoundError";
 import { ProjectMetadata } from "./metadata";
 import { REPOSITORY_URL } from "./domain/constants";
-import { ethers } from "ethers";
 
 export abstract class Project<ContractType> {
     protected metadata: ProjectMetadata;
@@ -27,7 +26,7 @@ export abstract class Project<ContractType> {
     }
 
     getInstance (aliasOrAddress: string) {
-        if (ethers.utils.isAddress(aliasOrAddress)) {
+        if (this.network.adapter.isAddress(aliasOrAddress)) {
             return this.getInstanceByAddress(aliasOrAddress);
         }
         return this.getInstanceByAlias(aliasOrAddress);

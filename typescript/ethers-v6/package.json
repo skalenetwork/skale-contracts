@@ -3,8 +3,8 @@
     "node": ">=16.0.0"
   },
   "devDependencies": {
-    "@tsconfig/recommended": "^1.0.2",
-    "@types/node": "^20.2.5",
+    "@skalenetwork/skale-contracts": "portal:../base/",
+    "@types/node": "^20.5.0",
     "@typescript-eslint/eslint-plugin": "^6.0.0",
     "@typescript-eslint/parser": "^6.0.0",
     "eslint": "^8.45.0",
@@ -14,7 +14,7 @@
     "lib/**/*"
   ],
   "main": "lib/index.js",
-  "name": "@skalenetwork/skale-contracts",
+  "name": "@skalenetwork/skale-contracts-ethers-v6",
   "packageManager": "yarn@3.5.1",
   "scripts": {
     "compile": "npx tsc",
@@ -23,8 +23,7 @@
     "eslint": "npx eslint ."
   },
   "types": "lib/index.d.ts",
-  "version": "0.0.3",
   "dependencies": {
-    "axios": "^1.4.0"
+    "ethers": "^6.7.1"
   }
 }

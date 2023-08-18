@@ -12,6 +12,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@adraffy/ens-normalize@npm:1.9.2":
+  version: 1.9.2
+  resolution: "@adraffy/ens-normalize@npm:1.9.2"
+  checksum: a9fdeb9e080774c19e4b7f9f60aa5b37cf23fe0e8fe80284bf8221f7396e9f78642bfd39a09a94a4dc3fb8e70f2ac81545204bdcaf222d93f4c4c2ae1f0dca0b
+  languageName: node
+  linkType: hard
+
 "@eslint-community/eslint-utils@npm:^4.2.0, @eslint-community/eslint-utils@npm:^4.3.0":
   version: 4.4.0
   resolution: "@eslint-community/eslint-utils@npm:4.4.0"
@@ -79,6 +86,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@noble/hashes@npm:1.1.2":
+  version: 1.1.2
+  resolution: "@noble/hashes@npm:1.1.2"
+  checksum: 3c2a8cb7c2e053811032f242155d870c5eb98844d924d69702244d48804cb03b42d4a666c49c2b71164420d8229cb9a6f242b972d50d5bb2f1d673b98b041de2
+  languageName: node
+  linkType: hard
+
+"@noble/secp256k1@npm:1.7.1":
+  version: 1.7.1
+  resolution: "@noble/secp256k1@npm:1.7.1"
+  checksum: d2301f1f7690368d8409a3152450458f27e54df47e3f917292de3de82c298770890c2de7c967d237eff9c95b70af485389a9695f73eb05a43e2bd562d18b18cb
+  languageName: node
+  linkType: hard
+
 "@nodelib/fs.scandir@npm:2.1.5":
   version: 2.1.5
   resolution: "@nodelib/fs.scandir@npm:2.1.5"
@@ -106,26 +127,27 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@skalenetwork/skale-contracts@workspace:.":
+"@skalenetwork/skale-contracts-ethers-v6@workspace:.":
   version: 0.0.0-use.local
-  resolution: "@skalenetwork/skale-contracts@workspace:."
+  resolution: "@skalenetwork/skale-contracts-ethers-v6@workspace:."
   dependencies:
-    "@tsconfig/recommended": ^1.0.2
-    "@types/node": ^20.2.5
+    "@skalenetwork/skale-contracts": "portal:../base/"
+    "@types/node": ^20.5.0
     "@typescript-eslint/eslint-plugin": ^6.0.0
     "@typescript-eslint/parser": ^6.0.0
-    axios: ^1.4.0
     eslint: ^8.45.0
+    ethers: ^6.7.1
     typescript: ^5.1.6
   languageName: unknown
   linkType: soft
 
-"@tsconfig/recommended@npm:^1.0.2":
-  version: 1.0.2
-  resolution: "@tsconfig/recommended@npm:1.0.2"
-  checksum: 8dab26157fc9748ff2d090b95f4dbe2aeb592dbdcf90f373f712da5ac54ff24f66193e7ee68fdc45880e7f767cfeb339ef3e9970ca59608ef93225db047f0d16
+"@skalenetwork/skale-contracts@portal:../base/::locator=%40skalenetwork%2Fskale-contracts-ethers-v6%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "@skalenetwork/skale-contracts@portal:../base/::locator=%40skalenetwork%2Fskale-contracts-ethers-v6%40workspace%3A."
+  dependencies:
+    axios: ^1.4.0
   languageName: node
-  linkType: hard
+  linkType: soft
 
 "@types/json-schema@npm:^7.0.11":
   version: 7.0.12
@@ -134,10 +156,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:^20.2.5":
-  version: 20.2.5
-  resolution: "@types/node@npm:20.2.5"
-  checksum: 38ce7c7e9d76880dc632f71d71e0d5914fcda9d5e9a7095d6c339abda55ca4affb0f2a882aeb29398f8e09d2c5151f0b6586c81c8ccdfe529c34b1ea3337425e
+"@types/node@npm:18.15.13":
+  version: 18.15.13
+  resolution: "@types/node@npm:18.15.13"
+  checksum: 79cc5a2b5f98e8973061a4260a781425efd39161a0e117a69cd089603964816c1a14025e1387b4590c8e82d05133b7b4154fa53a7dffb3877890a66145e76515
+  languageName: node
+  linkType: hard
+
+"@types/node@npm:^20.5.0":
+  version: 20.5.0
+  resolution: "@types/node@npm:20.5.0"
+  checksum: 659bc5fc93b5c02bd88ca4bfae4f6b9dc307d45884d1dd9d69df85819a9943cdc00cd3c87eec3048866df6a67f52297f74d170e47a44f61edb3e8f770d94e85e
   languageName: node
   linkType: hard
 
@@ -288,6 +317,13 @@ __metadata:
   bin:
     acorn: bin/acorn
   checksum: 538ba38af0cc9e5ef983aee196c4b8b4d87c0c94532334fa7e065b2c8a1f85863467bb774231aae91613fcda5e68740c15d97b1967ae3394d20faddddd8af61d
+  languageName: node
+  linkType: hard
+
+"aes-js@npm:4.0.0-beta.5":
+  version: 4.0.0-beta.5
+  resolution: "aes-js@npm:4.0.0-beta.5"
+  checksum: cc2ea969d77df939c32057f7e361b6530aa6cb93cb10617a17a45cd164e6d761002f031ff6330af3e67e58b1f0a3a8fd0b63a720afd591a653b02f649470e15b
   languageName: node
   linkType: hard
 
@@ -609,6 +645,21 @@ __metadata:
   version: 2.0.3
   resolution: "esutils@npm:2.0.3"
   checksum: 22b5b08f74737379a840b8ed2036a5fb35826c709ab000683b092d9054e5c2a82c27818f12604bfc2a9a76b90b6834ef081edbc1c7ae30d1627012e067c6ec87
+  languageName: node
+  linkType: hard
+
+"ethers@npm:^6.7.1":
+  version: 6.7.1
+  resolution: "ethers@npm:6.7.1"
+  dependencies:
+    "@adraffy/ens-normalize": 1.9.2
+    "@noble/hashes": 1.1.2
+    "@noble/secp256k1": 1.7.1
+    "@types/node": 18.15.13
+    aes-js: 4.0.0-beta.5
+    tslib: 2.4.0
+    ws: 8.5.0
+  checksum: 07833692e3f53b18e28c4cba9f53f3d5ebff8360de02ad57b2584c00c52b88f5b790373f9b9f6b4f6b52ffa2074530a6101192b30c3260f7cdeff929d34bb88b
   languageName: node
   linkType: hard
 
@@ -1236,6 +1287,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"tslib@npm:2.4.0":
+  version: 2.4.0
+  resolution: "tslib@npm:2.4.0"
+  checksum: 8c4aa6a3c5a754bf76aefc38026134180c053b7bd2f81338cb5e5ebf96fefa0f417bff221592bf801077f5bf990562f6264fecbc42cd3309b33872cb6fc3b113
+  languageName: node
+  linkType: hard
+
 "type-check@npm:^0.4.0, type-check@npm:~0.4.0":
   version: 0.4.0
   resolution: "type-check@npm:0.4.0"
@@ -1296,6 +1354,21 @@ __metadata:
   version: 1.0.2
   resolution: "wrappy@npm:1.0.2"
   checksum: 159da4805f7e84a3d003d8841557196034155008f817172d4e986bd591f74aa82aa7db55929a54222309e01079a65a92a9e6414da5a6aa4b01ee44a511ac3ee5
+  languageName: node
+  linkType: hard
+
+"ws@npm:8.5.0":
+  version: 8.5.0
+  resolution: "ws@npm:8.5.0"
+  peerDependencies:
+    bufferutil: ^4.0.1
+    utf-8-validate: ^5.0.2
+  peerDependenciesMeta:
+    bufferutil:
+      optional: true
+    utf-8-validate:
+      optional: true
+  checksum: 76f2f90e40344bf18fd544194e7067812fb1372b2a37865678d8f12afe4b478ff2ebc0c7c0aff82cd5e6b66fc43d889eec0f1865c2365d8f7a66d92da7744a77
   languageName: node
   linkType: hard
 

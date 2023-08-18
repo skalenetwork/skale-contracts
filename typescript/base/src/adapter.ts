@@ -19,4 +19,6 @@ export abstract class Adapter<ContractType> {
     ): Promise<unknown>;
 
     abstract getChainId(): Promise<bigint>;
+
+    abstract isAddress(value: string): boolean;
 }

@@ -80,6 +80,36 @@ jobs:
     - name: Run static checks
       run: yarn fullCheck
 
+  ethers-v6:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [16, 18, 19, 20]
+
+    defaults:
+      run:
+        working-directory: typescript/ethers-v6
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Node
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+
+    - name: Install base project
+      run: |
+        yarn ../base
+        yarn ../base compile
+
+    - name: Install project
+      run: yarn
+
+    - name: Run static checks
+      run: yarn fullCheck
+
   python:
     runs-on: ubuntu-latest
 

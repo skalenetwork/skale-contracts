@@ -4,11 +4,10 @@ import {
     ContractData,
     FunctionCall
 } from "@skalenetwork/skale-contracts";
-import { BaseContract, ethers } from "ethers";
-import { Provider } from "@ethersproject/providers";
+import { BaseContract, Provider, ethers } from "ethers";
 
 
-export class Ethers5Adapter extends Adapter<BaseContract> {
+export class Ethers6Adapter extends Adapter<BaseContract> {
     provider: Provider;
 
     constructor (provider: Provider) {
@@ -16,10 +15,10 @@ export class Ethers5Adapter extends Adapter<BaseContract> {
         this.provider = provider;
     }
 
-    createContract (address: string, abi: Abi): ethers.Contract {
+    createContract (address: string, abi: Abi) {
         return new ethers.Contract(
             address,
-            new ethers.utils.Interface(abi),
+            new ethers.Interface(abi),
             this.provider
         ) as BaseContract;
     }
@@ -29,7 +28,7 @@ export class Ethers5Adapter extends Adapter<BaseContract> {
         targetFunction: FunctionCall
     ): Promise<unknown> {
         const
-            contractInterface = new ethers.utils.Interface(contract.abi),
+            contractInterface = new ethers.Interface(contract.abi),
             [result] = contractInterface.decodeFunctionResult(
                 targetFunction.functionName,
                 await this.provider.call({
@@ -50,6 +49,6 @@ export class Ethers5Adapter extends Adapter<BaseContract> {
 
     // eslint-disable-next-line class-methods-use-this
     isAddress (value: string): boolean {
-        return ethers.utils.isAddress(value);
+        return ethers.isAddress(value);
     }
 }

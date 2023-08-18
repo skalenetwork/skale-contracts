@@ -5,7 +5,12 @@
   "name": "development",
   "packageManager": "yarn@3.5.1",
   "scripts": {
-    "fullCheck": "yarn cspell && yarn ./typescript/base fullCheck && yarn ./typescript/ethers-v5 fullCheck && python/scripts/full_check.sh",
+    "python-check": "python/scripts/full_check.sh",
+    "typescript-base-check": "yarn ./typescript/base fullCheck",
+    "ethers5-check": "yarn ./typescript/ethers-v5 fullCheck",
+    "ethers6-check": "yarn ./typescript/ethers-v6 fullCheck",
+    "typescript-check": "yarn typescript-base-check && yarn ethers5-check && yarn ethers6-check",
+    "fullCheck": "yarn cspell && yarn typescript-check && yarn python-check",
     "cspell": "npx cspell \"**/*\"",
     "hooks": "git config core.hooksPath .githooks || true",
     "no-hooks": "git config core.hooksPath .git/hooks",
