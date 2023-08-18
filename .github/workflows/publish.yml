@@ -157,4 +157,4 @@ jobs:
       with:
         tag: python-${{ env.VERSION }}
         prerelease: ${{ env.PRERELEASE }}
-        artifacts: python/dist
+        artifacts: python/dist/*
