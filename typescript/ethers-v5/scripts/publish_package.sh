@@ -16,10 +16,10 @@ then
     exit 2
 fi
 
-cd "$(dirname "$0")/../.."
+cd "$(dirname "$0")/.."
 
 BRANCH=$(echo $BRANCH | tr [:upper:] [:lower:] | tr -d [:space:])
-VERSION=$(BRANCH=$BRANCH CURRENT=true "scripts/calculate_version.sh")
+VERSION=$(BRANCH=$BRANCH CURRENT=true "../scripts/calculate_version.sh")
 
 TAG=""
 if ! [[ $BRANCH == 'stable' ]]
