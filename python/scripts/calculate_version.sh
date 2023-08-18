@@ -21,7 +21,8 @@ git fetch --tags > /dev/null
 for (( NUMBER=0; ; NUMBER++ ))
 do
     FULL_VERSION="$VERSION-$BRANCH.$NUMBER"
-    if ! [[ $(git tag -l | grep "$FULL_VERSION") ]]; then
+    TAG="python-$FULL_VERSION"
+    if ! [[ $(git tag -l | grep "$TAG") ]]; then
         echo "$FULL_VERSION" | tr / -
         break
     fi

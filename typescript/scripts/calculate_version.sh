@@ -2,8 +2,10 @@
 
 set -e
 
-VERSION=$(node --print --eval "require('../base/package.json').version")
-USAGE_MSG='Usage: BRANCH=[BRANCH] calculate_version.sh'
+cd "$(dirname "$0")/.."
+
+VERSION=$(jq -r .version base/package.json)
+USAGE_MSG='Usage: BRANCH={BRANCH} [CURRENT=true] calculate_version.sh'
 
 if [ -z "$BRANCH" ]
 then
@@ -21,12 +23,20 @@ fi
 
 git fetch --tags > /dev/null
 
+CURRENT_VERSION=""
 for (( NUMBER=0; ; NUMBER++ ))
 do
     FULL_VERSION="$VERSION-$BRANCH.$NUMBER"
-    if ! [[ $(git tag -l | grep "$FULL_VERSION") ]]
+    TAG="typescript-$FULL_VERSION"
+    if ! [[ $(git tag -l | grep "$TAG$") ]]
     then
-        echo "$FULL_VERSION" | tr / -
+        if [ -z "$CURRENT" ]
+        then
+            echo "$FULL_VERSION" | tr / -
+        else
+            echo "$CURRENT_VERSION" | tr / -
+        fi
         break
     fi
+    CURRENT_VERSION=$FULL_VERSION
 done
