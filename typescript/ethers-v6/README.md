@@ -8,13 +8,12 @@ The library simplifies development of dApps that interact with smart contracts i
 
 - resolving of addresses of SKALE contracts on different networks
 - providing up to date ABI for SKALE contracts (they may change over time due to upgradeable nature of some contracts)
-- automatic creation of `Contract` objects. Currently supported libraries:
-  - ethers v5
+- automatic creation of `Contract` objects.
 
 ## Installation
 
 ```bash
-yarn add @skalenetwork/skale-contracts
+yarn add @skalenetwork/skale-contracts-ethers-v6
 ```
 
 ## Glossary
@@ -54,7 +53,7 @@ When target instance is received it can be queried for information  (address, AB
 ### Example
 
 ```typescript
-import { skaleContracts } from "@skalenetwork/skale-contracts";
+import { skaleContracts } from "@skalenetwork/skale-contracts-ethers-v6";
 import { ethers } from "ethers";
 
 const provider = new ethers.providers.JsonRpcProvider(endpoint)

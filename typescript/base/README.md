@@ -8,8 +8,10 @@ The library simplifies development of dApps that interact with smart contracts i
 
 - resolving of addresses of SKALE contracts on different networks
 - providing up to date ABI for SKALE contracts (they may change over time due to upgradeable nature of some contracts)
-- automatic creation of `Contract` objects. Currently supported libraries:
+- the library does not depend on any library for interaction with Ethereum (like ethers or web3)
+- there are child packages that support:
   - ethers v5
+  - ethers v6
 
 ## Installation
 
@@ -43,24 +45,16 @@ For example `IMA` on Ethereum mainnet or `etherbase` on some of SKALE chains.
 
 An alias is a textual name of an instance.
 
+### Adapter
+
+The object that performs interaction with Ethereum network.
+
 ## Usage
 
 The library provides master object `skaleContracts`.
 
 This object is used to provide desired [network](#network), [project](#project) and [instance](#instance) using it's [alias](#alias) or direct address.
 
+To get [network](#network) an implementation of abstract class [Adapter](#adapter) has to be provided.
+
 When target instance is received it can be queried for information  (address, ABI or Contract object) about a particular contract by it's name.
-
-### Example
-
-```typescript
-import { skaleContracts } from "@skalenetwork/skale-contracts";
-import { ethers } from "ethers";
-
-const provider = new ethers.providers.JsonRpcProvider(endpoint)
-const network = await skaleContracts.getNetworkByProvider(provider);
-const project = await network.getProject("skale-manager");
-const instance = await project.getInstance("production");
-const distributor = await instance.getContract("Distributor");
-const fee = await distributor.getEarnedFeeAmount()
-```
