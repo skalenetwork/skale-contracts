@@ -10,15 +10,15 @@ export type FunctionCall = {
     args: unknown[]
 }
 
-export abstract class Adapter<ContractType> {
-    abstract createContract(address: string, abi: Abi): ContractType;
+export interface Adapter<ContractType> {
+    createContract(address: string, abi: Abi): ContractType;
 
-    abstract makeCall(
+    makeCall(
         contract: ContractData,
         target: FunctionCall
     ): Promise<unknown>;
 
-    abstract getChainId(): Promise<bigint>;
+    getChainId(): Promise<bigint>;
 
-    abstract isAddress(value: string): boolean;
+    isAddress(value: string): boolean;
 }

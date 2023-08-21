@@ -1,4 +1,5 @@
 import { Adapter } from "./adapter";
+import { RetryAdapter } from "./retryAdapter";
 import { SkaleContracts } from "./skaleContracts";
 import { createProject } from "./projects/factory";
 
@@ -12,7 +13,7 @@ export class Network<ContractType> {
         skaleContracts: SkaleContracts<ContractType>,
         adapter: Adapter<ContractType>
     ) {
-        this.networkAdapter = adapter;
+        this.networkAdapter = new RetryAdapter(adapter);
         this.skaleContracts = skaleContracts;
     }
 

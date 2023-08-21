@@ -7,11 +7,10 @@ import {
 import { BaseContract, Provider, ethers } from "ethers";
 
 
-export class Ethers6Adapter extends Adapter<BaseContract> {
+export class Ethers6Adapter implements Adapter<BaseContract> {
     provider: Provider;
 
     constructor (provider: Provider) {
-        super();
         this.provider = provider;
     }
 

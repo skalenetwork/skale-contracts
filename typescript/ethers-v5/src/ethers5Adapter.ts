@@ -8,11 +8,10 @@ import { BaseContract, ethers } from "ethers";
 import { Provider } from "@ethersproject/providers";
 
 
-export class Ethers5Adapter extends Adapter<BaseContract> {
+export class Ethers5Adapter implements Adapter<BaseContract> {
     provider: Provider;
 
     constructor (provider: Provider) {
-        super();
         this.provider = provider;
     }
 
