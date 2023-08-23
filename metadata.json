@@ -5,11 +5,5 @@
             "name": "Mainnet",
             "path": "mainnet"
         }
-    ],
-    "projects": [
-        {
-            "name": "skale-manager",
-            "path": "skale-manager"
-        }
     ]
 }
