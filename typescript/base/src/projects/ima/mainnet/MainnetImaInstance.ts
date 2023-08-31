@@ -44,8 +44,26 @@ export class MainnetImaInstance<ContractType> extends
                     "functionName": "communityPool"
                 }
             ) as Promise<string>;
+        } else if (name === "Linker") {
+            return this.project.network.adapter.makeCall(
+                {
+                    "abi": await this.getContractAbi("DepositBoxEth"),
+                    "address":
+                        await this.getContractAddress("DepositBoxEth")
+                },
+                {
+                    "args": [],
+                    "functionName": "linker"
+                }
+            ) as Promise<string>;
         }
-        throw new Error("Method not implemented.");
+        return this.project.network.adapter.makeCall(
+            await this.getContractManager(),
+            {
+                "args": [name],
+                "functionName": "getContract"
+            }
+        ) as Promise<string>;
     }
 
     // Private
