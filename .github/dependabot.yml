@@ -4,4 +4,8 @@ updates:
   directory: "/typescript"
   schedule:
     interval: "weekly"
-    day: "saturday"
+
+- package-ecosystem: "pip"
+    directory: "/python"
+    schedule:
+      interval: "weekly"
