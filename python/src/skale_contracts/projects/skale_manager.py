@@ -51,7 +51,8 @@ class SkaleManagerInstance(Instance):
             abi=CONTRACT_MANAGER_ABI
         )
         self.custom_names = {
-            'BountyV2': 'Bounty'
+            'BountyV2': 'Bounty',
+            'TimeHelpersWithDebug':  'TimeHelpers'
         }
 
     def get_contract_address(self, name: str) -> Address:
