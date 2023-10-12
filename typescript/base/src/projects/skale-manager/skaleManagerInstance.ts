@@ -41,6 +41,10 @@ export class SkaleManagerInstance<ContractType> extends
         [
             "BountyV2",
             "Bounty"
+        ],
+        [
+            "TimeHelpersWithDebug",
+            "TimeHelpers"
         ]
     ]);
 
