@@ -26,18 +26,17 @@ export class Ethers6Adapter implements Adapter<BaseContract> {
         contract: ContractData,
         targetFunction: FunctionCall
     ): Promise<unknown> {
-        const
-            contractInterface = new ethers.Interface(contract.abi),
-            [result] = contractInterface.decodeFunctionResult(
-                targetFunction.functionName,
-                await this.provider.call({
-                    "data": contractInterface.encodeFunctionData(
-                        targetFunction.functionName,
-                        targetFunction.args
-                    ),
-                    "to": contract.address
-                })
-            );
+        const contractInterface = new ethers.Interface(contract.abi);
+        const [result] = contractInterface.decodeFunctionResult(
+            targetFunction.functionName,
+            await this.provider.call({
+                "data": contractInterface.encodeFunctionData(
+                    targetFunction.functionName,
+                    targetFunction.args
+                ),
+                "to": contract.address
+            })
+        );
         return result;
     }
 

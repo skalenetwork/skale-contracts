@@ -57,11 +57,11 @@ export class SkaleManagerInstance<ContractType> extends
 
     async getContractAddress (name: ContractName): Promise<ContractAddress> {
         const contractManagerAbi =
-                await this.getContractAbi("ContractManager"),
-            contractManagerAddress = await this.callSkaleManager(
-                "contractManager",
-                []
-            ) as string;
+                await this.getContractAbi("ContractManager");
+        const contractManagerAddress = await this.callSkaleManager(
+            "contractManager",
+            []
+        ) as string;
 
         return await this.project.network.adapter.makeCall(
             {

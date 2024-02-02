@@ -10,6 +10,23 @@ export type InstanceData = {
     [contractName: string]: MainContractAddress
 }
 
+const defaultVersionAbi = [
+    {
+        "constant": true,
+        "inputs": [],
+        "name": "version",
+        "outputs": [
+            {
+                "name": "",
+                "type": "string"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+    }
+];
+
 export abstract class Instance<ContractType> {
     protected project: Project<ContractType>;
 
@@ -31,7 +48,10 @@ export abstract class Instance<ContractType> {
         return this.project.network.adapter;
     }
 
-    abstract getContractAddress(name: ContractName): Promise<ContractAddress>;
+    abstract getContractAddress(
+        name: ContractName,
+        args?: unknown[]
+    ): Promise<ContractAddress>;
 
     async getContract (name: ContractName) {
         return this.adapter.createContract(
@@ -42,7 +62,18 @@ export abstract class Instance<ContractType> {
 
     // Protected
 
-    protected abstract queryVersion(): Promise<string>;
+    protected queryVersion () {
+        return this.project.network.adapter.makeCall(
+            {
+                "abi": defaultVersionAbi,
+                "address": this.address
+            },
+            {
+                "args": [],
+                "functionName": "version"
+            }
+        ) as Promise<string>;
+    }
 
     protected async getContractAbi (contractName: string) {
         const abi = await this.getAbi();
