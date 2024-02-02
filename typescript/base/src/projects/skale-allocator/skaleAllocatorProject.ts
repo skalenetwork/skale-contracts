@@ -4,7 +4,7 @@ import { SkaleAllocatorInstance } from "./skaleAllocatorInstance";
 
 export class SkaleAllocatorProject<ContractType> extends
     Project<ContractType> {
-    githubRepo = "https://github.com/skalenetwork/skale-manager/";
+    githubRepo = "https://github.com/skalenetwork/skale-allocator/";
 
     createInstance (address: string): Instance<ContractType> {
         return new SkaleAllocatorInstance(
