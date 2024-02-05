@@ -53,9 +53,12 @@ export abstract class Instance<ContractType> {
         args?: unknown[]
     ): Promise<ContractAddress>;
 
-    async getContract (name: ContractName) {
+    async getContract (name: ContractName, args?: unknown[]) {
         return this.adapter.createContract(
-            await this.getContractAddress(name),
+            await this.getContractAddress(
+                name,
+                args
+            ),
             await this.getContractAbi(name)
         );
     }
