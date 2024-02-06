@@ -11,7 +11,7 @@ module.exports = {
     rules: {
         "object-curly-spacing": [ "error", "always" ],
         "padded-blocks": [ "error", "never" ],
-        "one-var": ["error", "consecutive"]
+        "one-var": ["error", "never"]
     },
     ignorePatterns: [
         "lib/**",
