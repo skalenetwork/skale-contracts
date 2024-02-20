@@ -55,7 +55,7 @@ export abstract class Project<ContractType> {
             `${this.githubRepo.replace(
                 "github.com",
                 "raw.githubusercontent.com"
-            )}abi/${version}/${this.getAbiFilename(version)}`
+            )}abi/${this.getAbiFilename(version)}`
         ];
     }
 
