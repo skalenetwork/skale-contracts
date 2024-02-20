@@ -33,13 +33,30 @@ export abstract class Project<ContractType> {
     }
 
     async downloadAbiFile (version: string) {
-        const response = await axios.get(this.getAbiUrl(version));
-        return response.data as SkaleABIFile;
+        const exceptions = [];
+        for (const abiUrl of this.getAbiUrls(version)) {
+            try {
+                // Await expression should be executed only
+                // when it failed on the previous iteration
+                // eslint-disable-next-line no-await-in-loop
+                const response = await axios.get(abiUrl);
+                return response.data as SkaleABIFile;
+            } catch (exception) {
+                exceptions.push(exception);
+            }
+        }
+        throw new Error(exceptions.toString());
     }
 
-    getAbiUrl (version: string) {
-        return `${this.githubRepo}releases/download/` +
-            `${version}/${this.getAbiFilename(version)}`;
+    getAbiUrls (version: string) {
+        return [
+            `${this.githubRepo}releases/download/` +
+                `${version}/${this.getAbiFilename(version)}`,
+            `${this.githubRepo.replace(
+                "github.com",
+                "raw.githubusercontent.com"
+            )}abi/${this.getAbiFilename(version)}`
+        ];
     }
 
     abstract getAbiFilename(version: string): string;

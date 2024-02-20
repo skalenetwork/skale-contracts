@@ -9,7 +9,8 @@
         "**/node_modules/**",
         "**/__pycache__/**",
         "**/requirements.txt",
-        "**/*.egg-info/**"
+        "**/*.egg-info/**",
+        "**/lib/**"
     ],
     "dictionaries": ["domain-terms", "libraries", "names", "skale-terms", "solidity"],
     "dictionaryDefinitions": [
