@@ -2,24 +2,16 @@
 from __future__ import annotations
 from abc import ABC, abstractmethod
 from typing import TYPE_CHECKING
-from attr import dataclass
 from eth_utils.address import to_canonical_address
 import requests
 
 from .constants import REPOSITORY_URL, NETWORK_TIMEOUT
 from .instance import Instance, InstanceData
-from .network import ListedNetwork
 
 if TYPE_CHECKING:
     from eth_typing import Address
     from .network import Network
-
-
-@dataclass
-class ProjectMetadata:
-    """Contains project metadata"""
-    name: str
-    path: str
+    from .project_metadata import ProjectMetadata
 
 
 class Project(ABC):
@@ -30,8 +22,8 @@ class Project(ABC):
         self.network = network
         self._metadata = metadata
 
-    @abstractmethod
     @property
+    @abstractmethod
     def github_repo(self) -> str:
         """URL of github repo with the project"""
 
@@ -53,7 +45,10 @@ class Project(ABC):
 
     def download_abi_file(self, version: str) -> str:
         """Download file with ABI"""
-        response = requests.get(self.get_abi_url(version), timeout=NETWORK_TIMEOUT)
+        url = self.get_abi_url(version)
+        response = requests.get(url, timeout=NETWORK_TIMEOUT)
+        if response.status_code != 200:
+            raise RuntimeError(f"Can't download abi file from {url}")
         return response.text
 
     def get_abi_url(self, version: str) -> str:
@@ -66,8 +61,9 @@ class Project(ABC):
 
     def get_instance_data_url(self, alias: str) -> str:
         """Get URL of a file containing address for provided alias"""
-        if isinstance(self.network, ListedNetwork):
-            return f'{REPOSITORY_URL}{self.network.path}/{self._metadata.path}/{alias}.json'
+        if self.network.is_listed():
+            return f'{REPOSITORY_URL}{self.network.as_listed().path}/' + \
+                f'{self._metadata.path}/{alias}.json'
         raise ValueError('Network is unknown')
 
     @abstractmethod

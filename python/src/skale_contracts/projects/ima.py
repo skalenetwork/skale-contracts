@@ -3,8 +3,10 @@
 from __future__ import annotations
 from typing import cast, TYPE_CHECKING
 
-from ..instance import Instance, DEFAULT_GET_VERSION_FUNCTION
-from ..project import Project
+from skale_contracts.instance import Instance, DEFAULT_GET_VERSION_FUNCTION
+from skale_contracts.project import Project
+
+from .skale_manager import CONTRACT_MANAGER_ABI
 
 
 if TYPE_CHECKING:
@@ -36,8 +38,42 @@ class ImaProject(Project):
 
 class MainnetImaInstance(ImaInstance):
     """Represents IMA instance on mainnet"""
+
+    def __init__(self, project: Project, address: Address) -> None:
+        super().__init__(project, address)
+        self._contract_manager: Contract | None = None
+
     def get_contract_address(self, name: str) -> Address:
-        raise NotImplementedError("get_contract_address")
+        if name == 'MessageProxyForMainnet':
+            return self.address
+        if name == 'CommunityPool':
+            return cast(
+                Address,
+                self.get_contract("MessageProxyForMainnet").functions.communityPool().call()
+            )
+        if name == 'Linker':
+            return cast(
+                Address,
+                self.get_contract("MessageProxyForMainnet").functions.linker().call()
+            )
+        return cast(
+            Address,
+            self.contract_manager.functions.getContract(name).call()
+        )
+
+    @property
+    def contract_manager(self) -> Contract:
+        """ContractManager contract of a skale-manager instance associated with the IMA"""
+        if self._contract_manager is None:
+            self._contract_manager = self.web3.eth.contract(
+                address=cast(
+                    Address,
+                    self.get_contract("MessageProxyForMainnet")
+                        .functions.contractManagerOfSkaleManager().call()
+                ),
+                abi=CONTRACT_MANAGER_ABI
+            )
+        return self._contract_manager
 
 
 class MainnetImaProject(ImaProject):
@@ -47,4 +83,4 @@ class MainnetImaProject(ImaProject):
         return MainnetImaInstance(self, address)
 
     def get_abi_filename(self, version: str) -> str:
-        return f'ima-{version}-abi.json'
+        return f'mainnet-ima-{version}-abi.json'

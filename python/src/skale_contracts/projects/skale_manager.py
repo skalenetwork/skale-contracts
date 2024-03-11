@@ -3,8 +3,8 @@
 from __future__ import annotations
 from typing import cast, TYPE_CHECKING
 
-from ..instance import Instance, DEFAULT_GET_VERSION_FUNCTION
-from ..project import Project
+from skale_contracts.instance import Instance, DEFAULT_GET_VERSION_FUNCTION
+from skale_contracts.project import Project
 
 
 if TYPE_CHECKING:
