@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 from typing import cast, TYPE_CHECKING
+from eth_typing import Address
 
 from skale_contracts.instance import Instance, DEFAULT_GET_VERSION_FUNCTION
 from skale_contracts.project import Project
@@ -10,7 +11,6 @@ from .skale_manager import CONTRACT_MANAGER_ABI
 
 
 if TYPE_CHECKING:
-    from eth_typing import Address
     from web3.contract.contract import Contract
 
 MESSAGE_PROXY_ABI = [
