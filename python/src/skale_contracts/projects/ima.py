@@ -3,6 +3,7 @@
 from __future__ import annotations
 from typing import cast, TYPE_CHECKING
 from eth_typing import Address
+from eth_utils.address import to_canonical_address
 
 from skale_contracts.instance import Instance, DEFAULT_GET_VERSION_FUNCTION
 from skale_contracts.project import Project
@@ -84,3 +85,36 @@ class MainnetImaProject(ImaProject):
 
     def get_abi_filename(self, version: str) -> str:
         return f'mainnet-ima-{version}-abi.json'
+
+
+class SchainImaInstance(ImaInstance):
+    """Represents IMA instance on schain"""
+
+    PREDEPLOYED: dict[str, Address] = {
+        name: to_canonical_address(address) for name, address in {
+            'ProxyAdmin':                       '0xd2aAa00000000000000000000000000000000000',
+            'MessageProxyForSchain':            '0xd2AAa00100000000000000000000000000000000',
+            'KeyStorage':                       '0xd2aaa00200000000000000000000000000000000',
+            'CommunityLocker':                  '0xD2aaa00300000000000000000000000000000000',
+            'TokenManagerEth':                  '0xd2AaA00400000000000000000000000000000000',
+            'TokenManagerERC20':                '0xD2aAA00500000000000000000000000000000000',
+            'TokenManagerERC721':               '0xD2aaa00600000000000000000000000000000000',
+            'TokenManagerLinker':               '0xD2aAA00800000000000000000000000000000000',
+            'TokenManagerERC1155':              '0xD2aaA00900000000000000000000000000000000',
+            'TokenManagerERC721WithMetadata':   '0xd2AaA00a00000000000000000000000000000000'
+        }.items()}
+
+    def get_contract_address(self, name: str) -> Address:
+        if name in self.PREDEPLOYED:
+            return self.PREDEPLOYED[name]
+        raise RuntimeError(f"Can't get address of {name} contract")
+
+
+class SchainImaProject(ImaProject):
+    """Represents schain part of IMA project"""
+
+    def create_instance(self, address: Address) -> Instance:
+        return SchainImaInstance(self, address)
+
+    def get_abi_filename(self, version: str) -> str:
+        return f'schain-ima-{version}-abi.json'
