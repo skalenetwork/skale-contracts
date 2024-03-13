@@ -15,6 +15,16 @@ if TYPE_CHECKING:
     from .project import Project
 
 
+DEFAULT_GET_VERSION_FUNCTION = {
+    "type": "function",
+    "name": "version",
+    "constant": True,
+    "stateMutability": "view",
+    "payable": False,
+    "inputs": [],
+    "outputs": [ { "type": "string", "name": "" } ]
+}
+
 
 @dataclass
 class InstanceData:

@@ -3,8 +3,8 @@
 from __future__ import annotations
 from typing import cast, TYPE_CHECKING
 
-from ..instance import Instance
-from ..project import Project
+from skale_contracts.instance import Instance, DEFAULT_GET_VERSION_FUNCTION
+from skale_contracts.project import Project
 
 
 if TYPE_CHECKING:
@@ -18,15 +18,7 @@ SKALE_MANAGER_ABI = [
         "outputs": [{ "internalType": "contract IContractManager", "name": "", "type": "address" }],
         "stateMutability": "view", "type": "function"
     },
-    {
-        "type": "function",
-        "name": "version",
-        "constant": True,
-        "stateMutability": "view",
-        "payable": False,
-        "inputs": [],
-        "outputs": [ { "type": "string", "name": "" } ]
-    }
+    DEFAULT_GET_VERSION_FUNCTION
 ]
 
 CONTRACT_MANAGER_ABI = [

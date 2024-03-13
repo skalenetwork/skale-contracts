@@ -1,7 +1,7 @@
 """Module for work with networks"""
 
 from __future__ import annotations
-from typing import TYPE_CHECKING
+from typing import cast, TYPE_CHECKING
 from web3 import Web3
 from web3.providers.base import BaseProvider
 
@@ -28,9 +28,21 @@ class Network:
         """Get SkaleContracts object associated with the network"""
         return self._skale_contracts
 
+    def is_listed(self) -> bool:
+        """Return if the network is present in the skale-contract repository"""
+        return False
+
+    def as_listed(self) -> ListedNetwork:
+        """Cast to ListedNetwork"""
+        return cast(ListedNetwork, self)
+
 
 class ListedNetwork(Network):
     """Network that is listed in the metadata"""
     def __init__(self, skale_contracts: SkaleContracts, provider: BaseProvider, path: str):
         super().__init__(skale_contracts, provider)
         self.path = path
+
+    def is_listed(self) -> bool:
+        """Return if the network is present in the skale-contract repository"""
+        return True
