@@ -1,8 +1,4 @@
 """Tools for project metadata processing"""
-from attr import dataclass
+from collections import namedtuple
 
-@dataclass
-class ProjectMetadata:
-    """Contains project metadata"""
-    name: str
-    path: str
+ProjectMetadata = namedtuple('ProjectMetadata', ['name', 'path'])
