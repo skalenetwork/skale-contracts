@@ -17,6 +17,7 @@ class Projects:
     """Contains all known projects"""
     skale_manager = ProjectMetadata(name='skale-manager', path='skale-manager')
     mainnet_ima = ProjectMetadata(name='mainnet-ima', path='mainnet-ima')
+    schain_ima = ProjectMetadata(name='schain-ima', path='schain-ima')
 
 
 def create_project(network: Network, name: str) -> Project:
@@ -25,4 +26,6 @@ def create_project(network: Network, name: str) -> Project:
         return projects.SkaleManager(network, Projects.skale_manager)
     if name == Projects.mainnet_ima.name:
         return projects.MainnetIma(network, Projects.mainnet_ima)
+    if name == Projects.schain_ima.name:
+        return projects.SchainIma(network, Projects.schain_ima)
     raise ValueError(f'Project with name {name} is unknown')

@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 from typing import cast, TYPE_CHECKING
+from eth_utils.address import to_canonical_address
 
 from skale_contracts.instance import Instance, DEFAULT_GET_VERSION_FUNCTION
 from skale_contracts.project import Project
@@ -48,8 +49,7 @@ class SkaleManagerInstance(Instance):
         }
 
     def get_contract_address(self, name: str) -> Address:
-        return cast(
-            Address,
+        return to_canonical_address(
             self.contract_manager.functions.getContract(self._actual_name(name)).call()
         )
 
