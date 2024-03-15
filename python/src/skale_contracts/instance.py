@@ -5,6 +5,8 @@ from abc import ABC, abstractmethod
 import json
 from typing import TYPE_CHECKING, Optional
 from attr import dataclass
+from parver import Version as PyVersion
+from semver.version import Version as SemVersion
 
 
 if TYPE_CHECKING:
@@ -53,9 +55,24 @@ class Instance(ABC):
     def version(self) -> str:
         """Get version of the project instance"""
         if self._version is None:
-            self._version = self._get_version()
-            if not '-' in self._version:
-                self._version = self._version + '-stable.0'
+            raw_version = self._get_version()
+            if SemVersion.is_valid(raw_version):
+                sem_version = SemVersion.parse(raw_version)
+                if sem_version.prerelease is None:
+                    sem_version = sem_version.replace(prerelease='stable.0')
+                self._version = str(sem_version)
+            else:
+                py_version = PyVersion.parse(raw_version)
+                sem_version = SemVersion(*py_version.release)
+                if py_version.pre_tag == 'a':
+                    sem_version = sem_version.replace(
+                        prerelease=f'develop.{py_version.pre}'
+                    )
+                elif py_version.pre_tag == 'b':
+                    sem_version = sem_version.replace(
+                        prerelease=f'beta.{py_version.pre}'
+                    )
+                self._version = str(sem_version)
         return self._version
 
     @property
