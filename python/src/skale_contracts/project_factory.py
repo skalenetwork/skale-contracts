@@ -12,10 +12,10 @@ if TYPE_CHECKING:
 
 
 projects_dict = {
-    class_type.name(): class_type
-    for _, class_type
+    project_type.name(): project_type
+    for _, project_type
         in inspect.getmembers(projects, inspect.isclass)
-            if issubclass(class_type, Project)
+            if issubclass(project_type, Project)
 }
 
 
