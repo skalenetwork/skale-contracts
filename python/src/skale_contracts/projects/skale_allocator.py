@@ -1,4 +1,4 @@
-"""Module connects skale-manager project to the SKALE contracts library"""
+"""Module connects skale-allocator project to the SKALE contracts library"""
 
 from __future__ import annotations
 from typing import TYPE_CHECKING
