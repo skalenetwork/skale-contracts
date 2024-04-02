@@ -30,9 +30,7 @@ class ImaInstance(Instance):
 class ImaProject(Project):
     """Represents IMA project"""
 
-    @property
-    def github_repo(self) -> str:
-        return 'https://github.com/skalenetwork/ima/'
+    github_repo = 'https://github.com/skalenetwork/ima/'
 
 
 class MainnetImaInstance(ImaInstance):
@@ -74,6 +72,10 @@ class MainnetImaInstance(ImaInstance):
 class MainnetImaProject(ImaProject):
     """Represents mainnet part of IMA project"""
 
+    @staticmethod
+    def name() -> str:
+        return 'mainnet-ima'
+
     def create_instance(self, address: Address) -> Instance:
         return MainnetImaInstance(self, address)
 
@@ -106,6 +108,10 @@ class SchainImaInstance(ImaInstance):
 
 class SchainImaProject(ImaProject):
     """Represents schain part of IMA project"""
+
+    @staticmethod
+    def name() -> str:
+        return 'schain-ima'
 
     def get_instance(self, alias_or_address: str) -> Instance:
         if alias_or_address == PREDEPLOYED_ALIAS:

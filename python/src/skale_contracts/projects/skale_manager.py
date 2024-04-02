@@ -62,9 +62,10 @@ class SkaleManagerInstance(Instance):
 class SkaleManagerProject(Project):
     """Represents skale-manager project"""
 
-    @property
-    def github_repo(self) -> str:
-        return 'https://github.com/skalenetwork/skale-manager/'
+    @staticmethod
+    def name() -> str:
+        return 'skale-manager'
+    github_repo = 'https://github.com/skalenetwork/skale-manager/'
 
     def create_instance(self, address: Address) -> Instance:
         return SkaleManagerInstance(self, address)

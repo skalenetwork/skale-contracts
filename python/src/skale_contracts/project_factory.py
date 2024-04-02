@@ -2,33 +2,25 @@
 
 from __future__ import annotations
 from typing import TYPE_CHECKING
-from attr import dataclass
+import inspect
 
+from .project import Project
 from . import projects
-from .project_metadata import ProjectMetadata
 
 if TYPE_CHECKING:
-    from .project import Project
     from .network import Network
 
 
-@dataclass
-class Projects:
-    """Contains all known projects"""
-    skale_manager = ProjectMetadata(name='skale-manager', path='skale-manager')
-    mainnet_ima = ProjectMetadata(name='mainnet-ima', path='mainnet-ima')
-    schain_ima = ProjectMetadata(name='schain-ima', path='schain-ima')
-    skale_allocator = ProjectMetadata(name='skale-allocator', path='skale-allocator')
+projects_dict = {
+    class_type.name(): class_type
+    for _, class_type
+        in inspect.getmembers(projects, inspect.isclass)
+            if issubclass(class_type, Project)
+}
 
 
 def create_project(network: Network, name: str) -> Project:
     """Create Project object based on it's name"""
-    if name == Projects.skale_manager.name:
-        return projects.SkaleManager(network, Projects.skale_manager)
-    if name == Projects.mainnet_ima.name:
-        return projects.MainnetIma(network, Projects.mainnet_ima)
-    if name == Projects.schain_ima.name:
-        return projects.SchainIma(network, Projects.schain_ima)
-    if name == Projects.skale_allocator.name:
-        return projects.SkaleAllocator(network, Projects.skale_allocator)
+    if name in projects_dict:
+        return projects_dict[name](network)
     raise ValueError(f'Project with name {name} is unknown')
