@@ -1,7 +1,7 @@
 """Module connects skale-manager project to the SKALE contracts library"""
 
 from __future__ import annotations
-from typing import cast, TYPE_CHECKING
+from typing import TYPE_CHECKING
 from eth_utils.address import to_canonical_address
 
 from skale_contracts.instance import Instance, DEFAULT_GET_VERSION_FUNCTION
@@ -9,7 +9,7 @@ from skale_contracts.project import Project
 
 
 if TYPE_CHECKING:
-    from eth_typing import Address
+    from eth_typing import Address, ChecksumAddress
     from web3.contract.contract import Contract
 
 SKALE_MANAGER_ABI = [
@@ -48,13 +48,10 @@ class SkaleManagerInstance(Instance):
             'TimeHelpersWithDebug':  'TimeHelpers'
         }
 
-    def get_contract_address(self, name: str) -> Address:
+    def get_contract_address(self, name: str, *args: str|Address|ChecksumAddress) -> Address:
         return to_canonical_address(
             self.contract_manager.functions.getContract(self._actual_name(name)).call()
         )
-
-    def _get_version(self) -> str:
-        return cast(str, self.skale_manager.functions.version().call())
 
     def _actual_name(self, name: str) -> str:
         if name in self.custom_names:

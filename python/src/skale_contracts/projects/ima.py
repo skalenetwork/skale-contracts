@@ -1,8 +1,7 @@
 """Module connects IMA to the SKALE contracts library"""
 
 from __future__ import annotations
-from typing import cast, TYPE_CHECKING
-from eth_typing import Address
+from typing import TYPE_CHECKING
 from eth_utils.address import to_canonical_address
 
 from skale_contracts.constants import PREDEPLOYED_ALIAS
@@ -13,6 +12,7 @@ from .skale_manager import CONTRACT_MANAGER_ABI
 
 
 if TYPE_CHECKING:
+    from eth_typing import Address, ChecksumAddress
     from web3.contract.contract import Contract
 
 MESSAGE_PROXY_ABI = [
@@ -25,9 +25,6 @@ class ImaInstance(Instance):
     def __init__(self, project: Project, address: Address) -> None:
         super().__init__(project, address)
         self.message_proxy = self.web3.eth.contract(address=address, abi=MESSAGE_PROXY_ABI)
-
-    def _get_version(self) -> str:
-        return cast(str, self.message_proxy.functions.version().call())
 
 
 class ImaProject(Project):
@@ -45,7 +42,7 @@ class MainnetImaInstance(ImaInstance):
         super().__init__(project, address)
         self._contract_manager: Contract | None = None
 
-    def get_contract_address(self, name: str) -> Address:
+    def get_contract_address(self, name: str, *args: str|Address|ChecksumAddress) -> Address:
         if name == 'MessageProxyForMainnet':
             return self.address
         if name == 'CommunityPool':
@@ -101,7 +98,7 @@ class SchainImaInstance(ImaInstance):
             'TokenManagerERC721WithMetadata':   '0xd2AaA00a00000000000000000000000000000000'
         }.items()}
 
-    def get_contract_address(self, name: str) -> Address:
+    def get_contract_address(self, name: str, *args: str|Address|ChecksumAddress) -> Address:
         if name in self.PREDEPLOYED:
             return self.PREDEPLOYED[name]
         raise RuntimeError(f"Can't get address of {name} contract")
