@@ -18,7 +18,11 @@ class SkaleAllocatorInstance(Instance):
         super().__init__(project, address)
         self.allocator = self.get_contract("Allocator")
 
-    def get_contract_address(self, name: str, *args: str|Address|ChecksumAddress) -> Address:
+    def get_contract_address(
+            self,
+            name: str,
+            *args: str|Address|ChecksumAddress
+    ) -> Address:
         if name == 'Allocator':
             return self.address
         if name == 'Escrow':

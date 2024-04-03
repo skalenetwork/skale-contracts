@@ -63,7 +63,8 @@ class Project(ABC):
 
     def get_abi_url(self, version: str) -> str:
         """Calculate URL of ABI file"""
-        return f'{self.github_repo}releases/download/{version}/{self.get_abi_filename(version)}'
+        filename = self.get_abi_filename(version)
+        return f'{self.github_repo}releases/download/{version}/{filename}'
 
     @abstractmethod
     def get_abi_filename(self, version: str) -> str:

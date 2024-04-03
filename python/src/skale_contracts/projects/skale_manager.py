@@ -16,7 +16,11 @@ SKALE_MANAGER_ABI = [
     {
         "inputs": [],
         "name": "contractManager",
-        "outputs": [{ "internalType": "contract IContractManager", "name": "", "type": "address" }],
+        "outputs": [{
+            "internalType": "contract IContractManager",
+            "name": "",
+            "type": "address"
+        }],
         "stateMutability": "view", "type": "function"
     },
     DEFAULT_GET_VERSION_FUNCTION
@@ -24,9 +28,17 @@ SKALE_MANAGER_ABI = [
 
 CONTRACT_MANAGER_ABI = [
     {
-        "inputs": [{ "internalType": "string", "name": "name", "type": "string" }],
+        "inputs": [{
+            "internalType": "string",
+            "name": "name",
+            "type": "string"
+        }],
         "name": "getContract",
-        "outputs": [{ "internalType": "address", "name": "contractAddress", "type": "address" }],
+        "outputs": [{
+            "internalType": "address",
+            "name": "contractAddress",
+            "type": "address"
+        }],
         "stateMutability": "view",
         "type": "function"
     }
@@ -37,8 +49,12 @@ class SkaleManagerInstance(Instance):
     """Represents instance of skale-manager"""
     def __init__(self, project: Project, address: Address) -> None:
         super().__init__(project, address)
-        self.skale_manager = self.web3.eth.contract(address=address, abi=SKALE_MANAGER_ABI)
-        contract_manager_address: Address = self.skale_manager.functions.contractManager().call()
+        self.skale_manager = self.web3.eth.contract(
+            address=address,
+            abi=SKALE_MANAGER_ABI
+        )
+        contract_manager_address: Address = \
+            self.skale_manager.functions.contractManager().call()
         self.contract_manager: Contract = self.web3.eth.contract(
             address=contract_manager_address,
             abi=CONTRACT_MANAGER_ABI
@@ -48,9 +64,15 @@ class SkaleManagerInstance(Instance):
             'TimeHelpersWithDebug':  'TimeHelpers'
         }
 
-    def get_contract_address(self, name: str, *args: str|Address|ChecksumAddress) -> Address:
+    def get_contract_address(
+            self,
+            name: str,
+            *args: str|Address|ChecksumAddress
+    ) -> Address:
         return to_canonical_address(
-            self.contract_manager.functions.getContract(self._actual_name(name)).call()
+            self.contract_manager.functions.getContract(
+                self._actual_name(name)
+            ).call()
         )
 
     def _actual_name(self, name: str) -> str:

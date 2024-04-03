@@ -80,14 +80,24 @@ class Instance(ABC):
     def abi(self) -> SkaleAbi:
         """Get abi file of the project instance"""
         if self._abi is None:
-            self._abi = json.loads(self._project.download_abi_file(self.version))
+            self._abi = json.loads(
+                self._project.download_abi_file(self.version)
+            )
         return self._abi
 
     @abstractmethod
-    def get_contract_address(self, name: str, *args: str|Address|ChecksumAddress) -> Address:
+    def get_contract_address(
+        self,
+        name: str,
+        *args: str|Address|ChecksumAddress
+    ) -> Address:
         """Get address of the contract by it's name"""
 
-    def get_contract(self, name: str, *args: str|Address|ChecksumAddress) -> Contract:
+    def get_contract(
+            self,
+            name: str,
+            *args: str|Address|ChecksumAddress
+    ) -> Contract:
         """Get Contract object of the contract by it's name"""
         address = self.get_contract_address(name, *args)
         return self.web3.eth.contract(address=address, abi=self.abi[name])
