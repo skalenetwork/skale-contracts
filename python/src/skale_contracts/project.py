@@ -30,12 +30,10 @@ class Project(ABC):
     def github_repo(self) -> str:
         """URL of github repo with the project"""
 
-
     @property
     def folder(self) -> str:
         """Folder name with instances json files"""
         return self.name()
-
 
     def get_instance(self, alias_or_address: str) -> Instance:
         """Create instance object based on alias or address"""

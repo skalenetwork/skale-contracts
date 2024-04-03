@@ -25,7 +25,7 @@ DEFAULT_GET_VERSION_FUNCTION = {
     "stateMutability": "view",
     "payable": False,
     "inputs": [],
-    "outputs": [ { "type": "string", "name": "" } ]
+    "outputs": [{"type": "string", "name": ""}]
 }
 
 
@@ -33,6 +33,7 @@ DEFAULT_GET_VERSION_FUNCTION = {
 class InstanceData:
     """Contains instance data"""
     data: dict[str, str]
+
     @classmethod
     def from_json(cls, data: str) -> InstanceData:
         """Create InstanceData object from json string"""

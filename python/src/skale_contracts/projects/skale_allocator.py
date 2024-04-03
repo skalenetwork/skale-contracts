@@ -33,7 +33,7 @@ class SkaleAllocatorInstance(Instance):
             raise ValueError('Beneficiary is not set')
         raise ValueError(f'Contract ${name} is not found')
 
-    def _get_escrow (self, beneficiary: Address) -> Address:
+    def _get_escrow(self, beneficiary: Address) -> Address:
         return to_canonical_address(
             self.allocator.functions.getEscrowAddress(beneficiary).call()
         )

@@ -16,6 +16,7 @@ class NetworkMetadata:
     chain_id: int
     path: str
 
+
 @dataclass
 class MetadataFile:
     """Represents file with metadata"""
@@ -32,6 +33,7 @@ class MetadataFile:
                 chain_id=network['chainId'],
                 path=network['path']))
         return cls(networks)
+
 
 class Metadata:
     """Class to manage SKALE contracts metadata"""

@@ -14,8 +14,8 @@ if TYPE_CHECKING:
 projects_dict = {
     project_type.name(): project_type
     for _, project_type
-        in inspect.getmembers(projects, inspect.isclass)
-            if issubclass(project_type, Project)
+    in inspect.getmembers(projects, inspect.isclass)
+    if issubclass(project_type, Project)
 }
 
 
