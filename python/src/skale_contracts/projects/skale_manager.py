@@ -67,7 +67,7 @@ class SkaleManagerInstance(Instance):
     def get_contract_address(
             self,
             name: str,
-            *args: str|Address|ChecksumAddress
+            *args: str | Address | ChecksumAddress
     ) -> Address:
         return to_canonical_address(
             self.contract_manager.functions.getContract(

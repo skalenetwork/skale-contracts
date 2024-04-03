@@ -21,7 +21,7 @@ class SkaleAllocatorInstance(Instance):
     def get_contract_address(
             self,
             name: str,
-            *args: str|Address|ChecksumAddress
+            *args: str | Address | ChecksumAddress
     ) -> Address:
         if name == 'Allocator':
             return self.address

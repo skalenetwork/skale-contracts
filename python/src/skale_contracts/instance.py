@@ -89,14 +89,14 @@ class Instance(ABC):
     def get_contract_address(
         self,
         name: str,
-        *args: str|Address|ChecksumAddress
+        *args: str | Address | ChecksumAddress
     ) -> Address:
         """Get address of the contract by it's name"""
 
     def get_contract(
             self,
             name: str,
-            *args: str|Address|ChecksumAddress
+            *args: str | Address | ChecksumAddress
     ) -> Contract:
         """Get Contract object of the contract by it's name"""
         address = self.get_contract_address(name, *args)

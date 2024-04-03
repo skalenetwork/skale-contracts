@@ -45,7 +45,7 @@ class MainnetImaInstance(ImaInstance):
 
     def get_contract_address(
             self,
-            name: str, *args: str|Address|ChecksumAddress
+            name: str, *args: str | Address | ChecksumAddress
     ) -> Address:
         if name == 'MessageProxyForMainnet':
             return self.address
@@ -122,7 +122,7 @@ class SchainImaInstance(ImaInstance):
     def get_contract_address(
             self,
             name: str,
-            *args: str|Address|ChecksumAddress
+            *args: str | Address | ChecksumAddress
     ) -> Address:
         if name in self.PREDEPLOYED:
             return self.PREDEPLOYED[name]
