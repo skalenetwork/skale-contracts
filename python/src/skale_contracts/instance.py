@@ -3,8 +3,9 @@
 from __future__ import annotations
 from abc import ABC, abstractmethod
 import json
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING, Optional, cast
 from attr import dataclass
+from eth_typing import ChecksumAddress
 from parver import Version as PyVersion
 from semver.version import Version as SemVersion
 
@@ -24,7 +25,7 @@ DEFAULT_GET_VERSION_FUNCTION = {
     "stateMutability": "view",
     "payable": False,
     "inputs": [],
-    "outputs": [ { "type": "string", "name": "" } ]
+    "outputs": [{"type": "string", "name": ""}]
 }
 
 
@@ -32,6 +33,7 @@ DEFAULT_GET_VERSION_FUNCTION = {
 class InstanceData:
     """Contains instance data"""
     data: dict[str, str]
+
     @classmethod
     def from_json(cls, data: str) -> InstanceData:
         """Create InstanceData object from json string"""
@@ -79,20 +81,33 @@ class Instance(ABC):
     def abi(self) -> SkaleAbi:
         """Get abi file of the project instance"""
         if self._abi is None:
-            self._abi = json.loads(self._project.download_abi_file(self.version))
+            self._abi = json.loads(
+                self._project.download_abi_file(self.version)
+            )
         return self._abi
 
     @abstractmethod
-    def get_contract_address(self, name: str) -> Address:
+    def get_contract_address(
+        self,
+        name: str,
+        *args: str | Address | ChecksumAddress
+    ) -> Address:
         """Get address of the contract by it's name"""
 
-    def get_contract(self, name: str) -> Contract:
+    def get_contract(
+            self,
+            name: str,
+            *args: str | Address | ChecksumAddress
+    ) -> Contract:
         """Get Contract object of the contract by it's name"""
-        address = self.get_contract_address(name)
+        address = self.get_contract_address(name, *args)
         return self.web3.eth.contract(address=address, abi=self.abi[name])
 
     # protected
 
-    @abstractmethod
     def _get_version(self) -> str:
-        pass
+        contract = self.web3.eth.contract(
+            address=self.address,
+            abi=[DEFAULT_GET_VERSION_FUNCTION]
+        )
+        return cast(str, contract.functions.version().call())

@@ -15,7 +15,11 @@ if TYPE_CHECKING:
 
 class Network:
     """Represents blockchain with deployed smart contracts projects"""
-    def __init__(self, skale_contracts: SkaleContracts, provider: BaseProvider):
+    def __init__(
+            self,
+            skale_contracts: SkaleContracts,
+            provider: BaseProvider
+    ):
         self.web3 = Web3(provider)
         self._skale_contracts = skale_contracts
 
@@ -39,7 +43,12 @@ class Network:
 
 class ListedNetwork(Network):
     """Network that is listed in the metadata"""
-    def __init__(self, skale_contracts: SkaleContracts, provider: BaseProvider, path: str):
+    def __init__(
+            self,
+            skale_contracts: SkaleContracts,
+            provider: BaseProvider,
+            path: str
+    ):
         super().__init__(skale_contracts, provider)
         self.path = path
 

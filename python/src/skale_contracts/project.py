@@ -11,21 +11,29 @@ from .instance import Instance, InstanceData
 if TYPE_CHECKING:
     from eth_typing import Address
     from .network import Network
-    from .project_metadata import ProjectMetadata
 
 
 class Project(ABC):
     """Represents set of smart contracts known as project"""
 
-    def __init__(self, network: Network, metadata: ProjectMetadata) -> None:
+    def __init__(self, network: Network) -> None:
         super().__init__()
         self.network = network
-        self._metadata = metadata
+
+    @staticmethod
+    @abstractmethod
+    def name() -> str:
+        """Name of the project"""
 
     @property
     @abstractmethod
     def github_repo(self) -> str:
         """URL of github repo with the project"""
+
+    @property
+    def folder(self) -> str:
+        """Folder name with instances json files"""
+        return self.name()
 
     def get_instance(self, alias_or_address: str) -> Instance:
         """Create instance object based on alias or address"""
@@ -53,7 +61,8 @@ class Project(ABC):
 
     def get_abi_url(self, version: str) -> str:
         """Calculate URL of ABI file"""
-        return f'{self.github_repo}releases/download/{version}/{self.get_abi_filename(version)}'
+        filename = self.get_abi_filename(version)
+        return f'{self.github_repo}releases/download/{version}/{filename}'
 
     @abstractmethod
     def get_abi_filename(self, version: str) -> str:
@@ -63,7 +72,7 @@ class Project(ABC):
         """Get URL of a file containing address for provided alias"""
         if self.network.is_listed():
             return f'{REPOSITORY_URL}{self.network.as_listed().path}/' + \
-                f'{self._metadata.path}/{alias}.json'
+                f'{self.folder}/{alias}.json'
         raise ValueError('Network is unknown')
 
     @abstractmethod
