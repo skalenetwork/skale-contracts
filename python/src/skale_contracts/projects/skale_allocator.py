@@ -45,7 +45,10 @@ class SkaleAllocatorProject(Project):
     @staticmethod
     def name() -> str:
         return 'skale-allocator'
-    github_repo = 'https://github.com/skalenetwork/skale-allocator/'
+
+    @property
+    def github_repo(self) -> str:
+        return 'https://github.com/skalenetwork/skale-allocator/'
 
     def create_instance(self, address: Address) -> Instance:
         return SkaleAllocatorInstance(self, address)

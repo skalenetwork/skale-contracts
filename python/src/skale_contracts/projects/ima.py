@@ -33,7 +33,9 @@ class ImaInstance(Instance):
 class ImaProject(Project):
     """Represents IMA project"""
 
-    github_repo = 'https://github.com/skalenetwork/ima/'
+    @property
+    def github_repo(self) -> str:
+        return 'https://github.com/skalenetwork/ima/'
 
 
 class MainnetImaInstance(ImaInstance):
