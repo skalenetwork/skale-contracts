@@ -1,5 +1,5 @@
 """Supported projects"""
-from .context_contract import ContextProject as Context
+from .context import ContextProject as Context
 from .ima import \
     MainnetImaProject as MainnetIma, \
     SchainImaProject as SchainIma
