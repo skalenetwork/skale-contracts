@@ -106,10 +106,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@renovatebot/pep440@npm:^3.0.19":
+  version: 3.0.19
+  resolution: "@renovatebot/pep440@npm:3.0.19"
+  checksum: d4465f4bec8fe231ac5428c6ed1b9844508b0e0357eeb69818ce24a373faf41dbc2d2b60b2af474bf997aea918aaadb4d75ea005bfa6358deef9a5652f53d141
+  languageName: node
+  linkType: hard
+
 "@skalenetwork/skale-contracts@workspace:.":
   version: 0.0.0-use.local
   resolution: "@skalenetwork/skale-contracts@workspace:."
   dependencies:
+    "@renovatebot/pep440": ^3.0.19
     "@tsconfig/recommended": ^1.0.2
     "@types/node": ^20.2.5
     "@typescript-eslint/eslint-plugin": ^6.0.0

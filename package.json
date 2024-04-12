@@ -15,5 +15,8 @@
     "hooks": "git config core.hooksPath .githooks || true",
     "no-hooks": "git config core.hooksPath .git/hooks",
     "prepare": "yarn hooks"
+  },
+  "dependencies": {
+    "semver": "^7.6.0"
   }
 }

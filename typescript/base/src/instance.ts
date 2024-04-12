@@ -1,9 +1,12 @@
+import * as semver from "semver";
 import {
     ContractAddress,
     ContractName,
     MainContractAddress,
     SkaleABIFile
 } from "./domain/types";
+import { parse, stringify } from "@renovatebot/pep440/lib/version";
+import { Pep440Version } from "@renovatebot/pep440";
 import { Project } from "./project";
 
 export type InstanceData = {
@@ -26,6 +29,40 @@ const defaultVersionAbi = [
         "type": "function"
     }
 ];
+
+const processSemver = (semVersion: semver.SemVer) => {
+    if (!semVersion.prerelease.length) {
+        const defaultPrerelease = 0;
+        semVersion.prerelease = [
+            "stable",
+            defaultPrerelease
+        ];
+    }
+    return semVersion.format();
+};
+
+const processPep440 = (pyVersion: Pep440Version) => {
+    const replaceMap = new Map<string, string>([
+        [
+            "a",
+            "develop"
+        ],
+        [
+            "b",
+            "beta"
+        ]
+    ]);
+    pyVersion.pre = pyVersion.pre.map((value: string | number) => {
+        if (typeof value === "string" && replaceMap.has(value)) {
+            return `-${replaceMap.get(value)!}.`;
+        }
+        return value;
+    });
+    // TODO: remove any after the fix in the @renovatebot/pep440 library
+    // https://github.com/renovatebot/pep440/pull/555
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    return stringify(pyVersion as any)!;
+};
 
 export abstract class Instance<ContractType> {
     protected project: Project<ContractType>;
@@ -87,9 +124,17 @@ export abstract class Instance<ContractType> {
 
     private async getVersion () {
         if (typeof this.version === "undefined") {
-            this.version = await this.queryVersion();
-            if (!this.version.includes("-")) {
-                this.version = `${this.version}-stable.0`;
+            const rawVersion = await this.queryVersion();
+            const semVersion = semver.parse(rawVersion);
+            if (semVersion) {
+                this.version = processSemver(semVersion);
+            } else {
+                const pyVersion = parse(rawVersion);
+                if (pyVersion) {
+                    this.version = processPep440(pyVersion);
+                } else {
+                    throw new Error(`Can't parse version ${rawVersion}`);
+                }
             }
         }
         return this.version;

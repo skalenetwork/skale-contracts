@@ -47,6 +47,9 @@ export class SchainImaInstance<ContractType> extends
     ]);
 
     getContractAddress (name: string): Promise<string> {
+        if (name === "MessageProxyForSchain") {
+            return Promise.resolve(this.address);
+        }
         if (SchainImaInstance.PREDEPLOYED.has(name)) {
             return Promise.resolve(SchainImaInstance.PREDEPLOYED.
                 get(name) as string);
