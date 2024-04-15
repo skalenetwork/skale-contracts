@@ -58,10 +58,7 @@ const processPep440 = (pyVersion: Pep440Version) => {
         }
         return value;
     });
-    // TODO: remove any after the fix in the @renovatebot/pep440 library
-    // https://github.com/renovatebot/pep440/pull/555
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    return stringify(pyVersion as any)!;
+    return stringify(pyVersion)!;
 };
 
 export abstract class Instance<ContractType> {
