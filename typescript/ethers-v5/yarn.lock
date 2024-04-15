@@ -508,6 +508,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@renovatebot/pep440@npm:^3.0.20":
+  version: 3.0.20
+  resolution: "@renovatebot/pep440@npm:3.0.20"
+  checksum: f7014e1774bd7df0db8d08ea9aa8432a668f829f5f6233aee28dc598dc43a4011e5a65962a8d5f295b39b1bb550fd172b85ecb5bb47b8e9cd8ab5db69dabb8e0
+  languageName: node
+  linkType: hard
+
 "@skalenetwork/skale-contracts-ethers-v5@workspace:.":
   version: 0.0.0-use.local
   resolution: "@skalenetwork/skale-contracts-ethers-v5@workspace:."
@@ -526,6 +533,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@skalenetwork/skale-contracts@portal:../base/::locator=%40skalenetwork%2Fskale-contracts-ethers-v5%40workspace%3A."
   dependencies:
+    "@renovatebot/pep440": ^3.0.20
     axios: ^1.4.0
   languageName: node
   linkType: soft
