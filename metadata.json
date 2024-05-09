@@ -4,6 +4,11 @@
             "chainId": 1,
             "name": "Mainnet",
             "path": "mainnet"
+        },
+        {
+            "chainId": 17000,
+            "name": "Holesky",
+            "path": "holesky"
         }
     ]
 }
