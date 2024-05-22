@@ -56,11 +56,6 @@ class MainnetImaInstance(ImaInstance):
                 self.get_contract("MessageProxyForMainnet")
                     .functions.communityPool().call()
             )
-        if name == 'Linker':
-            return to_canonical_address(
-                self.get_contract("MessageProxyForMainnet")
-                    .functions.linker().call()
-            )
         return to_canonical_address(
             self.contract_manager.functions.getContract(name).call()
         )
