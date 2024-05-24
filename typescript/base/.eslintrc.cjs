@@ -24,6 +24,7 @@ module.exports = {
             "error",
             "separate-lines"
         ],
+        "no-warning-comments": ["warn"],
         "object-curly-spacing": [
             "error",
             "always"

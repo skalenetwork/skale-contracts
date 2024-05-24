@@ -33,7 +33,7 @@ export abstract class Project<ContractType> {
     }
 
     async downloadAbiFile (version: string) {
-        const exceptions = [];
+        const exceptions: string[] = [];
         for (const abiUrl of this.getAbiUrls(version)) {
             try {
                 // Await expression should be executed only
@@ -42,10 +42,10 @@ export abstract class Project<ContractType> {
                 const response = await axios.get(abiUrl);
                 return response.data as SkaleABIFile;
             } catch (exception) {
-                exceptions.push(exception);
+                exceptions.push(`\nDownloading from ${abiUrl} - ${exception}`);
             }
         }
-        throw new Error(exceptions.toString());
+        throw new Error(exceptions.join(""));
     }
 
     getAbiUrls (version: string) {

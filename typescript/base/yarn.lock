@@ -106,16 +106,25 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@renovatebot/pep440@npm:^3.0.20":
+  version: 3.0.20
+  resolution: "@renovatebot/pep440@npm:3.0.20"
+  checksum: f7014e1774bd7df0db8d08ea9aa8432a668f829f5f6233aee28dc598dc43a4011e5a65962a8d5f295b39b1bb550fd172b85ecb5bb47b8e9cd8ab5db69dabb8e0
+  languageName: node
+  linkType: hard
+
 "@skalenetwork/skale-contracts@workspace:.":
   version: 0.0.0-use.local
   resolution: "@skalenetwork/skale-contracts@workspace:."
   dependencies:
+    "@renovatebot/pep440": ^3.0.20
     "@tsconfig/recommended": ^1.0.2
     "@types/node": ^20.2.5
     "@typescript-eslint/eslint-plugin": ^6.0.0
     "@typescript-eslint/parser": ^6.0.0
     axios: ^1.4.0
     eslint: ^8.45.0
+    semver: ^7.6.0
     typescript: ^5.1.6
   languageName: unknown
   linkType: soft
@@ -1160,6 +1169,17 @@ __metadata:
   bin:
     semver: bin/semver.js
   checksum: 12d8ad952fa353b0995bf180cdac205a4068b759a140e5d3c608317098b3575ac2f1e09182206bf2eb26120e1c0ed8fb92c48c592f6099680de56bb071423ca3
+  languageName: node
+  linkType: hard
+
+"semver@npm:^7.6.0":
+  version: 7.6.0
+  resolution: "semver@npm:7.6.0"
+  dependencies:
+    lru-cache: ^6.0.0
+  bin:
+    semver: bin/semver.js
+  checksum: 7427f05b70786c696640edc29fdd4bc33b2acf3bbe1740b955029044f80575fc664e1a512e4113c3af21e767154a94b4aa214bf6cd6e42a1f6dba5914e0b208c
   languageName: node
   linkType: hard
 

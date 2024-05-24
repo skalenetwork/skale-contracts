@@ -4,6 +4,7 @@ import { Project } from "../project";
 import {
     ProjectNotFoundError
 } from "../domain/errors/project/projectNotFoundError";
+import { SchainImaProject } from "./ima/schain/SchainImaProject";
 import { SkaleAllocatorProject } from "./skale-allocator/skaleAllocatorProject";
 import { SkaleManagerProject } from "./skale-manager/skaleManagerProject";
 
@@ -12,6 +13,10 @@ export const projects = {
     "mainnetIma": {
         "name": "mainnet-ima",
         "path": "mainnet-ima"
+    },
+    "schainIma": {
+        "name": "schain-ima",
+        "path": "schain-ima"
     },
     "skaleAllocator": {
         "name": "skale-allocator",
@@ -37,6 +42,11 @@ export const createProject =
             return new MainnetImaProject<ContractType>(
                 network,
                 projects.mainnetIma
+            );
+        } else if (name === projects.schainIma.name) {
+            return new SchainImaProject<ContractType>(
+                network,
+                projects.schainIma
             );
         } else if (name === projects.skaleAllocator.name) {
             return new SkaleAllocatorProject<ContractType>(
