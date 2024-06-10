@@ -12,7 +12,8 @@
         },
         {
             "chainId": 151,
-            "name": "local"
+            "name": "local",
+            "path": "local"
         }
     ]
 }
