@@ -9,6 +9,10 @@
             "chainId": 17000,
             "name": "Holesky",
             "path": "holesky"
+        },
+        {
+            "chainId": 151,
+            "name": "local"
         }
     ]
 }
