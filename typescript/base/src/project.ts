@@ -11,8 +11,8 @@ import {
 import { ProjectMetadata } from "./metadata";
 import { REPOSITORY_URL } from "./domain/constants";
 
-const getAlternativeVersions =
-    function *getAlternativeVersions (version: string) {
+const alternativeVersionsGenerator =
+    function *alternativeVersionsGenerator (version: string) {
         const semVersion = semver.parse(version);
         const wordIndex = 0;
         const nextIndex = 1;
@@ -142,7 +142,8 @@ export abstract class Project<ContractType> {
         exceptions: string[]
     ) {
         let abiFile: SkaleABIFile | null = null;
-        for (const alternativeVersion of getAlternativeVersions(version)) {
+        for (const alternativeVersion
+            of alternativeVersionsGenerator(version)) {
             // Await expression must be executed sequentially
             // eslint-disable-next-line no-await-in-loop
             const alternativeAbiFile = await this.downloadAbiFileByVersion(
