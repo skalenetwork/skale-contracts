@@ -152,10 +152,12 @@ class Project(ABC):
         return abi_file
 
     def _get_github_release_abi_url(self, version: str) -> str:
-        return f'{self.github_repo}releases/download/{version}/{
-            self.get_abi_filename(version)}'
+        return f'{self.github_repo}releases/download/{version}/' + \
+            f'{self.get_abi_filename(version)}'
 
     def _get_github_repository_abi_url(self, version: str) -> str:
-        return f'{self.github_repo.replace(
+        url = self.github_repo.replace(
             'github.com',
-            'raw.githubusercontent.com')}abi/{self.get_abi_filename(version)}'
+            'raw.githubusercontent.com'
+        )
+        return f'{url}abi/{self.get_abi_filename(version)}'
