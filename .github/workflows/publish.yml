@@ -6,6 +6,10 @@ on:
       - stable
       - beta
       - develop
+  push:
+    tags:
+      - 'custom-release-*'
+
 env:
   NODE_VERSION: 18
   PYTHON_VERSION: 3.11

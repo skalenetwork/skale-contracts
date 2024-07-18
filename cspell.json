@@ -5,11 +5,12 @@
         "yarn-error.log",
         ".gitignore",
         "cspell.json",
-        "**/venv/**",
+        "**/venv*/**",
         "**/node_modules/**",
         "**/__pycache__/**",
         "**/requirements.txt",
-        "**/*.egg-info/**"
+        "**/*.egg-info/**",
+        "**/lib/**"
     ],
     "dictionaries": ["domain-terms", "libraries", "names", "skale-terms", "solidity"],
     "dictionaryDefinitions": [

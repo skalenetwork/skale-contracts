@@ -2,25 +2,25 @@
 
 from __future__ import annotations
 from typing import TYPE_CHECKING
-from attr import dataclass
+import inspect
 
-from .project import ProjectMetadata
-from .projects.skale_manager import SkaleManagerProject
-
+from .project import Project
+from . import projects
 
 if TYPE_CHECKING:
-    from .project import Project
     from .network import Network
 
 
-@dataclass
-class Projects:
-    """Contains all known projects"""
-    skale_manager = ProjectMetadata(name='skale-manager', path='skale-manager')
+projects_dict = {
+    project_type.name(): project_type
+    for _, project_type
+    in inspect.getmembers(projects, inspect.isclass)
+    if issubclass(project_type, Project)
+}
 
 
 def create_project(network: Network, name: str) -> Project:
     """Create Project object based on it's name"""
-    if name == Projects.skale_manager.name:
-        return SkaleManagerProject(network, Projects.skale_manager)
+    if name in projects_dict:
+        return projects_dict[name](network)
     raise ValueError(f'Project with name {name} is unknown')

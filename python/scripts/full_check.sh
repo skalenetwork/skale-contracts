@@ -10,3 +10,5 @@ echo "Run pylint"
 pylint src
 echo "Run mypy"
 mypy --strict src
+echo "Run flake8"
+flake8 src

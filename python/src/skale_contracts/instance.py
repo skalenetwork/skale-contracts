@@ -3,8 +3,11 @@
 from __future__ import annotations
 from abc import ABC, abstractmethod
 import json
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING, Optional, cast
 from attr import dataclass
+from eth_typing import ChecksumAddress
+from parver import Version as PyVersion
+from semver.version import Version as SemVersion
 
 
 if TYPE_CHECKING:
@@ -15,11 +18,22 @@ if TYPE_CHECKING:
     from .project import Project
 
 
+DEFAULT_GET_VERSION_FUNCTION = {
+    "type": "function",
+    "name": "version",
+    "constant": True,
+    "stateMutability": "view",
+    "payable": False,
+    "inputs": [],
+    "outputs": [{"type": "string", "name": ""}]
+}
+
 
 @dataclass
 class InstanceData:
     """Contains instance data"""
     data: dict[str, str]
+
     @classmethod
     def from_json(cls, data: str) -> InstanceData:
         """Create InstanceData object from json string"""
@@ -43,29 +57,57 @@ class Instance(ABC):
     def version(self) -> str:
         """Get version of the project instance"""
         if self._version is None:
-            self._version = self._get_version()
-            if not '-' in self._version:
-                self._version = self._version + '-stable.0'
+            raw_version = self._get_version()
+            if SemVersion.is_valid(raw_version):
+                sem_version = SemVersion.parse(raw_version)
+                if sem_version.prerelease is None:
+                    sem_version = sem_version.replace(prerelease='stable.0')
+                self._version = str(sem_version)
+            else:
+                py_version = PyVersion.parse(raw_version)
+                sem_version = SemVersion(*py_version.release)
+                if py_version.pre_tag == 'a':
+                    sem_version = sem_version.replace(
+                        prerelease=f'develop.{py_version.pre}'
+                    )
+                elif py_version.pre_tag == 'b':
+                    sem_version = sem_version.replace(
+                        prerelease=f'beta.{py_version.pre}'
+                    )
+                self._version = str(sem_version)
         return self._version
 
     @property
     def abi(self) -> SkaleAbi:
         """Get abi file of the project instance"""
         if self._abi is None:
-            self._abi = json.loads(self._project.download_abi_file(self.version))
+            self._abi = json.loads(
+                self._project.download_abi_file(self.version)
+            )
         return self._abi
 
     @abstractmethod
-    def get_contract_address(self, name: str) -> Address:
+    def get_contract_address(
+        self,
+        name: str,
+        *args: str | Address | ChecksumAddress
+    ) -> Address:
         """Get address of the contract by it's name"""
 
-    def get_contract(self, name: str) -> Contract:
+    def get_contract(
+            self,
+            name: str,
+            *args: str | Address | ChecksumAddress
+    ) -> Contract:
         """Get Contract object of the contract by it's name"""
-        address = self.get_contract_address(name)
+        address = self.get_contract_address(name, *args)
         return self.web3.eth.contract(address=address, abi=self.abi[name])
 
     # protected
 
-    @abstractmethod
     def _get_version(self) -> str:
-        pass
+        contract = self.web3.eth.contract(
+            address=self.address,
+            abi=[DEFAULT_GET_VERSION_FUNCTION]
+        )
+        return cast(str, contract.functions.version().call())

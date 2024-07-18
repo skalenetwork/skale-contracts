@@ -1,12 +1,11 @@
 import { Adapter, ContractData, FunctionCall } from "./adapter";
 import { Abi } from "./domain/types";
 
-const
-    defaultRetryCount = 100,
-    maxDelayMs = 5000,
-    minDelayMs = 10,
-    slowDownCoefficient = 2,
-    speedUpCoefficient = 1.5;
+const defaultRetryCount = 100;
+const maxDelayMs = 5000;
+const minDelayMs = 10;
+const slowDownCoefficient = 2;
+const speedUpCoefficient = 1.5;
 
 
 export class RetryAdapter<ContractType> implements Adapter<ContractType> {
@@ -83,9 +82,8 @@ export class RetryAdapter<ContractType> implements Adapter<ContractType> {
     }
 
     private async waitIfNeeded () {
-        const
-            now = Date.now(),
-            timeFromPreviousCall = now - this.previousCallTimestampMs;
+        const now = Date.now();
+        const timeFromPreviousCall = now - this.previousCallTimestampMs;
         this.previousCallTimestampMs = now;
 
         if (timeFromPreviousCall < this.delayMs) {

@@ -16,6 +16,7 @@ class NetworkMetadata:
     chain_id: int
     path: str
 
+
 @dataclass
 class MetadataFile:
     """Represents file with metadata"""
@@ -33,6 +34,7 @@ class MetadataFile:
                 path=network['path']))
         return cls(networks)
 
+
 class Metadata:
     """Class to manage SKALE contracts metadata"""
     networks: list[NetworkMetadata]
@@ -49,7 +51,10 @@ class Metadata:
         metadata = MetadataFile.from_json(metadata_response.text)
         self.networks = metadata.networks
 
-    def get_network_by_chain_id(self, chain_id: int) -> Optional[NetworkMetadata]:
+    def get_network_by_chain_id(
+            self,
+            chain_id: int
+    ) -> Optional[NetworkMetadata]:
         """Get network metadata by it's chain id.
         Returns None if there is no such network in the metadata.
         """
