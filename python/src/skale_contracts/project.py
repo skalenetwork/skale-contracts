@@ -1,9 +1,15 @@
 """Contains Project class"""
+
+# cspell:words maxsplit
+
 from __future__ import annotations
 from abc import ABC, abstractmethod
-from typing import TYPE_CHECKING
+from itertools import count
+from typing import TYPE_CHECKING, Generator
+
 from eth_utils.address import to_canonical_address
 import requests
+from semver.version import Version as SemVersion
 
 from .constants import REPOSITORY_URL, NETWORK_TIMEOUT
 from .instance import Instance, InstanceData
@@ -11,6 +17,18 @@ from .instance import Instance, InstanceData
 if TYPE_CHECKING:
     from eth_typing import Address
     from .network import Network
+
+
+def alternative_versions_generator(version: str) -> Generator[str, None, None]:
+    """Provides versions that have compatible ABI"""
+    sem_version = SemVersion.parse(version)
+    if sem_version.prerelease:
+        prerelease_title = sem_version.prerelease.split('.', maxsplit=1)[0]
+        if prerelease_title == 'stable':
+            for prerelease_version in count():
+                yield str(
+                    sem_version.replace(prerelease=f'rc.{prerelease_version}')
+                )
 
 
 class Project(ABC):
@@ -53,11 +71,23 @@ class Project(ABC):
 
     def download_abi_file(self, version: str) -> str:
         """Download file with ABI"""
-        url = self.get_abi_url(version)
-        response = requests.get(url, timeout=NETWORK_TIMEOUT)
-        if response.status_code != 200:
-            raise RuntimeError(f"Can't download abi file from {url}")
-        return response.text
+        exceptions: list[str] = []
+        abi_file = self._download_abi_file_by_version(
+            version,
+            exceptions
+        )
+        if abi_file:
+            return abi_file
+
+        # Stable version can be absent for some time after upgrade.
+        # Try release candidate branch
+        abi_file = self._download_alternative_abi_file(
+            version,
+            exceptions
+        )
+        if abi_file:
+            return abi_file
+        raise RuntimeError('\n'.join(exceptions))
 
     def get_abi_url(self, version: str) -> str:
         """Calculate URL of ABI file"""
@@ -78,3 +108,56 @@ class Project(ABC):
     @abstractmethod
     def create_instance(self, address: Address) -> Instance:
         """Create instance object based on known address"""
+
+    def get_abi_urls(self, version: str) -> list[str]:
+        """Calculate URLs of ABI file"""
+        return [
+            self._get_github_release_abi_url(version),
+            self._get_github_repository_abi_url(version)
+        ]
+
+    # Private
+
+    def _download_abi_file_by_version(
+        self,
+        version: str,
+        exceptions: list[str]
+    ) -> str | None:
+        for abi_url in self.get_abi_urls(version):
+            response = requests.get(abi_url, timeout=NETWORK_TIMEOUT)
+            if response.status_code != 200:
+                exceptions.append(f"Can't download abi file from {abi_url}")
+            else:
+                return response.text
+        return None
+
+    def _download_alternative_abi_file(
+        self,
+        version: str,
+        exceptions: list[str]
+    ) -> str | None:
+        abi_file: str | None = None
+        for alternative_version in alternative_versions_generator(version):
+            alternative_abi_file = self._download_abi_file_by_version(
+                alternative_version,
+                exceptions
+            )
+            if alternative_abi_file:
+                abi_file = alternative_abi_file
+            else:
+                # If abiFile is none
+                # the previous one is the latest
+                break
+
+        return abi_file
+
+    def _get_github_release_abi_url(self, version: str) -> str:
+        return f'{self.github_repo}releases/download/{version}/' + \
+            f'{self.get_abi_filename(version)}'
+
+    def _get_github_repository_abi_url(self, version: str) -> str:
+        url = self.github_repo.replace(
+            'github.com',
+            'raw.githubusercontent.com'
+        )
+        return f'{url}abi/{self.get_abi_filename(version)}'

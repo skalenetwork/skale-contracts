@@ -5,7 +5,7 @@
         "yarn-error.log",
         ".gitignore",
         "cspell.json",
-        "**/venv/**",
+        "**/venv*/**",
         "**/node_modules/**",
         "**/__pycache__/**",
         "**/requirements.txt",

@@ -1,3 +1,4 @@
+import * as semver from "semver";
 import { Instance, InstanceData } from "./instance";
 import { MainContractAddress, SkaleABIFile } from "./domain/types";
 import axios, { HttpStatusCode } from "axios";
@@ -9,6 +10,22 @@ import {
 } from "./domain/errors/network/networkNotFoundError";
 import { ProjectMetadata } from "./metadata";
 import { REPOSITORY_URL } from "./domain/constants";
+
+const alternativeVersionsGenerator =
+    function *alternativeVersionsGenerator (version: string) {
+        const semVersion = semver.parse(version);
+        const wordIndex = 0;
+        const nextIndex = 1;
+        if (semVersion?.prerelease[wordIndex] === "stable") {
+            for (let prereleaseVersion = 0; ; prereleaseVersion += nextIndex) {
+                semVersion.prerelease = [
+                    "rc",
+                    prereleaseVersion
+                ];
+                yield semVersion.format();
+            }
+        }
+    };
 
 export abstract class Project<ContractType> {
     protected metadata: ProjectMetadata;
@@ -34,28 +51,31 @@ export abstract class Project<ContractType> {
 
     async downloadAbiFile (version: string) {
         const exceptions: string[] = [];
-        for (const abiUrl of this.getAbiUrls(version)) {
-            try {
-                // Await expression should be executed only
-                // when it failed on the previous iteration
-                // eslint-disable-next-line no-await-in-loop
-                const response = await axios.get(abiUrl);
-                return response.data as SkaleABIFile;
-            } catch (exception) {
-                exceptions.push(`\nDownloading from ${abiUrl} - ${exception}`);
-            }
+        let abiFile = await this.downloadAbiFileByVersion(
+            version,
+            exceptions
+        );
+        if (abiFile !== null) {
+            return abiFile;
+        }
+
+        // Stable version can be absent for some time after upgrade.
+        // Try release candidate branch
+        abiFile = await this.downloadAlternativeAbiFile(
+            version,
+            exceptions
+        );
+
+        if (abiFile !== null) {
+            return abiFile;
         }
         throw new Error(exceptions.join(""));
     }
 
     getAbiUrls (version: string) {
         return [
-            `${this.githubRepo}releases/download/` +
-                `${version}/${this.getAbiFilename(version)}`,
-            `${this.githubRepo.replace(
-                "github.com",
-                "raw.githubusercontent.com"
-            )}abi/${this.getAbiFilename(version)}`
+            this.getGithubReleaseAbiUrl(version),
+            this.getGithubRepositoryAbiUrl(version)
         ];
     }
 
@@ -85,5 +105,59 @@ export abstract class Project<ContractType> {
             return this.createInstance(address);
         }
         throw new InstanceNotFound(`Can't download data for instance ${alias}`);
+    }
+
+    private getGithubReleaseAbiUrl (version: string) {
+        return `${this.githubRepo}releases/download/` +
+            `${version}/${this.getAbiFilename(version)}`;
+    }
+
+    private getGithubRepositoryAbiUrl (version: string) {
+        return `${this.githubRepo.replace(
+            "github.com",
+            "raw.githubusercontent.com"
+        )}abi/${this.getAbiFilename(version)}`;
+    }
+
+    private async downloadAbiFileByVersion (
+        version: string,
+        exceptions: string[]
+    ) {
+        for (const abiUrl of this.getAbiUrls(version)) {
+            try {
+                // Await expression should be executed only
+                // when it failed on the previous iteration
+                // eslint-disable-next-line no-await-in-loop
+                const response = await axios.get(abiUrl);
+                return response.data as SkaleABIFile;
+            } catch (exception) {
+                exceptions.push(`\nDownloading from ${abiUrl} - ${exception}`);
+            }
+        }
+        return null;
+    }
+
+    private async downloadAlternativeAbiFile (
+        version: string,
+        exceptions: string[]
+    ) {
+        let abiFile: SkaleABIFile | null = null;
+        for (const alternativeVersion
+            of alternativeVersionsGenerator(version)) {
+            // Await expression must be executed sequentially
+            // eslint-disable-next-line no-await-in-loop
+            const alternativeAbiFile = await this.downloadAbiFileByVersion(
+                alternativeVersion,
+                exceptions
+            );
+            if (alternativeAbiFile === null) {
+                // If abiFile is null
+                // the previous one is the latest
+                break;
+            } else {
+                abiFile = alternativeAbiFile;
+            }
+        }
+        return abiFile;
     }
 }
