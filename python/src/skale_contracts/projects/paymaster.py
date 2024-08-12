@@ -1,4 +1,4 @@
-"""Module connects predeployed project to the SKALE contracts library"""
+"""Module connects paymaster project to the SKALE contracts library"""
 from __future__ import annotations
 from typing import TYPE_CHECKING
 from eth_utils.address import to_canonical_address
