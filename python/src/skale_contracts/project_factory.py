@@ -11,7 +11,7 @@ if TYPE_CHECKING:
     from .network import Network
 
 
-projects_dict = {
+projects_dict: dict[str, type[Project]] = {
     project_type.name(): project_type
     for _, project_type
     in inspect.getmembers(projects, inspect.isclass)
