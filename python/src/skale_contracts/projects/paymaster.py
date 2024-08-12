@@ -20,10 +20,12 @@ class PaymasterInstance(Instance):
     ) -> Address:
         if name in {"Paymaster", "FastForwardPaymaster"}:
             return self.address
-        return to_canonical_address(
-            self.get_contract("FastForwardPaymaster")
-                .functions.authority().call()
-        )
+        if name == "PaymasterAccessManager":
+            return to_canonical_address(
+                self.get_contract("FastForwardPaymaster")
+                    .functions.authority().call()
+            )
+        raise RuntimeError(f"Can't get address of {name} contract")
 
 
 class PaymasterProject(Project):
