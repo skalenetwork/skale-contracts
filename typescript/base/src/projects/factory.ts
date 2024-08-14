@@ -1,5 +1,6 @@
 import { MainnetImaProject } from "./ima/mainnet/MainnetImaProject";
 import { Network } from "../network";
+import { PaymasterProject } from "./paymaster/paymasterProject";
 import { Project } from "../project";
 import {
     ProjectNotFoundError
@@ -13,6 +14,10 @@ export const projects = {
     "mainnetIma": {
         "name": "mainnet-ima",
         "path": "mainnet-ima"
+    },
+    "paymaster": {
+        "name": "paymaster",
+        "path": "paymaster"
     },
     "schainIma": {
         "name": "schain-ima",
@@ -52,6 +57,11 @@ export const createProject =
             return new SkaleAllocatorProject<ContractType>(
                 network,
                 projects.skaleAllocator
+            );
+        } else if (name === projects.paymaster.name) {
+            return new PaymasterProject<ContractType>(
+                network,
+                projects.paymaster
             );
         }
         throw new ProjectNotFoundError(`Project with name ${name} is unknown`);
