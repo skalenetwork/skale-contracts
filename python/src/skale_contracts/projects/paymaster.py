@@ -22,7 +22,7 @@ class PaymasterInstance(Instance):
             return self.address
         if name == "PaymasterAccessManager":
             return to_canonical_address(
-                self.get_contract("FastForwardPaymaster")
+                self.get_contract("Paymaster")
                     .functions.authority().call()
             )
         raise RuntimeError(f"Can't get address of {name} contract")
