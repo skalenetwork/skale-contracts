@@ -14,6 +14,11 @@
             "chainId": 151,
             "name": "local",
             "path": "local"
+        },
+        {
+            "chainId": 2046399126,
+            "name": "elated-tan-skat",
+            "path": "elated-tan-skat"
         }
     ]
 }
