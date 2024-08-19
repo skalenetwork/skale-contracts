@@ -1,4 +1,5 @@
 """Supported projects"""
+from .config_controller import ConfigControllerProject as ConfigController
 from .context import ContextProject as Context
 from .paymaster import PaymasterProject as Paymaster
 from .ima import \
@@ -7,5 +8,5 @@ from .ima import \
 from .skale_manager import SkaleManagerProject as SkaleManager
 from .skale_allocator import SkaleAllocatorProject as SkaleAllocator
 
-__all__ = ['Context', 'MainnetIma', 'Paymaster', 'SchainIma',
-           'SkaleAllocator', 'SkaleManager']
+__all__ = ['ConfigController', 'Context', 'MainnetIma', 'Paymaster',
+           'SchainIma', 'SkaleAllocator', 'SkaleManager']
