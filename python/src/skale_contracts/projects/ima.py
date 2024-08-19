@@ -113,7 +113,9 @@ class SchainImaInstance(ImaInstance):
             'TokenManagerERC1155':
                 '0xD2aaA00900000000000000000000000000000000',
             'TokenManagerERC721WithMetadata':
-                '0xd2AaA00a00000000000000000000000000000000'
+                '0xd2AaA00a00000000000000000000000000000000',
+            'EthErc20':
+                '0xD2Aaa00700000000000000000000000000000000'
         }.items()}
 
     def get_contract_address(
