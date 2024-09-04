@@ -15,7 +15,8 @@ if TYPE_CHECKING:
 class Erc1820PredeployedInstance(Instance):
     """Represents instance of erc1820-predeployed"""
 
-    INITIAL_VERSION = '0.0.1-develop.1'
+    def _get_version(self) -> str:
+      return '0.0.1-develop.1'
 
     PREDEPLOYED: dict[str, Address] = {
         name: to_canonical_address(address) for name, address in {
@@ -31,12 +32,6 @@ class Erc1820PredeployedInstance(Instance):
         if name in self.PREDEPLOYED:
             return self.PREDEPLOYED[name]
         raise RuntimeError(f"Can't get address of {name} contract")
-    
-    def _get_version(self) -> str:
-        try:
-            return super()._get_version()
-        except ValueError:
-            return self.INITIAL_VERSION
 
 
 class Erc1820PredeployedProject(Project):
