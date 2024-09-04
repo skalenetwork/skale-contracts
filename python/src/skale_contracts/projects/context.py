@@ -14,7 +14,8 @@ if TYPE_CHECKING:
 class ContextInstance(Instance):
     """Represents instance of context-contract"""
 
-    INITIAL_VERSION = '1.0.0-develop.5'
+    def _get_version(self) -> str:
+      return '1.0.0-develop.5'
 
     PREDEPLOYED: dict[str, Address] = {
         name: to_canonical_address(address) for name, address in {
@@ -31,19 +32,13 @@ class ContextInstance(Instance):
             return self.PREDEPLOYED[name]
         raise RuntimeError(f"Can't get address of {name} contract")
 
-    def _get_version(self) -> str:
-        try:
-            return super()._get_version()
-        except ValueError:
-            return self.INITIAL_VERSION
-
 
 class ContextProject(Project):
     """Represents context-contract project"""
 
     @staticmethod
     def name() -> str:
-        return 'ContextContract'
+        return 'context-contract'
 
     @property
     def github_repo(self) -> str:
