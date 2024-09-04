@@ -110,4 +110,10 @@ class Instance(ABC):
             address=self.address,
             abi=[DEFAULT_GET_VERSION_FUNCTION]
         )
-        return cast(str, contract.functions.version().call())
+        try:
+            return cast(str, contract.functions.version().call())
+        except ValueError:
+            if self.initial_version is not None:
+                return self.initial_version
+            raise
+            
