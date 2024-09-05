@@ -16,7 +16,7 @@ class Erc1820Instance(Instance):
     """Represents instance of erc1820"""
 
     def _get_version(self) -> str:
-      return '0.0.1-develop.1'
+        return '0.0.1-develop.1'
 
     PREDEPLOYED: dict[str, Address] = {
         name: to_canonical_address(address) for name, address in {
