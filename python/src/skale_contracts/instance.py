@@ -47,6 +47,7 @@ class Instance(ABC):
         self._version: Optional[str] = None
         self._abi: Optional[SkaleAbi] = None
         self.address = address
+        self.initial_version: Optional[str] = None
 
     @property
     def web3(self) -> Web3:
@@ -116,4 +117,3 @@ class Instance(ABC):
             if self.initial_version is not None:
                 return self.initial_version
             raise
-            
