@@ -14,8 +14,9 @@ if TYPE_CHECKING:
 class ContextInstance(Instance):
     """Represents instance of context-contract"""
 
-    def _get_version(self) -> str:
-      return '1.0.0-develop.5'
+    def __init__(self, project: Project, address: Address):
+        super().__init__(project, address)
+        self.initial_version = '1.0.0-develop.5'
 
     PREDEPLOYED: dict[str, Address] = {
         name: to_canonical_address(address) for name, address in {
