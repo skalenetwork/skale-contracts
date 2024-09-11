@@ -20,7 +20,7 @@ class Erc1820Instance(Instance):
 
     PREDEPLOYED: dict[str, Address] = {
         name: to_canonical_address(address) for name, address in {
-            'Erc1820':
+            'ERC1820Registry':
                 '0x1820a4B7618BdE71Dce8cdc73aAB6C95905faD24'
         }.items()}
 
