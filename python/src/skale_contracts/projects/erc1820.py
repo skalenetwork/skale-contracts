@@ -1,4 +1,5 @@
-"""Module connects context-contract project to the SKALE contracts library"""
+"""Module connects erc1820 project to the SKALE contracts library"""
+
 from __future__ import annotations
 from typing import TYPE_CHECKING
 from eth_utils.address import to_canonical_address
@@ -11,18 +12,17 @@ if TYPE_CHECKING:
     from eth_typing import Address, ChecksumAddress
 
 
-class ContextInstance(Instance):
-    """Represents instance of context-contract"""
+class Erc1820Instance(Instance):
+    """Represents instance of erc1820"""
 
-    def __init__(self, project: Project, address: Address):
-        super().__init__(project, address)
-        self.initial_version = '1.0.0-develop.5'
+    def _get_version(self) -> str:
+        return '0.0.1-develop.1'
 
     PREDEPLOYED: dict[str, Address] = {
         name: to_canonical_address(address) for name, address in {
-            'ContextContract':
-            '0xD2001000000000000000000000000000000000D2'
-            }.items()}
+            'ERC1820Registry':
+                '0x1820a4B7618BdE71Dce8cdc73aAB6C95905faD24'
+        }.items()}
 
     def get_contract_address(
             self,
@@ -34,26 +34,26 @@ class ContextInstance(Instance):
         raise RuntimeError(f"Can't get address of {name} contract")
 
 
-class ContextProject(Project):
-    """Represents context-contract project"""
+class Erc1820Project(Project):
+    """Represents erc1820 project"""
 
     @staticmethod
     def name() -> str:
-        return 'context-contract'
-
-    @property
-    def github_repo(self) -> str:
-        return 'https://github.com/skalenetwork/context-contract/'
-
-    def create_instance(self, address: Address) -> Instance:
-        return ContextInstance(self, address)
+        return 'erc1820'
 
     def get_instance(self, alias_or_address: str) -> Instance:
         if alias_or_address == PREDEPLOYED_ALIAS:
             return self.create_instance(
-                ContextInstance.PREDEPLOYED['ContextContract']
-                )
+                Erc1820Instance.PREDEPLOYED['Erc1820']
+            )
         return super().get_instance(alias_or_address)
 
+    @property
+    def github_repo(self) -> str:
+        return 'https://github.com/skalenetwork/erc1820-predeployed/'
+
+    def create_instance(self, address: Address) -> Instance:
+        return Erc1820Instance(self, address)
+
     def get_abi_filename(self, version: str) -> str:
-        return f'context-{version}-abi.json'
+        return f'erc1820-predeployed-{version}-abi.json'

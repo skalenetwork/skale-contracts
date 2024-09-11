@@ -47,6 +47,7 @@ class Instance(ABC):
         self._version: Optional[str] = None
         self._abi: Optional[SkaleAbi] = None
         self.address = address
+        self.initial_version: Optional[str] = None
 
     @property
     def web3(self) -> Web3:
@@ -110,4 +111,9 @@ class Instance(ABC):
             address=self.address,
             abi=[DEFAULT_GET_VERSION_FUNCTION]
         )
-        return cast(str, contract.functions.version().call())
+        try:
+            return cast(str, contract.functions.version().call())
+        except ValueError:
+            if self.initial_version is not None:
+                return self.initial_version
+            raise
