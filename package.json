@@ -1,6 +1,6 @@
 {
   "devDependencies": {
-    "cspell": "^6.31.1"
+    "cspell": "^8.14.4"
   },
   "name": "development",
   "packageManager": "yarn@3.5.1",
