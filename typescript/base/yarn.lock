@@ -118,7 +118,7 @@ __metadata:
   resolution: "@skalenetwork/skale-contracts@workspace:."
   dependencies:
     "@renovatebot/pep440": ^3.0.20
-    "@tsconfig/recommended": ^1.0.2
+    "@tsconfig/recommended": ^1.0.7
     "@types/node": ^20.2.5
     "@typescript-eslint/eslint-plugin": ^6.0.0
     "@typescript-eslint/parser": ^8.8.0
@@ -129,10 +129,10 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tsconfig/recommended@npm:^1.0.2":
-  version: 1.0.2
-  resolution: "@tsconfig/recommended@npm:1.0.2"
-  checksum: 8dab26157fc9748ff2d090b95f4dbe2aeb592dbdcf90f373f712da5ac54ff24f66193e7ee68fdc45880e7f767cfeb339ef3e9970ca59608ef93225db047f0d16
+"@tsconfig/recommended@npm:^1.0.7":
+  version: 1.0.7
+  resolution: "@tsconfig/recommended@npm:1.0.7"
+  checksum: 1a453b4157b6ed97ddfdf4a7c3597e4e8c91ce1595573a42fcf0ba863628285b8486edd25c4140e241fc421559e4f991c1581524158fb4fc6482b575e0884cad
   languageName: node
   linkType: hard
 
