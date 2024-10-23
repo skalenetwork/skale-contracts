@@ -26,7 +26,7 @@
   "version": "1.0.2",
   "dependencies": {
     "@renovatebot/pep440": "^3.0.20",
-    "axios": "^1.4.0",
+    "axios": "^1.7.7",
     "semver": "^7.6.0"
   }
 }
