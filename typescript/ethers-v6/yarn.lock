@@ -141,7 +141,7 @@ __metadata:
   resolution: "@skalenetwork/skale-contracts-ethers-v6@workspace:."
   dependencies:
     "@skalenetwork/skale-contracts": "portal:../base/"
-    "@types/node": ^22.7.4
+    "@types/node": ^22.7.9
     "@typescript-eslint/eslint-plugin": ^6.0.0
     "@typescript-eslint/parser": ^8.10.0
     eslint: ^8.45.0
@@ -174,12 +174,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:^22.7.4":
-  version: 22.7.4
-  resolution: "@types/node@npm:22.7.4"
+"@types/node@npm:^22.7.9":
+  version: 22.7.9
+  resolution: "@types/node@npm:22.7.9"
   dependencies:
     undici-types: ~6.19.2
-  checksum: a3f4154147639369aed08fe6f8d62eff637cf87b187bb252d7bbccdc82884626007af424b08a653c53f2182adfa0340001b4888cb7cbb942cef351210fc742a5
+  checksum: 02671449e61f3f7c9898da44e18af272056fee0afbbc98b11dcff7cd7c4ed6c8a45353cfdde413208d9f597e247ee68d908c83a72cae4cbdd763b0e3a45ac0cd
   languageName: node
   linkType: hard
 
