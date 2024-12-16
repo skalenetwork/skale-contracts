@@ -1,7 +1,6 @@
 import { Abi, Adapter, ContractData, FunctionCall } from '@skalenetwork/skale-contracts';
 import {
     Address,
-    WalletClient,
     GetContractReturnType,
     PublicClient,
     Abi as ViemAbi,
@@ -9,9 +8,7 @@ import {
     isAddress
 } from 'viem';
 
-
-type ViemContract = GetContractReturnType<ViemAbi, PublicClient>
-
+type ViemContract = GetContractReturnType<ViemAbi, { public: PublicClient }, Address>;
 
 export class ViemAdapter implements Adapter<ViemContract> {
     client: PublicClient;
@@ -20,20 +17,12 @@ export class ViemAdapter implements Adapter<ViemContract> {
         this.client = client;
     }
 
-    // createContract(address: string, abi: Abi) {
-    //     return getContractViem({
-    //         abi: abi as ViemAbi,
-    //         address: address as Address,
-    //         client: this.client
-    //     }) as GetContractReturnType<ViemAbi, PublicClient | WalletClient>;
-    // }
-
     createContract(address: string, abi: Abi): ViemContract {
         return getContractViem({
             abi: abi as ViemAbi,
             address: address as Address,
             client: this.client
-        }) as ViemContract;
+        });
     }
 
     async makeCall(
@@ -53,7 +42,6 @@ export class ViemAdapter implements Adapter<ViemContract> {
         return BigInt(chainId);
     }
 
-    // eslint-disable-next-line class-methods-use-this
     isAddress(value: string): boolean {
         return isAddress(value);
     }

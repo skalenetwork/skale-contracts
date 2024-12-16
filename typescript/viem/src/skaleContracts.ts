@@ -7,10 +7,12 @@ import {
 } from "@skalenetwork/skale-contracts";
 import { ViemAdapter } from './viemAdapter';
 
-export type Instance = BaseInstance<GetContractReturnType<ViemAbi>>;
+export type Instance = BaseInstance<GetContractReturnType<ViemAbi, { public: PublicClient }>>;
 
-export class SkaleContracts extends BaseSkaleContracts<GetContractReturnType<ViemAbi>> {
+export class SkaleContracts extends BaseSkaleContracts<GetContractReturnType<ViemAbi, { public: PublicClient }>> {
     getNetworkByProvider(client: PublicClient) {
         return this.getNetworkByAdapter(new ViemAdapter(client));
     }
 }
+
+export const skaleContracts = new SkaleContracts();
