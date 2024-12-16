@@ -8,7 +8,7 @@ import {
     isAddress
 } from 'viem';
 
-type ViemContract = GetContractReturnType<ViemAbi, { public: PublicClient }, Address>;
+export type ViemContract = GetContractReturnType<ViemAbi, { public: PublicClient }, Address>;
 
 export class ViemAdapter implements Adapter<ViemContract> {
     client: PublicClient;

@@ -1,15 +1,16 @@
-import { GetContractReturnType, PublicClient, Abi as ViemAbi } from 'viem';
+import { ViemAdapter, ViemContract } from './viemAdapter';
 import {
     Instance as BaseInstance
 } from "@skalenetwork/skale-contracts/lib/instance";
 import {
     SkaleContracts as BaseSkaleContracts
 } from "@skalenetwork/skale-contracts";
-import { ViemAdapter } from './viemAdapter';
+import { PublicClient } from 'viem';
 
-export type Instance = BaseInstance<GetContractReturnType<ViemAbi, { public: PublicClient }>>;
 
-export class SkaleContracts extends BaseSkaleContracts<GetContractReturnType<ViemAbi, { public: PublicClient }>> {
+export type Instance = BaseInstance<ViemContract>;
+
+export class SkaleContracts extends BaseSkaleContracts<ViemContract> {
     getNetworkByProvider(client: PublicClient) {
         return this.getNetworkByAdapter(new ViemAdapter(client));
     }

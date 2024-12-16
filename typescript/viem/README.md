@@ -64,7 +64,7 @@ const client = createPublicClient({
 });
 
 const network = await skaleContracts.getNetworkByProvider(client);
-const project = await network.getProject("skale-manager");
+const project = network.getProject("skale-manager");
 const instance = await project.getInstance("production");
 const nodes = await instance.getContract("Nodes");
 const numberOfActiveNodes = await nodes.read.numberOfActiveNodes();
