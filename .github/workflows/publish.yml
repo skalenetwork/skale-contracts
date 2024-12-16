@@ -59,6 +59,7 @@ jobs:
       with:
         tag: typescript-${{ env.VERSION }}
         prerelease: ${{ env.PRERELEASE }}
+        commit: ${{ github.sha }}
 
   ethers-v5:
     runs-on: ubuntu-latest
@@ -112,6 +113,7 @@ jobs:
       with:
         tag: typescript-ethers-v5-${{ env.VERSION }}
         prerelease: ${{ env.PRERELEASE }}
+        commit: ${{ github.sha }}
 
   ethers-v6:
     runs-on: ubuntu-latest
@@ -165,6 +167,7 @@ jobs:
       with:
         tag: typescript-ethers-v6-${{ env.VERSION }}
         prerelease: ${{ env.PRERELEASE }}
+        commit: ${{ github.sha }}
   
   viem:
     runs-on: ubuntu-latest
@@ -218,6 +221,7 @@ jobs:
       with:
         tag: typescript-viem-${{ env.VERSION }}
         prerelease: ${{ env.PRERELEASE }}
+        commit: ${{ github.sha }}
 
   python:
     runs-on: ubuntu-latest
@@ -266,3 +270,4 @@ jobs:
         tag: python-${{ env.VERSION }}
         prerelease: ${{ env.PRERELEASE }}
         artifacts: python/dist/*
+        commit: ${{ github.sha }}
