@@ -109,6 +109,36 @@ jobs:
 
     - name: Run static checks
       run: yarn fullCheck
+  
+  viem:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [18, 20, 22]
+
+    defaults:
+      run:
+        working-directory: typescript/viem
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Node
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+
+    - name: Install base project
+      run: |
+        yarn ../base
+        yarn ../base compile
+
+    - name: Install project
+      run: yarn
+
+    - name: Run static checks
+      run: yarn fullCheck
 
   python:
     runs-on: ubuntu-latest

@@ -42,6 +42,7 @@ export class ViemAdapter implements Adapter<ViemContract> {
         return BigInt(chainId);
     }
 
+    // eslint-disable-next-line class-methods-use-this
     isAddress(value: string): boolean {
         return isAddress(value);
     }
