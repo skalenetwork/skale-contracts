@@ -1,0 +1,15 @@
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
+
+lib/
+*.log
+node_modules/
+cache
+src/debug.ts
+
+.editorconfig
+.gitattributes
