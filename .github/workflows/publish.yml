@@ -49,7 +49,7 @@ jobs:
         echo "PRERELEASE=$PRERELEASE" >> $GITHUB_ENV
 
     - name: Publish NPM package
-      run: ./scripts/publish_package.sh
+      run: ../scripts/publish_package.sh
       env:
         BRANCH: ${{ env.BRANCH }}
         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
@@ -103,7 +103,7 @@ jobs:
         echo "PRERELEASE=$PRERELEASE" >> $GITHUB_ENV
 
     - name: Publish NPM package
-      run: ./scripts/publish_package.sh
+      run: ../scripts/publish_package.sh
       env:
         BRANCH: ${{ env.BRANCH }}
         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
@@ -157,7 +157,7 @@ jobs:
         echo "PRERELEASE=$PRERELEASE" >> $GITHUB_ENV
 
     - name: Publish NPM package
-      run: ./scripts/publish_package.sh
+      run: ../scripts/publish_package.sh
       env:
         BRANCH: ${{ env.BRANCH }}
         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
@@ -211,7 +211,7 @@ jobs:
         echo "PRERELEASE=$PRERELEASE" >> $GITHUB_ENV
 
     - name: Publish NPM package
-      run: ./scripts/publish_package.sh
+      run: ../scripts/publish_package.sh
       env:
         BRANCH: ${{ env.BRANCH }}
         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
