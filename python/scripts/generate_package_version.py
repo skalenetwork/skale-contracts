@@ -10,7 +10,7 @@ def calculate_version(release_version):
     parts = release_version.strip().split('-')
     [main_part, tail_part] = [parts[0], '-'.join(parts[1:])]
     tail_parts = tail_part.split('.')
-    [branch, build_number] = ['.'.join(tail_parts[:-1]), tail_part[-1]]
+    [branch, build_number] = ['.'.join(tail_parts[:-1]), tail_parts[-1]]
     if branch == 'stable':
         if int(build_number) == 0:
             return main_part
