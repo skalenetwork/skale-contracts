@@ -6,7 +6,7 @@
     "@skalenetwork/skale-contracts": "portal:../base/",
     "@types/node": "^22.10.1",
     "@typescript-eslint/eslint-plugin": "^6.0.0",
-    "@typescript-eslint/parser": "^8.18.0",
+    "@typescript-eslint/parser": "^8.18.1",
     "eslint": "^8.45.0",
     "typescript": "^5.7.2"
   },
