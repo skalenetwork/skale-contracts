@@ -1,8 +1,12 @@
 import { Abi, Adapter, ContractData, FunctionCall } from '@skalenetwork/skale-contracts';
 import {
+    Account,
     Address,
+    Chain,
     GetContractReturnType,
     PublicClient,
+    RpcSchema,
+    Transport,
     Abi as ViemAbi,
     getContract as getContractViem,
     isAddress
@@ -11,9 +15,9 @@ import {
 export type ViemContract = GetContractReturnType<ViemAbi, { public: PublicClient }, Address>;
 
 export class ViemAdapter implements Adapter<ViemContract> {
-    client: PublicClient;
+    client: PublicClient<Transport, Chain, Account, RpcSchema>;
 
-    constructor(client: PublicClient) {
+    constructor(client: PublicClient<Transport, Chain, Account, RpcSchema>) {
         this.client = client;
     }
 
