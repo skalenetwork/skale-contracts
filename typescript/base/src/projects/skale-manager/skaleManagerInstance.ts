@@ -1,6 +1,7 @@
 import {
     ContractAddress,
-    ContractName
+    ContractName,
+    MainContractAddress
 } from "../../domain/types";
 import { Instance } from "../../instance";
 
@@ -72,7 +73,7 @@ export class SkaleManagerInstance<ContractType> extends
                 "args": [this.actualName(name)],
                 "functionName": "getContract"
             }
-        ) as string;
+        ) as MainContractAddress;
     }
 
     // Private
@@ -88,7 +89,7 @@ export class SkaleManagerInstance<ContractType> extends
         return this.project.network.adapter.makeCall(
             {
                 "abi": skaleManagerAbi,
-                "address": this.address
+                "address": this.mainContractAddress
             },
             {
                 args,

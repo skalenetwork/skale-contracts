@@ -1,6 +1,10 @@
 import * as semver from "semver";
+import {
+    ContractAddressMap,
+    MainContractAddress,
+    SkaleABIFile
+} from "./domain/types";
 import { Instance, InstanceData } from "./instance";
-import { MainContractAddress, SkaleABIFile } from "./domain/types";
 import axios, { HttpStatusCode } from "axios";
 import { InstanceNotFound } from "./domain/errors/instance/instanceNotFound";
 import { ListedNetwork } from "./listedNetwork";
@@ -34,6 +38,8 @@ export abstract class Project<ContractType> {
 
     abstract githubRepo: string;
 
+    abstract mainContractName: string;
+
     constructor (
         network: Network<ContractType>,
         metadata: ProjectMetadata
@@ -42,11 +48,12 @@ export abstract class Project<ContractType> {
         this.metadata = metadata;
     }
 
-    getInstance (aliasOrAddress: string) {
-        if (this.network.adapter.isAddress(aliasOrAddress)) {
-            return this.getInstanceByAddress(aliasOrAddress);
+    getInstance (target: string | MainContractAddress | ContractAddressMap) {
+        if (typeof target === "string" && this.network.adapter.isAddress(target) || typeof target === "object") {
+            return this.getInstanceByAddress(
+                target as MainContractAddress | ContractAddressMap);
         }
-        return this.getInstanceByAlias(aliasOrAddress);
+        return this.getInstanceByAlias(target);
     }
 
     async downloadAbiFile (version: string) {
@@ -89,12 +96,12 @@ export abstract class Project<ContractType> {
         throw new NetworkNotFoundError("Network is unknown");
     }
 
-    abstract createInstance(address: MainContractAddress):
+    abstract createInstance(address: MainContractAddress | ContractAddressMap):
         Instance<ContractType>;
 
     // Private
 
-    private getInstanceByAddress (address: string) {
+    private getInstanceByAddress (address: MainContractAddress | ContractAddressMap) {
         return this.createInstance(address);
     }
 
