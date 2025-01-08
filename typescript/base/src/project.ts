@@ -49,9 +49,13 @@ export abstract class Project<ContractType> {
     }
 
     getInstance (target: string | MainContractAddress | ContractAddressMap) {
-        if (typeof target === "string" && this.network.adapter.isAddress(target) || typeof target === "object") {
+        const isStringAndAddress =
+            typeof target === "string" &&
+            this.network.adapter.isAddress(target);
+        if (isStringAndAddress || typeof target === "object") {
             return this.getInstanceByAddress(
-                target as MainContractAddress | ContractAddressMap);
+                target as MainContractAddress | ContractAddressMap
+            );
         }
         return this.getInstanceByAlias(target);
     }
@@ -101,7 +105,9 @@ export abstract class Project<ContractType> {
 
     // Private
 
-    private getInstanceByAddress (address: MainContractAddress | ContractAddressMap) {
+    private getInstanceByAddress (
+        address: MainContractAddress | ContractAddressMap
+    ) {
         return this.createInstance(address);
     }
 

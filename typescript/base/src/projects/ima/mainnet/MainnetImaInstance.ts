@@ -1,5 +1,5 @@
-import { ContractData } from "../../../adapter";
 import { ContractAddress } from "../../../domain/types";
+import { ContractData } from "../../../adapter";
 import { ImaInstance } from "../ImaInstance";
 
 
