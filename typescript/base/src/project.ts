@@ -2,7 +2,8 @@ import * as semver from "semver";
 import {
     ContractAddressMap,
     MainContractAddress,
-    SkaleABIFile
+    SkaleABIFile,
+    isContractAddressMap
 } from "./domain/types";
 import { Instance, InstanceData } from "./instance";
 import axios, { HttpStatusCode } from "axios";
@@ -49,10 +50,10 @@ export abstract class Project<ContractType> {
     }
 
     getInstance (target: string | MainContractAddress | ContractAddressMap) {
-        const isStringAndAddress =
-            typeof target === "string" &&
-            this.network.adapter.isAddress(target);
-        if (isStringAndAddress || typeof target === "object") {
+        if (
+            this.network.adapter.isAddress(target) ||
+            isContractAddressMap(target)
+        ) {
             return this.getInstanceByAddress(
                 target as MainContractAddress | ContractAddressMap
             );

@@ -5,6 +5,24 @@ export type ContractAddressMap = {
     [contractName: ContractName]: ContractAddress
 }
 
+export const isContractAddressMap = (
+    obj: unknown
+): obj is ContractAddressMap => {
+    if (typeof obj !== "object" || obj === null) {
+        return false;
+    }
+
+    return Object.entries(obj).every(
+        ([
+            key,
+            value
+        ]) => typeof key === "string" &&
+              typeof value === "string" &&
+              (/^0x[a-fA-F0-9]{40}$/u).test(value)
+
+    );
+};
+
 export interface AbiFragmentType {
     readonly name?: string;
     readonly indexed?: boolean;

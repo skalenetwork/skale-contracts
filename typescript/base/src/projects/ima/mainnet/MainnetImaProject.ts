@@ -11,11 +11,11 @@ export class MainnetImaProject<ContractType> extends
         return `${this.metadata.name}-${version}-abi.json`;
     }
 
-    createInstance (target: MainContractAddress | ContractAddressMap)
+    createInstance (address: MainContractAddress | ContractAddressMap)
         : Instance<ContractType> {
         return new MainnetImaInstance(
             this,
-            target
+            address
         );
     }
 }

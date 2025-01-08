@@ -73,15 +73,15 @@ export abstract class Instance<ContractType> {
 
     constructor (
         project: Project<ContractType>,
-        addressOrAddressContainer: MainContractAddress | ContractAddressMap
+        address: MainContractAddress | ContractAddressMap
     ) {
         this.project = project;
-        if (typeof addressOrAddressContainer === "string") {
+        if (typeof address === "string") {
             this.addressContainer = {
-                [this.project.mainContractName]: addressOrAddressContainer
+                [this.project.mainContractName]: address
             };
         } else {
-            this.addressContainer = addressOrAddressContainer;
+            this.addressContainer = address;
         }
     }
 

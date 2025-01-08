@@ -20,5 +20,5 @@ export interface Adapter<ContractType> {
 
     getChainId(): Promise<bigint>;
 
-    isAddress(value: string): boolean;
+    isAddress(value: unknown): boolean;
 }
