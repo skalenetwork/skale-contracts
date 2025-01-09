@@ -1,6 +1,6 @@
 {
   "devDependencies": {
-    "cspell": "^8.16.0"
+    "cspell": "^8.17.1"
   },
   "name": "development",
   "packageManager": "yarn@3.5.1",
@@ -9,6 +9,7 @@
     "typescript-base-check": "yarn ./typescript/base fullCheck",
     "ethers5-check": "yarn ./typescript/ethers-v5 fullCheck",
     "ethers6-check": "yarn ./typescript/ethers-v6 fullCheck",
+    "viem-check": "yarn ./typescript/viem fullCheck",
     "typescript-check": "yarn typescript-base-check && yarn ethers5-check && yarn ethers6-check",
     "fullCheck": "yarn cspell && yarn typescript-check && yarn python-check",
     "cspell": "npx cspell \"**/*\"",

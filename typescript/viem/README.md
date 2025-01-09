@@ -1,19 +1,20 @@
-# SKALE Contracts
+# SKALE Contracts Viem
 
 ## Description
 
-The library simplifies development of dApps that interact with smart contracts in SKALE infrastructure.
+The library simplifies development of dApps that interact with smart contracts in SKALE infrastructure using viem.
 
 ## Features
 
-- resolving of addresses of SKALE contracts on different networks
-- providing up to date ABI for SKALE contracts (they may change over time due to upgradeable nature of some contracts)
-- automatic creation of `Contract` objects.
+- Resolving of addresses of SKALE contracts on different networks
+- Providing up to date ABI for SKALE contracts (they may change over time due to upgradeable nature of some contracts)
+- Automatic creation of Contract objects using viem
+- Full TypeScript support with viem types
 
 ## Installation
 
 ```bash
-yarn add @skalenetwork/skale-contracts-ethers-v6
+yarn add @skalenetwork/skale-contracts-viem
 ```
 
 ## Glossary
@@ -53,13 +54,18 @@ When target instance is received it can be queried for information (address, ABI
 ### Example
 
 ```typescript
-import { skaleContracts } from "@skalenetwork/skale-contracts-ethers-v6";
-import { ethers } from "ethers";
+import { skaleContracts } from "@skalenetwork/skale-contracts-viem";
+import { createPublicClient, http } from "viem";
+import { mainnet } from "viem/chains";
 
-const provider = new ethers.providers.JsonRpcProvider(endpoint);
-const network = await skaleContracts.getNetworkByProvider(provider);
+const client = createPublicClient({
+  chain: mainnet,
+  transport: http(),
+});
+
+const network = await skaleContracts.getNetworkByProvider(client);
 const project = network.getProject("skale-manager");
 const instance = await project.getInstance("production");
-const distributor = await instance.getContract("Distributor");
-const fee = await distributor.getEarnedFeeAmount();
+const nodes = await instance.getContract("Nodes");
+const numberOfActiveNodes = await nodes.read.numberOfActiveNodes();
 ```

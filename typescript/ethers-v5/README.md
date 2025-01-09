@@ -48,7 +48,7 @@ The library provides master object `skaleContracts`.
 
 This object is used to provide desired [network](#network), [project](#project) and [instance](#instance) using it's [alias](#alias) or direct address.
 
-When target instance is received it can be queried for information  (address, ABI or Contract object) about a particular contract by it's name.
+When target instance is received it can be queried for information (address, ABI or Contract object) about a particular contract by it's name.
 
 ### Example
 
@@ -56,10 +56,10 @@ When target instance is received it can be queried for information  (address, AB
 import { skaleContracts } from "@skalenetwork/skale-contracts-ethers-v5";
 import { ethers } from "ethers";
 
-const provider = new ethers.providers.JsonRpcProvider(endpoint)
+const provider = new ethers.providers.JsonRpcProvider(endpoint);
 const network = await skaleContracts.getNetworkByProvider(provider);
-const project = await network.getProject("skale-manager");
+const project = network.getProject("skale-manager");
 const instance = await project.getInstance("production");
 const distributor = await instance.getContract("Distributor");
-const fee = await distributor.getEarnedFeeAmount()
+const fee = await distributor.getEarnedFeeAmount();
 ```
