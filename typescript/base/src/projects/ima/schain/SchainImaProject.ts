@@ -16,12 +16,14 @@ export class SchainImaProject<ContractType> extends
         return `${this.metadata.name}-${version}-abi.json`;
     }
 
-    getInstance (address: string | MainContractAddress | ContractAddressMap) {
-        if (address === PREDEPLOYED_ALIAS) {
+    getInstance (
+        aliasOrAddress: string | MainContractAddress | ContractAddressMap
+    ) {
+        if (aliasOrAddress === PREDEPLOYED_ALIAS) {
             return this.createInstance(SchainImaInstance.PREDEPLOYED.
                 get("MessageProxyForSchain")! as ContractAddress);
         }
-        return super.getInstance(address);
+        return super.getInstance(aliasOrAddress);
     }
 
     createInstance (address: MainContractAddress | ContractAddressMap)
