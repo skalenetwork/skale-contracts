@@ -21,7 +21,7 @@ export class SchainImaProject<ContractType> extends
     ) {
         if (aliasOrAddress === PREDEPLOYED_ALIAS) {
             return this.createInstance(SchainImaInstance.PREDEPLOYED.
-                get("MessageProxyForSchain")! as ContractAddress);
+                get(this.mainContractName)! as ContractAddress);
         }
         return super.getInstance(aliasOrAddress);
     }
