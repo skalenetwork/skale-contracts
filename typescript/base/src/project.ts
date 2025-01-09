@@ -53,9 +53,7 @@ export abstract class Project<ContractType> {
             this.network.adapter.isAddress(target) ||
             this.isContractAddressMap(target)
         ) {
-            return this.getInstanceByAddress(
-                target as MainContractAddress | ContractAddressMap
-            );
+            return this.getInstanceByAddress(target);
         }
         return this.getInstanceByAlias(target);
     }

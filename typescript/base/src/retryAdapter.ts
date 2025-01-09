@@ -1,5 +1,5 @@
+import { Abi, ContractAddress } from "./domain/types";
 import { Adapter, ContractData, FunctionCall } from "./adapter";
-import { Abi } from "./domain/types";
 
 const defaultRetryCount = 100;
 const maxDelayMs = 5000;
@@ -47,7 +47,7 @@ export class RetryAdapter<ContractType> implements Adapter<ContractType> {
         );
     }
 
-    isAddress (value: string): boolean {
+    isAddress (value: string): value is ContractAddress {
         return this.adapter.isAddress(value);
     }
 
