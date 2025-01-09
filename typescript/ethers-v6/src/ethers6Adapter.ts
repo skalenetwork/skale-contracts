@@ -5,6 +5,9 @@ import {
     FunctionCall
 } from "@skalenetwork/skale-contracts";
 import { BaseContract, Provider, ethers } from "ethers";
+import {
+    ContractAddress
+} from "@skalenetwork/skale-contracts/lib/domain/types";
 
 
 export class Ethers6Adapter implements Adapter<BaseContract> {
@@ -46,7 +49,7 @@ export class Ethers6Adapter implements Adapter<BaseContract> {
     }
 
     // eslint-disable-next-line class-methods-use-this
-    isAddress (value: string): boolean {
+    isAddress (value: string): value is ContractAddress {
         return ethers.isAddress(value);
     }
 }
