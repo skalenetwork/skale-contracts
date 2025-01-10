@@ -12,7 +12,7 @@ export class PaymasterInstance<ContractType> extends
             "Paymaster",
             "FastForwardPaymaster"
         ].includes(name)) {
-            return this.address;
+            return this.mainContractAddress;
         }
         if (name === "PaymasterAccessManager") {
             return await this.callPaymaster(
@@ -29,7 +29,7 @@ export class PaymasterInstance<ContractType> extends
         return this.project.network.adapter.makeCall(
             {
                 "abi": await this.getContractAbi("Paymaster"),
-                "address": this.address
+                "address": this.mainContractAddress
             },
             {
                 args,

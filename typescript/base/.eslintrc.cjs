@@ -36,6 +36,17 @@ module.exports = {
         "padded-blocks": [
             "error",
             "never"
+        ],
+        "function-paren-newline": [
+            "error",
+            "multiline-arguments"
+        ],
+        "no-extra-parens": [
+            "error",
+            "all",
+            {
+                "nestedBinaryExpressions": false
+            }
         ]
     }
 };

@@ -1,3 +1,4 @@
+import { ContractAddress } from "../../../domain/types";
 import { ContractData } from "../../../adapter";
 import { ImaInstance } from "../ImaInstance";
 
@@ -29,9 +30,9 @@ export class MainnetImaInstance<ContractType> extends
     ImaInstance<ContractType> {
     private contractManager: ContractData | undefined;
 
-    async getContractAddress (name: string): Promise<string> {
+    async getContractAddress (name: string): Promise<ContractAddress> {
         if (name === "MessageProxyForMainnet") {
-            return Promise.resolve(this.address);
+            return Promise.resolve(this.mainContractAddress);
         } else if (name === "CommunityPool") {
             return this.project.network.adapter.makeCall(
                 {
@@ -43,7 +44,7 @@ export class MainnetImaInstance<ContractType> extends
                     "args": [],
                     "functionName": "communityPool"
                 }
-            ) as Promise<string>;
+            ) as Promise<ContractAddress>;
         }
         return this.project.network.adapter.makeCall(
             await this.getContractManager(),
@@ -51,7 +52,7 @@ export class MainnetImaInstance<ContractType> extends
                 "args": [name],
                 "functionName": "getContract"
             }
-        ) as Promise<string>;
+        ) as Promise<ContractAddress>;
     }
 
     // Private
@@ -63,7 +64,7 @@ export class MainnetImaInstance<ContractType> extends
                     {
                         "abi":
                             await this.getContractAbi("MessageProxyForMainnet"),
-                        "address": this.address
+                        "address": this.mainContractAddress
                     },
                     {
                         "args": [],

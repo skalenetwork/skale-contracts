@@ -33,7 +33,7 @@ export abstract class ImaInstance<ContractType> extends
         return this.project.network.adapter.makeCall(
             {
                 "abi": messageProxyAbi,
-                "address": this.address
+                "address": this.mainContractAddress
             },
             {
                 args,

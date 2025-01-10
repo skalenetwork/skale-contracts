@@ -1,3 +1,4 @@
+import { ContractAddress } from "../../../domain/types";
 import { ImaInstance } from "../ImaInstance";
 
 
@@ -46,13 +47,13 @@ export class SchainImaInstance<ContractType> extends
         ]
     ]);
 
-    getContractAddress (name: string): Promise<string> {
-        if (name === "MessageProxyForSchain") {
-            return Promise.resolve(this.address);
+    getContractAddress (name: string): Promise<ContractAddress> {
+        if (name in this.addressContainer) {
+            return Promise.resolve(this.addressContainer[name]);
         }
         if (SchainImaInstance.PREDEPLOYED.has(name)) {
             return Promise.resolve(SchainImaInstance.PREDEPLOYED.
-                get(name) as string);
+                get(name) as ContractAddress);
         }
         throw new Error(`Can't get address of ${name} contract`);
     }

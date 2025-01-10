@@ -1,6 +1,10 @@
 import * as semver from "semver";
+import {
+    ContractAddressMap,
+    MainContractAddress,
+    SkaleABIFile
+} from "./domain/types";
 import { Instance, InstanceData } from "./instance";
-import { MainContractAddress, SkaleABIFile } from "./domain/types";
 import axios, { HttpStatusCode } from "axios";
 import { InstanceNotFound } from "./domain/errors/instance/instanceNotFound";
 import { ListedNetwork } from "./listedNetwork";
@@ -34,6 +38,8 @@ export abstract class Project<ContractType> {
 
     abstract githubRepo: string;
 
+    abstract mainContractName: string;
+
     constructor (
         network: Network<ContractType>,
         metadata: ProjectMetadata
@@ -42,11 +48,14 @@ export abstract class Project<ContractType> {
         this.metadata = metadata;
     }
 
-    getInstance (aliasOrAddress: string) {
-        if (this.network.adapter.isAddress(aliasOrAddress)) {
-            return this.getInstanceByAddress(aliasOrAddress);
+    getInstance (target: string | MainContractAddress | ContractAddressMap) {
+        if (
+            this.network.adapter.isAddress(target) ||
+            this.isContractAddressMap(target)
+        ) {
+            return this.getInstanceByAddress(target);
         }
-        return this.getInstanceByAlias(aliasOrAddress);
+        return this.getInstanceByAlias(target);
     }
 
     async downloadAbiFile (version: string) {
@@ -89,12 +98,32 @@ export abstract class Project<ContractType> {
         throw new NetworkNotFoundError("Network is unknown");
     }
 
-    abstract createInstance(address: MainContractAddress):
+    abstract createInstance(address: MainContractAddress | ContractAddressMap):
         Instance<ContractType>;
+
+    public isContractAddressMap = (
+        obj: unknown
+    ): obj is ContractAddressMap => {
+        if (typeof obj !== "object" || obj === null) {
+            return false;
+        }
+
+        return Object.entries(obj).every(
+            ([
+                key,
+                value
+            ]) => typeof key === "string" &&
+                    typeof value === "string" &&
+                    this.network.adapter.isAddress(value)
+
+        );
+    };
 
     // Private
 
-    private getInstanceByAddress (address: string) {
+    private getInstanceByAddress (
+        address: MainContractAddress | ContractAddressMap
+    ) {
         return this.createInstance(address);
     }
 

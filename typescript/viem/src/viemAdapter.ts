@@ -47,7 +47,7 @@ export class ViemAdapter implements Adapter<ViemContract> {
     }
 
     // eslint-disable-next-line class-methods-use-this
-    isAddress(value: string): boolean {
+    isAddress(value: string): value is Address {
         return isAddress(value);
     }
 }

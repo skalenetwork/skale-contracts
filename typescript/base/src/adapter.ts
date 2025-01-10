@@ -1,4 +1,4 @@
-import { Abi } from "./domain/types";
+import { Abi, ContractAddress } from "./domain/types";
 
 export type ContractData = {
     address: string;
@@ -20,5 +20,5 @@ export interface Adapter<ContractType> {
 
     getChainId(): Promise<bigint>;
 
-    isAddress(value: string): boolean;
+    isAddress(value: unknown): value is ContractAddress;
 }

@@ -1,6 +1,7 @@
 import * as semver from "semver";
 import {
     ContractAddress,
+    ContractAddressMap,
     ContractName,
     MainContractAddress,
     SkaleABIFile
@@ -64,7 +65,7 @@ const processPep440 = (pyVersion: Pep440Version) => {
 export abstract class Instance<ContractType> {
     protected project: Project<ContractType>;
 
-    address: MainContractAddress;
+    addressContainer: ContractAddressMap;
 
     abi: SkaleABIFile | undefined;
 
@@ -72,10 +73,16 @@ export abstract class Instance<ContractType> {
 
     constructor (
         project: Project<ContractType>,
-        address: MainContractAddress
+        address: MainContractAddress | ContractAddressMap
     ) {
         this.project = project;
-        this.address = address;
+        if (this.project.isContractAddressMap(address)) {
+            this.addressContainer = address;
+        } else {
+            this.addressContainer = {
+                [this.project.mainContractName]: address
+            };
+        }
     }
 
     get adapter () {
@@ -103,7 +110,7 @@ export abstract class Instance<ContractType> {
         return this.project.network.adapter.makeCall(
             {
                 "abi": defaultVersionAbi,
-                "address": this.address
+                "address": this.mainContractAddress
             },
             {
                 "args": [],
@@ -115,6 +122,10 @@ export abstract class Instance<ContractType> {
     protected async getContractAbi (contractName: string) {
         const abi = await this.getAbi();
         return abi[contractName];
+    }
+
+    get mainContractAddress () {
+        return this.addressContainer[this.project.mainContractName];
     }
 
     // Private

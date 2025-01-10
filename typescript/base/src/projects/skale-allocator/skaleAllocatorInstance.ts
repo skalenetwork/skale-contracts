@@ -12,7 +12,7 @@ export class SkaleAllocatorInstance<ContractType> extends
         args?: unknown[]
     ): Promise<ContractAddress> {
         if (name === "Allocator") {
-            return Promise.resolve(this.address);
+            return Promise.resolve(this.mainContractAddress);
         }
         if (name === "Escrow") {
             const firstArgument = 0;
