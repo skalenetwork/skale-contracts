@@ -53,6 +53,7 @@ jobs:
       env:
         BRANCH: ${{ env.BRANCH }}
         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        BASE_PACKAGE: "true"
 
     - name: Create Release
       uses: ncipollo/release-action@v1
@@ -168,7 +169,7 @@ jobs:
         tag: typescript-ethers-v6-${{ env.VERSION }}
         prerelease: ${{ env.PRERELEASE }}
         commit: ${{ github.sha }}
-  
+
   viem:
     runs-on: ubuntu-latest
 
