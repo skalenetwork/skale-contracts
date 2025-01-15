@@ -5,7 +5,7 @@ set -e
 cd "$(dirname "$0")/.."
 
 VERSION=$(jq -r .version base/package.json)
-USAGE_MSG='Usage: BRANCH={BRANCH} [CURRENT=true] calculate_version.sh'
+USAGE_MSG='Usage: BRANCH={BRANCH} [LAST_EXISTING=true] calculate_version.sh'
 
 if [ -z "$BRANCH" ]
 then
@@ -30,7 +30,7 @@ do
     TAG="typescript-$FULL_VERSION"
     if ! [[ $(git tag -l | grep "$TAG$") ]]
     then
-        if [ -z "$CURRENT" ]
+        if [ -z "$LAST_EXISTING" ]
         then
             echo "$FULL_VERSION" | tr / -
         else
