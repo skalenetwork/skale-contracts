@@ -36,5 +36,11 @@ echo "Using $VERSION as a new version"
 jq -c ".version = \"$VERSION\"" package.json > package.json.new
 mv package.json.new package.json
 
+# set reference to the base package
+if [ -z "$BASE_PACKAGE" ]; then
+    yarn remove @skalenetwork/skale-contracts
+    yarn add @skalenetwork/skale-contracts@$VERSION
+fi
+
 yarn config set npmAuthToken "$NODE_AUTH_TOKEN"
 yarn npm publish --access public $TAG
