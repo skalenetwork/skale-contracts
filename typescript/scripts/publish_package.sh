@@ -16,14 +16,10 @@ then
     exit 2
 fi
 
-CURRENT=""
-if [ -z "$BASE_PACKAGE" ]
-then
-    CURRENT=true
-fi
+[ -z "$BASE_PACKAGE" ] && LAST_EXISTING=true
 
 BRANCH=$(echo $BRANCH | tr [:upper:] [:lower:] | tr -d [:space:])
-VERSION=$(BRANCH=$BRANCH CURRENT=$CURRENT "../scripts/calculate_version.sh")
+VERSION=$(BRANCH=$BRANCH LAST_EXISTING=$LAST_EXISTING "../scripts/calculate_version.sh")
 
 TAG=""
 if ! [[ $BRANCH == 'stable' ]]
