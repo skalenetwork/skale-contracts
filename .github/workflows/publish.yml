@@ -97,7 +97,7 @@ jobs:
         export BRANCH=${GITHUB_REF##*/}
         echo "BRANCH=$BRANCH" >> $GITHUB_ENV
         echo "Branch $BRANCH"
-        export VERSION=$(CURRENT=true bash ../scripts/calculate_version.sh)
+        export VERSION=$(LAST_EXISTING=true bash ../scripts/calculate_version.sh)
         echo "VERSION=$VERSION" >> $GITHUB_ENV
         echo "Version $VERSION"
         ( test $BRANCH = "stable" && export PRERELEASE=false ) || export PRERELEASE=true
@@ -151,7 +151,7 @@ jobs:
         export BRANCH=${GITHUB_REF##*/}
         echo "BRANCH=$BRANCH" >> $GITHUB_ENV
         echo "Branch $BRANCH"
-        export VERSION=$(CURRENT=true bash ../scripts/calculate_version.sh)
+        export VERSION=$(LAST_EXISTING=true bash ../scripts/calculate_version.sh)
         echo "VERSION=$VERSION" >> $GITHUB_ENV
         echo "Version $VERSION"
         ( test $BRANCH = "stable" && export PRERELEASE=false ) || export PRERELEASE=true
@@ -205,7 +205,7 @@ jobs:
         export BRANCH=${GITHUB_REF##*/}
         echo "BRANCH=$BRANCH" >> $GITHUB_ENV
         echo "Branch $BRANCH"
-        export VERSION=$(CURRENT=true bash ../scripts/calculate_version.sh)
+        export VERSION=$(LAST_EXISTING=true bash ../scripts/calculate_version.sh)
         echo "VERSION=$VERSION" >> $GITHUB_ENV
         echo "Version $VERSION"
         ( test $BRANCH = "stable" && export PRERELEASE=false ) || export PRERELEASE=true
