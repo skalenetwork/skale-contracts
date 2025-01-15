@@ -2,7 +2,6 @@
 
 set -e
 
-WORKING_DIR=$(pwd)
 USAGE_MSG='Usage: BRANCH=[BRANCH] NODE_AUTH_TOKEN=[TOKEN] publish_package.sh'
 if [ -z "$BRANCH" ]
 then
@@ -23,7 +22,6 @@ then
     CURRENT=true
 fi
 
-cd "$(dirname "$0")/../base"
 BRANCH=$(echo $BRANCH | tr [:upper:] [:lower:] | tr -d [:space:])
 VERSION=$(BRANCH=$BRANCH CURRENT=$CURRENT "../scripts/calculate_version.sh")
 
@@ -46,7 +44,6 @@ mv package.json.new package.json
 
 # set reference to the base package
 if [ -z "$BASE_PACKAGE" ]; then
-    cd $WORKING_DIR
     yarn remove @skalenetwork/skale-contracts
     yarn add @skalenetwork/skale-contracts@$VERSION
 fi
