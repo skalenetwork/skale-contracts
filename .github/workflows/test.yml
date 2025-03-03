@@ -19,6 +19,7 @@ jobs:
       with:
         node-version: ${{ env.NODE_VERSION }}
         cache: 'yarn'
+      run: mkdir -p ~/.cache/yarn
 
     - name: Install dev tools
       run: yarn
@@ -45,6 +46,7 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'yarn'
+      run: mkdir -p ~/.cache/yarn
 
     - name: Install project
       run: yarn
@@ -71,6 +73,7 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'yarn'
+      run: mkdir -p ~/.cache/yarn
 
     - name: Install base project
       run: |
@@ -102,6 +105,7 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'yarn'
+      run: mkdir -p ~/.cache/yarn
 
     - name: Install base project
       run: |
@@ -113,7 +117,7 @@ jobs:
 
     - name: Run static checks
       run: yarn fullCheck
-  
+
   viem:
     runs-on: ubuntu-latest
 
@@ -133,6 +137,7 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'yarn'
+      run: mkdir -p ~/.cache/yarn
 
     - name: Install base project
       run: |
