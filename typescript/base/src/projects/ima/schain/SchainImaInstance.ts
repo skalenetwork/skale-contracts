@@ -44,6 +44,10 @@ export class SchainImaInstance<ContractType> extends
         [
             "TokenManagerLinker",
             "0xD2aAA00800000000000000000000000000000000"
+        ],
+        [
+            "EthErc20",
+            "0xD2Aaa00700000000000000000000000000000000"
         ]
     ]);
 
