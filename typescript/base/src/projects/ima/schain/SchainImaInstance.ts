@@ -4,7 +4,6 @@ import { ImaInstance } from "../ImaInstance";
 
 export class SchainImaInstance<ContractType> extends
     ImaInstance<ContractType> {
-
     static PREDEPLOYED = new Map<string, string>([
         [
             "CommunityLocker",
