@@ -19,7 +19,6 @@ jobs:
       with:
         node-version: ${{ env.NODE_VERSION }}
         cache: 'yarn'
-      run: mkdir -p ~/.cache/yarn
 
     - name: Ensure Yarn cache folder exists
       run: mkdir -p "$(yarn config get cacheFolder)"
@@ -49,7 +48,6 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'yarn'
-      run: mkdir -p ~/.cache/yarn
 
     - name: Ensure Yarn cache folder exists
       run: mkdir -p "$(yarn config get cacheFolder)"
@@ -79,7 +77,6 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'yarn'
-      run: mkdir -p ~/.cache/yarn
 
     - name: Ensure Yarn cache folder exists
       run: mkdir -p "$(yarn config get cacheFolder)"
@@ -114,7 +111,6 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'yarn'
-      run: mkdir -p ~/.cache/yarn
 
     - name: Ensure Yarn cache folder exists
       run: mkdir -p "$(yarn config get cacheFolder)"
@@ -149,7 +145,6 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'yarn'
-      run: mkdir -p ~/.cache/yarn
 
     - name: Ensure Yarn cache folder exists
       run: mkdir -p "$(yarn config get cacheFolder)"
