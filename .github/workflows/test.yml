@@ -20,6 +20,9 @@ jobs:
         node-version: ${{ env.NODE_VERSION }}
         cache: 'yarn'
 
+    - name: Ensure Yarn cache folder exists
+      run: mkdir -p "$(yarn config get cacheFolder)"
+
     - name: Install dev tools
       run: yarn
 
@@ -46,6 +49,9 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'yarn'
 
+    - name: Ensure Yarn cache folder exists
+      run: mkdir -p "$(yarn config get cacheFolder)"
+
     - name: Install project
       run: yarn
 
@@ -71,6 +77,9 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'yarn'
+
+    - name: Ensure Yarn cache folder exists
+      run: mkdir -p "$(yarn config get cacheFolder)"
 
     - name: Install base project
       run: |
@@ -103,6 +112,9 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'yarn'
 
+    - name: Ensure Yarn cache folder exists
+      run: mkdir -p "$(yarn config get cacheFolder)"
+
     - name: Install base project
       run: |
         yarn ../base
@@ -113,7 +125,7 @@ jobs:
 
     - name: Run static checks
       run: yarn fullCheck
-  
+
   viem:
     runs-on: ubuntu-latest
 
@@ -133,6 +145,9 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'yarn'
+
+    - name: Ensure Yarn cache folder exists
+      run: mkdir -p "$(yarn config get cacheFolder)"
 
     - name: Install base project
       run: |

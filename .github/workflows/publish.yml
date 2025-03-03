@@ -31,6 +31,9 @@ jobs:
         node-version: ${{ env.NODE_VERSION }}
         cache: 'yarn'
 
+    - name: Ensure Yarn cache folder exists
+      run: mkdir -p "$(yarn config get cacheFolder)"
+
     - name: Install project
       run: yarn
 
@@ -80,6 +83,9 @@ jobs:
       with:
         node-version: ${{ env.NODE_VERSION }}
         cache: 'yarn'
+
+    - name: Ensure Yarn cache folder exists
+      run: mkdir -p "$(yarn config get cacheFolder)"
 
     - name: Install base project
       run: |
@@ -135,6 +141,9 @@ jobs:
         node-version: ${{ env.NODE_VERSION }}
         cache: 'yarn'
 
+    - name: Ensure Yarn cache folder exists
+      run: mkdir -p "$(yarn config get cacheFolder)"
+
     - name: Install base project
       run: |
         yarn ../base
@@ -188,6 +197,9 @@ jobs:
       with:
         node-version: ${{ env.NODE_VERSION }}
         cache: 'yarn'
+
+    - name: Ensure Yarn cache folder exists
+      run: mkdir -p "$(yarn config get cacheFolder)"
 
     - name: Install base project
       run: |
