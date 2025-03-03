@@ -49,6 +49,9 @@ jobs:
     - name: Install project
       run: yarn
 
+    - name: Ensure Yarn cache folder exists
+      run: mkdir -p "$(yarn config get cacheFolder)"
+
     - name: Run static checks
       run: yarn fullCheck
 
@@ -79,6 +82,9 @@ jobs:
 
     - name: Install project
       run: yarn
+
+    - name: Ensure Yarn cache folder exists
+      run: mkdir -p "$(yarn config get cacheFolder)"
 
     - name: Run static checks
       run: yarn fullCheck
@@ -111,9 +117,12 @@ jobs:
     - name: Install project
       run: yarn
 
+    - name: Ensure Yarn cache folder exists
+      run: mkdir -p "$(yarn config get cacheFolder)"
+
     - name: Run static checks
       run: yarn fullCheck
-  
+
   viem:
     runs-on: ubuntu-latest
 
@@ -141,6 +150,9 @@ jobs:
 
     - name: Install project
       run: yarn
+
+    - name: Ensure Yarn cache folder exists
+      run: mkdir -p "$(yarn config get cacheFolder)"
 
     - name: Run static checks
       run: yarn fullCheck
