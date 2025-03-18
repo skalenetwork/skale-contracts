@@ -2,6 +2,8 @@ import { METADATA_FILENAME, REPOSITORY_URL } from "./domain/constants";
 import {
     MetadataIsNotDownloaded
 } from "./domain/errors/metadata/metadataIsNotDownloaded";
+import { SkaleProjectName } from "./project";
+
 import axios from "axios";
 
 
@@ -12,7 +14,7 @@ export type NetworkMetadata = {
 }
 
 export type ProjectMetadata = {
-    name: string;
+    name: SkaleProjectName;
     path: string;
 }
 

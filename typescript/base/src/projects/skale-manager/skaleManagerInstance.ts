@@ -5,6 +5,38 @@ import {
 } from "../../domain/types";
 import { Instance } from "../../instance";
 
+export enum SkaleManagerContract {
+    CONTRACT_MANAGER = "ContractManager",
+
+    DELEGATION_CONTROLLER = "DelegationController",
+    DELEGATION_PERIOD_MANAGER = "DelegationPeriodManager",
+    DISTRIBUTOR = "Distributor",
+    PUNISHER = "Punisher",
+    SLASHING_TABLE = "SlashingTable",
+    TIME_HELPERS = "TimeHelpers",
+    TOKEN_STATE = "TokenState",
+    VALIDATOR_SERVICE = "ValidatorService",
+
+    CONSTANTS_HOLDER = "ConstantsHolder",
+    NODES = "Nodes",
+    NODE_ROTATION = "NodeRotation",
+    SCHAINS_INTERNAL = "SchainsInternal",
+    SCHAINS = "Schains",
+    DECRYPTION = "Decryption",
+    ECDH = "ECDH",
+    KEY_STORAGE = "KeyStorage",
+    SKALE_DKG = "SkaleDKG",
+    SKALE_VERIFIER = "SkaleVerifier",
+    SKALE_MANAGER = "SkaleManager",
+    BOUNTY = "Bounty",
+    BOUNTY_V2 = "BountyV2",
+    WALLETS = "Wallets",
+    SYNC_MANAGER = "SyncManager",
+    PAYMASTER_CONTROLLER = "PaymasterController",
+    TIME_HELPERS_WITH_DEBUG = "TimeHelpersWithDebug",
+    SKALE_TOKEN = "SkaleToken"
+}
+export type SkaleManagerContractName = `${SkaleManagerContract}`;
 
 const skaleManagerAbi = [
     {
@@ -36,6 +68,12 @@ const skaleManagerAbi = [
     }
 ];
 
+
+const contractExists = (
+    name: SkaleManagerContractName
+) => Object.values(SkaleManagerContract).includes(name as SkaleManagerContract);
+
+
 export class SkaleManagerInstance<ContractType> extends
     Instance<ContractType> {
     customNames = new Map<string, string>([
@@ -56,7 +94,14 @@ export class SkaleManagerInstance<ContractType> extends
         ) as string;
     }
 
-    async getContractAddress (name: ContractName): Promise<ContractAddress> {
+    async getContractAddress (
+        name: SkaleManagerContractName
+    ): Promise<ContractAddress> {
+        if (!contractExists(name)) {
+            throw new Error(
+                `Contract name ${name} does not exist in skale-manager`
+            );
+        }
         const contractManagerAbi =
                 await this.getContractAbi("ContractManager");
         const contractManagerAddress = await this.callSkaleManager(

@@ -3,11 +3,13 @@
 from __future__ import annotations
 from abc import ABC, abstractmethod
 import json
-from typing import TYPE_CHECKING, Optional, cast
+from typing import TYPE_CHECKING, Generic, Optional, cast
 from attr import dataclass
 from eth_typing import ChecksumAddress
 from parver import Version as PyVersion
 from semver.version import Version as SemVersion
+
+from .types import ContractName
 
 
 if TYPE_CHECKING:
@@ -40,9 +42,11 @@ class InstanceData:
         return cls(data=json.loads(data))
 
 
-class Instance(ABC):
+class Instance(Generic[ContractName], ABC):
     """Represents deployed instance of a smart contracts project"""
-    def __init__(self, project: Project, address: Address) -> None:
+    def __init__(
+            self, project: Project[ContractName], address: Address) -> None:
+
         self._project = project
         self._version: Optional[str] = None
         self._abi: Optional[SkaleAbi] = None
@@ -90,14 +94,14 @@ class Instance(ABC):
     @abstractmethod
     def get_contract_address(
         self,
-        name: str,
+        name: ContractName,
         *args: str | Address | ChecksumAddress
     ) -> Address:
         """Get address of the contract by it's name"""
 
     def get_contract(
             self,
-            name: str,
+            name: ContractName,
             *args: str | Address | ChecksumAddress
     ) -> Contract:
         """Get Contract object of the contract by it's name"""
