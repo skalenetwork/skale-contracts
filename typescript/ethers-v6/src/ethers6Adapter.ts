@@ -2,54 +2,51 @@ import {
     Abi,
     Adapter,
     ContractData,
-    FunctionCall
+    FunctionCall,
 } from "@skalenetwork/skale-contracts";
 import { BaseContract, Provider, ethers } from "ethers";
-import {
-    ContractAddress
-} from "@skalenetwork/skale-contracts/lib/domain/types";
-
+import { ContractAddress } from "@skalenetwork/skale-contracts/lib/domain/types";
 
 export class Ethers6Adapter implements Adapter<BaseContract> {
     provider: Provider;
 
-    constructor (provider: Provider) {
+    constructor(provider: Provider) {
         this.provider = provider;
     }
 
-    createContract (address: string, abi: Abi) {
+    createContract(address: string, abi: Abi) {
         return new ethers.Contract(
             address,
             new ethers.Interface(abi),
-            this.provider
+            this.provider,
         ) as BaseContract;
     }
 
-    async makeCall (
+    async makeCall(
         contract: ContractData,
-        targetFunction: FunctionCall
+        targetFunction: FunctionCall,
     ): Promise<unknown> {
         const contractInterface = new ethers.Interface(contract.abi);
         const [result] = contractInterface.decodeFunctionResult(
             targetFunction.functionName,
             await this.provider.call({
-                "data": contractInterface.encodeFunctionData(
+                data: contractInterface.encodeFunctionData(
                     targetFunction.functionName,
-                    targetFunction.args
+                    targetFunction.args,
                 ),
-                "to": contract.address
-            })
+                to: contract.address,
+            }),
         );
         return result;
     }
 
-    async getChainId (): Promise<bigint> {
+    async getChainId(): Promise<bigint> {
         const { chainId } = await this.provider.getNetwork();
         return BigInt(chainId);
     }
 
     // eslint-disable-next-line class-methods-use-this
-    isAddress (value: string): value is ContractAddress {
+    isAddress(value: string): value is ContractAddress {
         return ethers.isAddress(value);
     }
 }

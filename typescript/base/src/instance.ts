@@ -4,54 +4,45 @@ import {
     ContractAddressMap,
     ContractName,
     MainContractAddress,
-    SkaleABIFile
+    SkaleABIFile,
 } from "./domain/types";
 import { parse, stringify } from "@renovatebot/pep440/lib/version";
 import { Pep440Version } from "@renovatebot/pep440";
 import { Project } from "./project";
 
 export type InstanceData = {
-    [contractName: string]: MainContractAddress
-}
+    [contractName: string]: MainContractAddress;
+};
 
 const defaultVersionAbi = [
     {
-        "constant": true,
-        "inputs": [],
-        "name": "version",
-        "outputs": [
+        constant: true,
+        inputs: [],
+        name: "version",
+        outputs: [
             {
-                "name": "",
-                "type": "string"
-            }
+                name: "",
+                type: "string",
+            },
         ],
-        "payable": false,
-        "stateMutability": "view",
-        "type": "function"
-    }
+        payable: false,
+        stateMutability: "view",
+        type: "function",
+    },
 ];
 
 const processSemver = (semVersion: semver.SemVer) => {
     if (!semVersion.prerelease.length) {
         const defaultPrerelease = 0;
-        semVersion.prerelease = [
-            "stable",
-            defaultPrerelease
-        ];
+        semVersion.prerelease = ["stable", defaultPrerelease];
     }
     return semVersion.format();
 };
 
 const processPep440 = (pyVersion: Pep440Version) => {
     const replaceMap = new Map<string, string>([
-        [
-            "a",
-            "develop"
-        ],
-        [
-            "b",
-            "beta"
-        ]
+        ["a", "develop"],
+        ["b", "beta"],
     ]);
     pyVersion.pre = pyVersion.pre.map((value: string | number) => {
         if (typeof value === "string" && replaceMap.has(value)) {
@@ -71,66 +62,63 @@ export abstract class Instance<ContractType> {
 
     version: string | undefined;
 
-    constructor (
+    constructor(
         project: Project<ContractType>,
-        address: MainContractAddress | ContractAddressMap
+        address: MainContractAddress | ContractAddressMap,
     ) {
         this.project = project;
         if (this.project.isContractAddressMap(address)) {
             this.addressContainer = address;
         } else {
             this.addressContainer = {
-                [this.project.mainContractName]: address
+                [this.project.mainContractName]: address,
             };
         }
     }
 
-    get adapter () {
+    get adapter() {
         return this.project.network.adapter;
     }
 
     abstract getContractAddress(
         name: ContractName,
-        args?: unknown[]
+        args?: unknown[],
     ): Promise<ContractAddress>;
 
-    async getContract (name: ContractName, args?: unknown[]) {
+    async getContract(name: ContractName, args?: unknown[]) {
         return this.adapter.createContract(
-            await this.getContractAddress(
-                name,
-                args
-            ),
-            await this.getContractAbi(name)
+            await this.getContractAddress(name, args),
+            await this.getContractAbi(name),
         );
     }
 
     // Protected
 
-    protected queryVersion () {
+    protected queryVersion() {
         return this.project.network.adapter.makeCall(
             {
-                "abi": defaultVersionAbi,
-                "address": this.mainContractAddress
+                abi: defaultVersionAbi,
+                address: this.mainContractAddress,
             },
             {
-                "args": [],
-                "functionName": "version"
-            }
+                args: [],
+                functionName: "version",
+            },
         ) as Promise<string>;
     }
 
-    protected async getContractAbi (contractName: string) {
+    protected async getContractAbi(contractName: string) {
         const abi = await this.getAbi();
         return abi[contractName];
     }
 
-    get mainContractAddress () {
+    get mainContractAddress() {
         return this.addressContainer[this.project.mainContractName];
     }
 
     // Private
 
-    private async getVersion () {
+    private async getVersion() {
         if (typeof this.version === "undefined") {
             const rawVersion = await this.queryVersion();
             const semVersion = semver.parse(rawVersion);
@@ -148,10 +136,11 @@ export abstract class Instance<ContractType> {
         return this.version;
     }
 
-    private async getAbi () {
+    private async getAbi() {
         if (typeof this.abi === "undefined") {
-            this.abi =
-                await this.project.downloadAbiFile(await this.getVersion());
+            this.abi = await this.project.downloadAbiFile(
+                await this.getVersion(),
+            );
         }
         return this.abi;
     }

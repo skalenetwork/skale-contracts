@@ -7,7 +7,6 @@ const minDelayMs = 10;
 const slowDownCoefficient = 2;
 const speedUpCoefficient = 1.5;
 
-
 export class RetryAdapter<ContractType> implements Adapter<ContractType> {
     private adapter;
 
@@ -17,43 +16,34 @@ export class RetryAdapter<ContractType> implements Adapter<ContractType> {
 
     private retries;
 
-    constructor (adapter: Adapter<ContractType>, retries = defaultRetryCount) {
+    constructor(adapter: Adapter<ContractType>, retries = defaultRetryCount) {
         this.adapter = adapter;
         this.retries = retries;
         this.previousCallTimestampMs = Date.now();
     }
 
-    createContract (address: string, abi: Abi): ContractType {
-        return this.adapter.createContract(
-            address,
-            abi
-        );
+    createContract(address: string, abi: Abi): ContractType {
+        return this.adapter.createContract(address, abi);
     }
 
-    makeCall (contract: ContractData, target: FunctionCall): Promise<unknown> {
+    makeCall(contract: ContractData, target: FunctionCall): Promise<unknown> {
         return this.retry(
-            this.adapter.makeCall(
-                contract,
-                target
-            ),
-            this.retries
+            this.adapter.makeCall(contract, target),
+            this.retries,
         );
     }
 
-    getChainId (): Promise<bigint> {
-        return this.retry(
-            this.adapter.getChainId(),
-            this.retries
-        );
+    getChainId(): Promise<bigint> {
+        return this.retry(this.adapter.getChainId(), this.retries);
     }
 
-    isAddress (value: string): value is ContractAddress {
+    isAddress(value: string): value is ContractAddress {
         return this.adapter.isAddress(value);
     }
 
-    private async retry<ReturnType> (
+    private async retry<ReturnType>(
         task: Promise<ReturnType>,
-        retriesLeft: number
+        retriesLeft: number,
     ): Promise<ReturnType> {
         await this.waitIfNeeded();
 
@@ -63,25 +53,22 @@ export class RetryAdapter<ContractType> implements Adapter<ContractType> {
             const result = await task;
             this.delayMs = Math.max(
                 this.delayMs / speedUpCoefficient,
-                minDelayMs
+                minDelayMs,
             );
             return result;
         } catch (exception) {
             if (retriesLeft) {
                 this.delayMs = Math.min(
                     this.delayMs * slowDownCoefficient,
-                    maxDelayMs
+                    maxDelayMs,
                 );
-                return this.retry(
-                    task,
-                    retriesLeft - oneRetry
-                );
+                return this.retry(task, retriesLeft - oneRetry);
             }
             throw exception;
         }
     }
 
-    private async waitIfNeeded () {
+    private async waitIfNeeded() {
         const now = Date.now();
         const timeFromPreviousCall = now - this.previousCallTimestampMs;
         this.previousCallTimestampMs = now;
@@ -91,14 +78,11 @@ export class RetryAdapter<ContractType> implements Adapter<ContractType> {
         }
     }
 
-    private static delay (delayMs: number) {
+    private static delay(delayMs: number) {
         return new Promise<void>((resolve) => {
-            setTimeout(
-                () => {
-                    resolve();
-                },
-                delayMs
-            );
+            setTimeout(() => {
+                resolve();
+            }, delayMs);
         });
     }
 }
