@@ -2,8 +2,8 @@ export type ContractAddress = `0x${string}`;
 export type ContractName = string;
 export type MainContractAddress = ContractAddress;
 export type ContractAddressMap = {
-    [contractName: ContractName]: ContractAddress
-}
+    [contractName: ContractName]: ContractAddress;
+};
 
 export interface AbiFragmentType {
     readonly name?: string;

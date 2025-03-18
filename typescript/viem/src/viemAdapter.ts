@@ -1,4 +1,9 @@
-import { Abi, Adapter, ContractData, FunctionCall } from '@skalenetwork/skale-contracts';
+import {
+    Abi,
+    Adapter,
+    ContractData,
+    FunctionCall,
+} from "@skalenetwork/skale-contracts";
 import {
     Account,
     Address,
@@ -9,10 +14,14 @@ import {
     Transport,
     Abi as ViemAbi,
     getContract as getContractViem,
-    isAddress
-} from 'viem';
+    isAddress,
+} from "viem";
 
-export type ViemContract = GetContractReturnType<ViemAbi, { public: PublicClient }, Address>;
+export type ViemContract = GetContractReturnType<
+    ViemAbi,
+    { public: PublicClient },
+    Address
+>;
 
 export class ViemAdapter implements Adapter<ViemContract> {
     client: PublicClient<Transport, Chain, Account, RpcSchema>;
@@ -25,19 +34,19 @@ export class ViemAdapter implements Adapter<ViemContract> {
         return getContractViem({
             abi: abi as ViemAbi,
             address: address as Address,
-            client: this.client
+            client: this.client,
         });
     }
 
     async makeCall(
         contract: ContractData,
-        targetFunction: FunctionCall
+        targetFunction: FunctionCall,
     ): Promise<unknown> {
         return await this.client.readContract({
             abi: contract.abi as ViemAbi,
             address: contract.address as Address,
             args: targetFunction.args,
-            functionName: targetFunction.functionName
+            functionName: targetFunction.functionName,
         });
     }
 

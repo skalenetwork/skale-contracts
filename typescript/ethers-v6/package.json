@@ -1,29 +1,34 @@
 {
-  "engines": {
-    "node": ">=16.0.0"
-  },
-  "devDependencies": {
-    "@skalenetwork/skale-contracts": "portal:../base/",
-    "@types/node": "^22.10.5",
-    "@typescript-eslint/eslint-plugin": "^8.25.0",
-    "@typescript-eslint/parser": "^8.22.0",
-    "eslint": "^8.45.0",
-    "typescript": "^5.7.3"
-  },
-  "files": [
-    "lib/**/*"
-  ],
-  "main": "lib/index.js",
-  "name": "@skalenetwork/skale-contracts-ethers-v6",
-  "packageManager": "yarn@3.5.1",
-  "scripts": {
-    "compile": "npx tsc",
-    "fullCheck": "yarn compile && yarn eslint",
-    "prepare": "yarn compile",
-    "eslint": "npx eslint ."
-  },
-  "types": "lib/index.d.ts",
-  "dependencies": {
-    "ethers": "^6.13.5"
-  }
+    "engines": {
+        "node": ">=16.0.0"
+    },
+    "devDependencies": {
+        "@skalenetwork/skale-contracts": "portal:../base/",
+        "@types/node": "^22.10.5",
+        "@typescript-eslint/eslint-plugin": "^8.25.0",
+        "@typescript-eslint/parser": "^8.22.0",
+        "eslint": "^8.45.0",
+        "eslint-config-prettier": "9.1.0",
+        "eslint-plugin-prettier": "5.1.3",
+        "prettier": "3.2.5",
+        "typescript": "^5.7.3"
+    },
+    "files": [
+        "lib/**/*"
+    ],
+    "main": "lib/index.js",
+    "name": "@skalenetwork/skale-contracts-ethers-v6",
+    "packageManager": "yarn@3.5.1",
+    "scripts": {
+        "compile": "npx tsc",
+        "fullCheck": "yarn compile && yarn prettier && yarn eslint",
+        "prepare": "yarn compile",
+        "eslint": "npx eslint .",
+        "prettier": "npx prettier --check .",
+        "fix-lint": "npx prettier --write . && npx eslint . --fix"
+    },
+    "types": "lib/index.d.ts",
+    "dependencies": {
+        "ethers": "^6.13.5"
+    }
 }

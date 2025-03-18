@@ -3,28 +3,24 @@ import { RetryAdapter } from "./retryAdapter";
 import { SkaleContracts } from "./skaleContracts";
 import { createProject } from "./projects/factory";
 
-
 export class Network<ContractType> {
     private skaleContracts: SkaleContracts<ContractType>;
 
     private networkAdapter: Adapter<ContractType>;
 
-    constructor (
+    constructor(
         skaleContracts: SkaleContracts<ContractType>,
-        adapter: Adapter<ContractType>
+        adapter: Adapter<ContractType>,
     ) {
         this.networkAdapter = new RetryAdapter(adapter);
         this.skaleContracts = skaleContracts;
     }
 
-    get adapter () {
+    get adapter() {
         return this.networkAdapter;
     }
 
-    getProject (name: string) {
-        return createProject<ContractType>(
-            this,
-            name
-        );
+    getProject(name: string) {
+        return createProject<ContractType>(this, name);
     }
 }
