@@ -1,26 +1,34 @@
 import {
-    ContractAddress,
-    ContractName
+    ContractAddress
 } from "../../domain/types";
 import { Instance } from "../../instance";
 
-
+export enum PaymasterContract {
+    PAYMASTER = "Paymaster",
+    PAYMASTER_ACCESS_MANAGER = "PaymasterAccessManager",
+    FAST_FORWARD_PAYMASTER = "FastForwardPaymaster"
+}
+export type PaymasterContractName = `${PaymasterContract}`;
 export class PaymasterInstance<ContractType> extends
     Instance<ContractType> {
-    async getContractAddress (name: ContractName): Promise<ContractAddress> {
+    async getContractAddress (
+        name: PaymasterContractName
+    ): Promise<ContractAddress> {
         if ([
-            "Paymaster",
-            "FastForwardPaymaster"
-        ].includes(name)) {
+            PaymasterContract.PAYMASTER,
+            PaymasterContract.FAST_FORWARD_PAYMASTER
+        ].includes(name as PaymasterContract)) {
             return this.mainContractAddress;
         }
-        if (name === "PaymasterAccessManager") {
+        if (name === PaymasterContract.PAYMASTER_ACCESS_MANAGER) {
             return await this.callPaymaster(
                 "authority",
                 []
             ) as ContractAddress;
         }
-        throw new Error(`Contract ${name} is not found`);
+        throw new Error(
+            `Contract name ${name} does not exist in paymaster`
+        );
     }
 
     // Private

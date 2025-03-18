@@ -1,17 +1,19 @@
 """Module for creation of Project objects"""
 
 from __future__ import annotations
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 import inspect
 
-from .project import Project
+from .types import ContractName
+
+from .project import Project, SkaleProject
 from . import projects
 
 if TYPE_CHECKING:
     from .network import Network
 
 
-projects_dict: dict[str, type[Project]] = {
+projects_dict: dict[str, type[Project[Any]]] = {
     project_type.name(): project_type
     for _, project_type
     in inspect.getmembers(projects, inspect.isclass)
@@ -19,7 +21,8 @@ projects_dict: dict[str, type[Project]] = {
 }
 
 
-def create_project(network: Network, name: str) -> Project:
+def create_project(
+        network: Network, name: SkaleProject) -> Project[ContractName]:
     """Create Project object based on it's name"""
     if name in projects_dict:
         return projects_dict[name](network)

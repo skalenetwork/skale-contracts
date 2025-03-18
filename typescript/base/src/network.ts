@@ -1,6 +1,7 @@
 import { Adapter } from "./adapter";
 import { RetryAdapter } from "./retryAdapter";
 import { SkaleContracts } from "./skaleContracts";
+import { SkaleProjectName } from "./project";
 import { createProject } from "./projects/factory";
 
 
@@ -21,7 +22,7 @@ export class Network<ContractType> {
         return this.networkAdapter;
     }
 
-    getProject (name: string) {
+    getProject (name: SkaleProjectName) {
         return createProject<ContractType>(
             this,
             name

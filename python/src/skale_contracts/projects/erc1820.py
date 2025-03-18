@@ -1,18 +1,24 @@
 """Module connects erc1820 project to the SKALE contracts library"""
 
 from __future__ import annotations
-from typing import TYPE_CHECKING
+from enum import StrEnum
+from typing import TYPE_CHECKING, cast
 from eth_utils.address import to_canonical_address
 
 from skale_contracts.constants import PREDEPLOYED_ALIAS
 from skale_contracts.instance import Instance
-from skale_contracts.project import Project
+from skale_contracts.project import Project, SkaleProject
 
 if TYPE_CHECKING:
     from eth_typing import Address, ChecksumAddress
 
 
-class Erc1820Instance(Instance):
+class Erc1820Contract(StrEnum):
+    """Defines contract names for erc1820 project"""
+    ERC1820_REGISTRY = "ERC1820Registry"
+
+
+class Erc1820Instance(Instance[Erc1820Contract]):
     """Represents instance of erc1820"""
 
     def _get_version(self) -> str:
@@ -26,7 +32,7 @@ class Erc1820Instance(Instance):
 
     def get_contract_address(
             self,
-            name: str,
+            name: Erc1820Contract,
             *args: str | Address | ChecksumAddress
     ) -> Address:
         if name in self.PREDEPLOYED:
@@ -34,25 +40,25 @@ class Erc1820Instance(Instance):
         raise RuntimeError(f"Can't get address of {name} contract")
 
 
-class Erc1820Project(Project):
+class Erc1820Project(Project[Erc1820Contract]):
     """Represents erc1820 project"""
 
     @staticmethod
-    def name() -> str:
-        return 'erc1820'
+    def name() -> SkaleProject:
+        return SkaleProject.ERC1820
 
-    def get_instance(self, alias_or_address: str) -> Instance:
+    def get_instance(self, alias_or_address: str) -> Erc1820Instance:
         if alias_or_address == PREDEPLOYED_ALIAS:
             return self.create_instance(
-                Erc1820Instance.PREDEPLOYED['Erc1820']
+                Erc1820Instance.PREDEPLOYED['ERC1820Registry']
             )
-        return super().get_instance(alias_or_address)
+        return cast(Erc1820Instance, super().get_instance(alias_or_address))
 
     @property
     def github_repo(self) -> str:
         return 'https://github.com/skalenetwork/erc1820-predeployed/'
 
-    def create_instance(self, address: Address) -> Instance:
+    def create_instance(self, address: Address) -> Erc1820Instance:
         return Erc1820Instance(self, address)
 
     def get_abi_filename(self, version: str) -> str:

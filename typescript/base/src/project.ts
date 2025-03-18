@@ -15,6 +15,17 @@ import {
 import { ProjectMetadata } from "./metadata";
 import { REPOSITORY_URL } from "./domain/constants";
 
+export enum SkaleProject {
+    MAINNET_IMA = "mainnet-ima",
+    SCHAIN_IMA = "schain-ima",
+    PAYMASTER = "paymaster",
+    SKALE_ALLOCATOR = "skale-allocator",
+    SKALE_MANAGER = "skale-manager",
+    MIRAGE_MANAGER = "mirage-manager"
+}
+export type SkaleProjectName = `${SkaleProject}`;
+
+
 const alternativeVersionsGenerator =
     function *alternativeVersionsGenerator (version: string) {
         const semVersion = semver.parse(version);
