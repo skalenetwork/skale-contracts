@@ -10,7 +10,8 @@
         "**/__pycache__/**",
         "**/requirements.txt",
         "**/*.egg-info/**",
-        "**/lib/**"
+        "**/lib/**",
+        "python/pytest.ini"
     ],
     "dictionaries": ["domain-terms", "libraries", "names", "skale-terms", "solidity"],
     "dictionaryDefinitions": [

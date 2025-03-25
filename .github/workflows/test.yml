@@ -203,7 +203,12 @@ jobs:
       run: pip3 install -e .
 
     - name: Install tools
-      run: pip3 install -r test/requirements.txt
+      run: pip3 install -r tests/requirements.txt
 
     - name: Run static checks
       run: scripts/full_check.sh
+
+    - name: Run tests
+      env:
+          ENDPOINT: ${{env.ENDPOINT}}
+      run: ENDPOINT="https://mainnet.infura.io/v3/${{ secrets.INFURA_API_TOKEN }}" pytest -v

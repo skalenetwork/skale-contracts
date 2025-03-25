@@ -29,7 +29,7 @@ class FilestorageInstance(Instance[FilestorageContract]):
             address: Address
     ) -> None:
         super().__init__(project, address)
-        self.initial_version = "1.0.1-beta.3"
+        self.initial_version = "1.0.1-stable.0"
 
     PREDEPLOYED: dict[str, Address] = {
         name: to_canonical_address(address) for name, address in {

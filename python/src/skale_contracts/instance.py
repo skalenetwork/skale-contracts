@@ -123,7 +123,8 @@ class Instance(Generic[ContractName], ABC):
         )
         try:
             return cast(str, contract.functions.version().call())
-        except BadResponseFormat:
+        # web3@v7 returns BadResponseFormat, while web3@v6 returns ValueError
+        except (BadResponseFormat, ValueError):
             if self.initial_version is not None:
                 return self.initial_version
             raise
