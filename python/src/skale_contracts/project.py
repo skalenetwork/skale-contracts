@@ -70,7 +70,7 @@ class Project(Generic[ContractName], ABC):
     @property
     def folder(self) -> str:
         """Folder name with instances json files"""
-        return self.name()
+        return self.name().value
 
     def get_instance(self, alias_or_address: str) -> Instance[ContractName]:
         """Create instance object based on alias or address"""
