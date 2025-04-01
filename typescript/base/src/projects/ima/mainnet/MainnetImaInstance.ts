@@ -1,7 +1,6 @@
 import { ContractAddress } from "../../../domain/types";
 import { ContractData } from "../../../adapter";
 import { ImaInstance } from "../ImaInstance";
-import { contractExists } from "../../../instance";
 
 export enum MainnetImaContract {
     MESSAGE_PROXY_FOR_MAINNET = "MessageProxyForMainnet",
@@ -42,12 +41,14 @@ export class MainnetImaInstance<ContractType> extends
     ImaInstance<ContractType> {
     private contractManager: ContractData | undefined;
 
+    contractNames =
+        Object.values(MainnetImaContract) as MainnetImaContractName[];
+
     async getContractAddress (
         name: MainnetImaContractName
     ): Promise<ContractAddress> {
         if (
-            !contractExists(
-                MainnetImaContract,
+            !this.contractNames.includes(
                 name
             )
         ) {
