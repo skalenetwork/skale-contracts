@@ -1,5 +1,5 @@
 """Module for work with an abi file"""
 
-from web3.types import ABI
+from typing import Any
 
-SkaleAbi = dict[str, ABI]
+SkaleAbi = dict[str, list[dict[str, Any]]]
