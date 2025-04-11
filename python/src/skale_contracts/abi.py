@@ -1,5 +1,5 @@
 """Module for work with an abi file"""
 
-from typing import Any
+from eth_typing import ABI
 
-SkaleAbi = dict[str, list[dict[str, Any]]]
+SkaleAbi = dict[str, ABI]
