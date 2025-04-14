@@ -5,62 +5,6 @@ import {
 } from "../../domain/types";
 import { Instance } from "../../instance";
 
-
-const committeeAbi = [
-    {
-        "inputs": [],
-        "name": "nodes",
-        "outputs": [
-            {
-                "internalType": "contract INodes",
-                "name": "",
-                "type": "address"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [],
-        "name": "status",
-        "outputs": [
-            {
-                "internalType": "contract IStatus",
-                "name": "",
-                "type": "address"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [],
-        "name": "dkg",
-        "outputs": [
-            {
-                "internalType": "contract IDkg",
-                "name": "",
-                "type": "address"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [],
-        "name": "authority",
-        "outputs": [
-            {
-                "internalType": "address",
-                "name": "",
-                "type": "address"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    }
-];
-
 export class PlayaManagerInstance<ContractType> extends
     Instance<ContractType> {
     async queryVersion () {
@@ -89,9 +33,14 @@ export class PlayaManagerInstance<ContractType> extends
                 ) as MainContractAddress;
             case "Committee":
                 return this.mainContractAddress;
-            case "AccessManager":
+            case "PlayaAccessManager":
                 return await this.callCommittee(
                     "authority",
+                    []
+                ) as MainContractAddress;
+            case "Staking":
+                return await this.callCommittee(
+                    "staking",
                     []
                 ) as MainContractAddress;
             default:
@@ -101,11 +50,10 @@ export class PlayaManagerInstance<ContractType> extends
         }
     }
 
-
-    private callCommittee (functionName: string, args: unknown[]) {
+    private async callCommittee (functionName: string, args: unknown[]) {
         return this.project.network.adapter.makeCall(
             {
-                "abi": committeeAbi,
+                "abi": await this.getContractAbi(this.project.mainContractName),
                 "address": this.mainContractAddress
             },
             {

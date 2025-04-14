@@ -1,4 +1,4 @@
-"""Module connects skale-manager project to the SKALE contracts library"""
+"""Module connects playa-manager project to the SKALE contracts library"""
 
 from __future__ import annotations
 from typing import TYPE_CHECKING
@@ -7,52 +7,8 @@ from eth_utils.address import to_canonical_address
 from skale_contracts.instance import Instance
 from skale_contracts.project import Project
 
-
 if TYPE_CHECKING:
     from eth_typing import Address, ChecksumAddress
-
-COMMITTEE_ABI = [
-    {
-        "inputs": [],
-        "name": "nodes",
-        "outputs": [{
-            "internalType": "contract INodes",
-            "name": "",
-            "type": "address"
-        }],
-        "stateMutability": "view", "type": "function"
-    },
-    {
-        "inputs": [],
-        "name": "status",
-        "outputs": [{
-            "internalType": "contract IStatus",
-            "name": "",
-            "type": "address"
-        }],
-        "stateMutability": "view", "type": "function"
-    },
-    {
-        "inputs": [],
-        "name": "dkg",
-        "outputs": [{
-            "internalType": "contract IDkg",
-            "name": "",
-            "type": "address"
-        }],
-        "stateMutability": "view", "type": "function"
-    },
-    {
-        "inputs": [],
-        "name": "authority",
-        "outputs": [{
-            "internalType": "address",
-            "name": "",
-            "type": "address"
-        }],
-        "stateMutability": "view", "type": "function"
-    }
-]
 
 
 class PlayaManagerInstance(Instance):
@@ -60,9 +16,10 @@ class PlayaManagerInstance(Instance):
     def __init__(self, project: Project, address: Address) -> None:
         super().__init__(project, address)
         self.committee_address = address
+
         self.committee = self.web3.eth.contract(
             address=address,
-            abi=COMMITTEE_ABI
+            abi=self.abi["Committee"]
         )
 
     def get_contract_address(
@@ -83,9 +40,13 @@ class PlayaManagerInstance(Instance):
                 return to_canonical_address(
                     self.committee.functions.dkg().call()
                 )
-            case "AccessManager":
+            case "PlayaAccessManager":
                 return to_canonical_address(
                     self.committee.functions.authority().call()
+                )
+            case "Staking":
+                return to_canonical_address(
+                    self.committee.functions.staking().call()
                 )
             case "Committee":
                 return self.committee_address
