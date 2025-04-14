@@ -20,6 +20,11 @@ module.exports = {
                 "ignoreConsecutiveComments": true
             }
         ],
+        "indent": [
+            "error",
+            4,
+            { "SwitchCase": 1 }
+        ],
         "multiline-comment-style": [
             "error",
             "separate-lines"
