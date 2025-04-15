@@ -15,39 +15,25 @@ export class PlayaManagerInstance<ContractType> extends
     }
 
     async getContractAddress (name: ContractName): Promise<ContractAddress> {
-        switch (name) {
-            case "Nodes":
-                return await this.callCommittee(
-                    "nodes",
-                    []
-                ) as MainContractAddress;
-            case "Status":
-                return await this.callCommittee(
-                    "nodes",
-                    []
-                ) as MainContractAddress;
-            case "Dkg":
-                return await this.callCommittee(
-                    "nodes",
-                    []
-                ) as MainContractAddress;
-            case "Committee":
-                return this.mainContractAddress;
-            case "PlayaAccessManager":
-                return await this.callCommittee(
-                    "authority",
-                    []
-                ) as MainContractAddress;
-            case "Staking":
-                return await this.callCommittee(
-                    "staking",
-                    []
-                ) as MainContractAddress;
-            default:
-                throw new Error(
-                    `Contract name ${name} does not exist in playa-manager`
-                );
+        if (name === "PlayaAccessManager") {
+            return await this.callCommittee(
+                "authority",
+                []
+            ) as MainContractAddress;
         }
+        const abi = await this.getContractAbi(this.project.mainContractName);
+        const hasFunc = abi.find((item) => item.type === "function" &&
+            item.stateMutability === "view" &&
+            item.name === name.toLowerCase());
+        if (hasFunc) {
+            return await this.callCommittee(
+                name.toLowerCase(),
+                []
+            ) as MainContractAddress;
+        }
+        throw new Error(
+            `Contract name ${name} does not exist in playa-manager`
+        );
     }
 
     private async callCommittee (functionName: string, args: unknown[]) {

@@ -36,7 +36,7 @@ class PlayaManagerInstance(Instance):
                 return to_canonical_address(
                     self.committee.functions.status().call()
                 )
-            case "Dkg":
+            case "DKG":
                 return to_canonical_address(
                     self.committee.functions.dkg().call()
                 )
