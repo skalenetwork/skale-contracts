@@ -15,4 +15,4 @@ from .mirage_manager import MirageManagerProject as MirageManager
 
 __all__ = ['ConfigController', 'Context', 'Etherbase', 'Erc1820',
            'FileStorage', 'MainnetIma', 'Marionette', 'Paymaster',
-           'SchainIma', 'SkaleAllocator', 'SkaleManager', 'MirageManager' ]
+           'SchainIma', 'SkaleAllocator', 'SkaleManager', 'MirageManager']
