@@ -44,39 +44,39 @@ export const createProject =
         name: string
     ): Project<ContractType> {
         switch (name) {
-            case projects.skaleManager.name:
-                return new SkaleManagerProject<ContractType>(
-                    network,
-                    projects.skaleManager
-                );
-            case projects.mainnetIma.name:
-                return new MainnetImaProject<ContractType>(
-                    network,
-                    projects.mainnetIma
-                );
-            case projects.schainIma.name:
-                return new SchainImaProject<ContractType>(
-                    network,
-                    projects.schainIma
-                );
-            case projects.skaleAllocator.name:
-                return new SkaleAllocatorProject<ContractType>(
-                    network,
-                    projects.skaleAllocator
-                );
-            case projects.paymaster.name:
-                return new PaymasterProject<ContractType>(
-                    network,
-                    projects.paymaster
-                );
-            case projects.mirageManager.name:
-                return new MirageManagerProject<ContractType>(
-                    network,
-                    projects.mirageManager
-                );
-            default:
-                throw new ProjectNotFoundError(
-                    `Project with name ${name} is unknown`
-                );
+        case projects.skaleManager.name:
+            return new SkaleManagerProject<ContractType>(
+                network,
+                projects.skaleManager
+            );
+        case projects.mainnetIma.name:
+            return new MainnetImaProject<ContractType>(
+                network,
+                projects.mainnetIma
+            );
+        case projects.schainIma.name:
+            return new SchainImaProject<ContractType>(
+                network,
+                projects.schainIma
+            );
+        case projects.skaleAllocator.name:
+            return new SkaleAllocatorProject<ContractType>(
+                network,
+                projects.skaleAllocator
+            );
+        case projects.paymaster.name:
+            return new PaymasterProject<ContractType>(
+                network,
+                projects.paymaster
+            );
+        case projects.mirageManager.name:
+            return new MirageManagerProject<ContractType>(
+                network,
+                projects.mirageManager
+            );
+        default:
+            throw new ProjectNotFoundError(
+                `Project with name ${name} is unknown`
+            );
         }
     };
