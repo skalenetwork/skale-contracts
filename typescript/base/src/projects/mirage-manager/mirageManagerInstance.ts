@@ -42,6 +42,9 @@ export class MirageManagerInstance<ContractType> extends
                 []
             ) as MainContractAddress;
         }
+        if (name === "Committee") {
+            return this.mainContractAddress;
+        }
         const abi = await this.getContractAbi(this.project.mainContractName);
         const hasFunc = abi.find((item) => item.type === "function" &&
             item.stateMutability === "view" &&
