@@ -145,7 +145,7 @@ export abstract class Instance<ContractType> {
                 }
             }
         }
-        return this.version;
+        return this.version as string;
     }
 
     private async getAbi () {

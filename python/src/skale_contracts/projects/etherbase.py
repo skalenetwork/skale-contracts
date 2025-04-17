@@ -1,18 +1,24 @@
 """Module connects etherbase project to the SKALE contracts library"""
 
 from __future__ import annotations
-from typing import TYPE_CHECKING
+from enum import StrEnum
+from typing import TYPE_CHECKING, cast
 from eth_utils.address import to_canonical_address
 
 from skale_contracts.constants import PREDEPLOYED_ALIAS
 from skale_contracts.instance import Instance
-from skale_contracts.project import Project
+from skale_contracts.project import Project, SkaleProject
 
 if TYPE_CHECKING:
     from eth_typing import Address, ChecksumAddress
 
 
-class EtherbaseInstance(Instance):
+class EtherbaseContract(StrEnum):
+    """Defines contract names for etherbase project"""
+    ETHERBASE = "Etherbase"
+
+
+class EtherbaseInstance(Instance[EtherbaseContract]):
     """Represents instance of etherbase"""
 
     PREDEPLOYED: dict[str, Address] = {
@@ -23,7 +29,7 @@ class EtherbaseInstance(Instance):
 
     def get_contract_address(
             self,
-            name: str,
+            name: EtherbaseContract,
             *args: str | Address | ChecksumAddress
     ) -> Address:
         if name in self.PREDEPLOYED:
@@ -31,25 +37,26 @@ class EtherbaseInstance(Instance):
         raise RuntimeError(f"Can't get address of {name} contract")
 
 
-class EtherbaseProject(Project):
+class EtherbaseProject(Project[EtherbaseContract]):
     """Represents etherbase project"""
 
     @staticmethod
-    def name() -> str:
-        return 'etherbase'
+    def name() -> SkaleProject:
+        return SkaleProject.ETHERBASE
 
-    def get_instance(self, alias_or_address: str) -> Instance:
+    def get_instance(
+            self, alias_or_address: str) -> EtherbaseInstance:
         if alias_or_address == PREDEPLOYED_ALIAS:
             return self.create_instance(
                 EtherbaseInstance.PREDEPLOYED['Etherbase']
             )
-        return super().get_instance(alias_or_address)
+        return cast(EtherbaseInstance, super().get_instance(alias_or_address))
 
     @property
     def github_repo(self) -> str:
         return 'https://github.com/skalenetwork/etherbase/'
 
-    def create_instance(self, address: Address) -> Instance:
+    def create_instance(self, address: Address) -> EtherbaseInstance:
         return EtherbaseInstance(self, address)
 
     def get_abi_filename(self, version: str) -> str:

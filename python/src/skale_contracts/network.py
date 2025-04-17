@@ -5,6 +5,10 @@ from typing import cast, TYPE_CHECKING
 from web3 import Web3
 from web3.providers.base import BaseProvider
 
+from .types import ContractName
+
+from .project import SkaleProject
+
 from .project_factory import create_project
 
 
@@ -23,7 +27,7 @@ class Network:
         self.web3 = Web3(provider)
         self._skale_contracts = skale_contracts
 
-    def get_project(self, name: str) -> Project:
+    def get_project(self, name: SkaleProject) -> Project[ContractName]:
         """Get Project object by it's name"""
         return create_project(self, name)
 
