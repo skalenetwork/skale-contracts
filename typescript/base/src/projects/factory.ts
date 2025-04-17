@@ -1,4 +1,5 @@
 import { MainnetImaProject } from "./ima/mainnet/MainnetImaProject";
+import { MirageManagerProject } from "./mirage-manager/mirageManagerProject";
 import { Network } from "../network";
 import { PaymasterProject } from "./paymaster/paymasterProject";
 import { Project } from "../project";
@@ -14,6 +15,10 @@ export const projects = {
     "mainnetIma": {
         "name": "mainnet-ima",
         "path": "mainnet-ima"
+    },
+    "mirageManager": {
+        "name": "mirage-manager",
+        "path": "mirage-manager"
     },
     "paymaster": {
         "name": "paymaster",
@@ -38,31 +43,40 @@ export const createProject =
         network: Network<ContractType>,
         name: string
     ): Project<ContractType> {
-        if (name === projects.skaleManager.name) {
+        switch (name) {
+        case projects.skaleManager.name:
             return new SkaleManagerProject<ContractType>(
                 network,
                 projects.skaleManager
             );
-        } else if (name === projects.mainnetIma.name) {
+        case projects.mainnetIma.name:
             return new MainnetImaProject<ContractType>(
                 network,
                 projects.mainnetIma
             );
-        } else if (name === projects.schainIma.name) {
+        case projects.schainIma.name:
             return new SchainImaProject<ContractType>(
                 network,
                 projects.schainIma
             );
-        } else if (name === projects.skaleAllocator.name) {
+        case projects.skaleAllocator.name:
             return new SkaleAllocatorProject<ContractType>(
                 network,
                 projects.skaleAllocator
             );
-        } else if (name === projects.paymaster.name) {
+        case projects.paymaster.name:
             return new PaymasterProject<ContractType>(
                 network,
                 projects.paymaster
             );
+        case projects.mirageManager.name:
+            return new MirageManagerProject<ContractType>(
+                network,
+                projects.mirageManager
+            );
+        default:
+            throw new ProjectNotFoundError(
+                `Project with name ${name} is unknown`
+            );
         }
-        throw new ProjectNotFoundError(`Project with name ${name} is unknown`);
     };
