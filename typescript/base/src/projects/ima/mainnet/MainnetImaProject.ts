@@ -1,11 +1,11 @@
 import { ContractAddressMap, MainContractAddress } from "../../../domain/types";
+import { MainnetImaContract, MainnetImaInstance } from "./MainnetImaInstance";
 import { ImaProject } from "../ImaProject";
 import { Instance } from "../../../instance";
-import { MainnetImaInstance } from "./MainnetImaInstance";
 
 export class MainnetImaProject<ContractType> extends
     ImaProject<ContractType> {
-    mainContractName = "MessageProxyForMainnet";
+    mainContractName = MainnetImaContract.PROXY_FOR_MAINNET;
 
     getAbiFilename (version: string) {
         return `${this.metadata.name}-${version}-abi.json`;
