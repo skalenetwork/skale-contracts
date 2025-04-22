@@ -3,7 +3,7 @@ import {
     ContractName,
     MainContractAddress
 } from "../../domain/types";
-import { Instance } from "../../instance";
+import { Instance, contractExists } from "../../instance";
 
 export enum SkaleManagerContract {
     CONTRACT_MANAGER = "ContractManager",
@@ -68,12 +68,6 @@ const skaleManagerAbi = [
     }
 ];
 
-
-const contractExists = (
-    name: SkaleManagerContractName
-) => Object.values(SkaleManagerContract).includes(name as SkaleManagerContract);
-
-
 export class SkaleManagerInstance<ContractType> extends
     Instance<ContractType> {
     customNames = new Map<string, string>([
@@ -97,7 +91,12 @@ export class SkaleManagerInstance<ContractType> extends
     async getContractAddress (
         name: SkaleManagerContractName
     ): Promise<ContractAddress> {
-        if (!contractExists(name)) {
+        if (
+            !contractExists(
+                SkaleManagerContract,
+                name
+            )
+        ) {
             throw new Error(
                 `Contract name ${name} does not exist in skale-manager`
             );

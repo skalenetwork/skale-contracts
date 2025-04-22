@@ -17,7 +17,7 @@ import {
 
 export class SchainImaProject<ContractType> extends
     ImaProject<ContractType> {
-    mainContractName = SchainImaContract.PROXY_FOR_SCHAIN;
+    mainContractName = SchainImaContract.MESSAGE_PROXY_FOR_SCHAIN;
 
     getAbiFilename (version: string) {
         return `${this.metadata.name}-${version}-abi.json`;

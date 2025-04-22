@@ -1,9 +1,10 @@
 import { ContractAddress } from "../../../domain/types";
 import { ContractData } from "../../../adapter";
 import { ImaInstance } from "../ImaInstance";
+import { contractExists } from "../../../instance";
 
 export enum MainnetImaContract {
-    PROXY_FOR_MAINNET = "MessageProxyForMainnet",
+    MESSAGE_PROXY_FOR_MAINNET = "MessageProxyForMainnet",
     COMMUNITY_POOL = "CommunityPool",
     LINKER = "Linker",
     DEPOSIT_BOX_ETH = "DepositBoxEth",
@@ -37,10 +38,6 @@ const contractManagerAbi = [
     }
 ];
 
-const contractExists = (
-    name: MainnetImaContractName
-) => Object.values(MainnetImaContract).includes(name as MainnetImaContract);
-
 export class MainnetImaInstance<ContractType> extends
     ImaInstance<ContractType> {
     private contractManager: ContractData | undefined;
@@ -48,22 +45,27 @@ export class MainnetImaInstance<ContractType> extends
     async getContractAddress (
         name: MainnetImaContractName
     ): Promise<ContractAddress> {
-        if (!contractExists(name)) {
+        if (
+            !contractExists(
+                MainnetImaContract,
+                name
+            )
+        ) {
             throw new Error(
                 `Contract name ${name} does not exist in mainnet-ima`
             );
         }
-        if (name === MainnetImaContract.PROXY_FOR_MAINNET) {
+        if (name === MainnetImaContract.MESSAGE_PROXY_FOR_MAINNET) {
             return Promise.resolve(this.mainContractAddress);
         } else if (name === MainnetImaContract.COMMUNITY_POOL) {
             return this.project.network.adapter.makeCall(
                 {
                     "abi": await this.getContractAbi(
-                        MainnetImaContract.PROXY_FOR_MAINNET
+                        MainnetImaContract.MESSAGE_PROXY_FOR_MAINNET
                     ),
                     "address":
                         await this.getContractAddress(
-                            MainnetImaContract.PROXY_FOR_MAINNET
+                            MainnetImaContract.MESSAGE_PROXY_FOR_MAINNET
                         )
                 },
                 {
@@ -90,7 +92,7 @@ export class MainnetImaInstance<ContractType> extends
                     {
                         "abi":
                             await this.getContractAbi(
-                                MainnetImaContract.PROXY_FOR_MAINNET
+                                MainnetImaContract.MESSAGE_PROXY_FOR_MAINNET
                             ),
                         "address": this.mainContractAddress
                     },

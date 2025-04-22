@@ -9,6 +9,7 @@ from skale_contracts.constants import PREDEPLOYED_ALIAS
 from skale_contracts.instance import Instance
 from skale_contracts.project import Project, SkaleProject
 
+
 if TYPE_CHECKING:
     from eth_typing import Address, ChecksumAddress
 
@@ -42,6 +43,7 @@ class ConfigControllerProject(Project[ConfigControllerContract]):
 
     @staticmethod
     def name() -> SkaleProject:
+
         return SkaleProject.CONFIG_CONTROLLER
 
     def get_instance(

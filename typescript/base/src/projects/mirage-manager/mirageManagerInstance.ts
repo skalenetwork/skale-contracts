@@ -2,7 +2,7 @@ import {
     ContractAddress,
     MainContractAddress
 } from "../../domain/types";
-import { Instance } from "../../instance";
+import { Instance, contractExists } from "../../instance";
 
 export enum MirageManagerContract {
     COMMITTEE = "Committee",
@@ -15,18 +15,17 @@ export enum MirageManagerContract {
 
 export type MirageManagerContractName = `${MirageManagerContract}`;
 
-const contractExists = (
-    name: MirageManagerContractName
-) => Object.values(
-    MirageManagerContract
-).includes(name as MirageManagerContract);
-
 export class MirageManagerInstance<ContractType> extends
     Instance<ContractType> {
     async getContractAddress (
         name: MirageManagerContractName
     ): Promise<ContractAddress> {
-        if (!contractExists(name)) {
+        if (
+            !contractExists(
+                MirageManagerContract,
+                name
+            )
+        ) {
             throw new Error(
                 `Contract name ${name} does not exist in mirage-manager`
             );

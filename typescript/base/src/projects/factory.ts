@@ -1,8 +1,8 @@
-import { Project, SkaleProject, SkaleProjectName } from "../project";
 import { MainnetImaProject } from "./ima/mainnet/MainnetImaProject";
 import { MirageManagerProject } from "./mirage-manager/mirageManagerProject";
 import { Network } from "../network";
 import { PaymasterProject } from "./paymaster/paymasterProject";
+import { Project } from "../project";
 import {
     ProjectNotFoundError
 } from "../domain/errors/project/projectNotFoundError";
@@ -10,6 +10,15 @@ import { SchainImaProject } from "./ima/schain/SchainImaProject";
 import { SkaleAllocatorProject } from "./skale-allocator/skaleAllocatorProject";
 import { SkaleManagerProject } from "./skale-manager/skaleManagerProject";
 
+export enum SkaleProject {
+    MAINNET_IMA = "mainnet-ima",
+    SCHAIN_IMA = "schain-ima",
+    PAYMASTER = "paymaster",
+    SKALE_ALLOCATOR = "skale-allocator",
+    SKALE_MANAGER = "skale-manager",
+    MIRAGE_MANAGER = "mirage-manager"
+}
+export type SkaleProjectName = `${SkaleProject}`;
 
 export const createProject = function createProject<ContractType> (
     network: Network<ContractType>,

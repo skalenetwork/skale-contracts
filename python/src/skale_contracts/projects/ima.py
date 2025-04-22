@@ -12,7 +12,6 @@ from skale_contracts.project import Project, SkaleProject
 
 from .skale_manager import CONTRACT_MANAGER_ABI
 
-
 if TYPE_CHECKING:
     from eth_typing import Address, ChecksumAddress
     from web3.contract.contract import Contract
@@ -28,8 +27,8 @@ class SchainImaContract(StrEnum):
     TOKEN_MANAGER_ERC20 = "TokenManagerERC20"
     TOKEN_MANAGER_ERC721 = "TokenManagerERC721"
     TOKEN_MANAGER_ERC1155 = "TokenManagerERC1155"
-    # TOKEN_MANAGER_ERC721_WITH_META = "DepositBoxERC721WithMetadata"
-    PROXY_FOR_SCHAIN = "MessageProxyForSchain"
+    TOKEN_MANAGER_ERC721_WITH_META = "TokenManagerERC721WithMetadata"
+    MESSAGE_PROXY_FOR_SCHAIN = "MessageProxyForSchain"
     COMMUNITY_LOCKER = "CommunityLocker"
     TOKEN_MANAGER_LINKER = "TokenManagerLinker"
     ETH_ERC20 = "EthErc20"
@@ -38,7 +37,7 @@ class SchainImaContract(StrEnum):
 
 class MainnetImaContract(StrEnum):
     """Defines contract names for mainnet-ima project"""
-    PROXY_FOR_MAINNET = "MessageProxyForMainnet"
+    MESSAGE_PROXY_FOR_MAINNET = "MessageProxyForMainnet"
     COMMUNITY_POOL = "CommunityPool"
     LINKER = "Linker"
     DEPOSIT_BOX_ETH = "DepositBoxEth"
@@ -96,7 +95,7 @@ class MainnetImaInstance(ImaInstance[MainnetImaContract]):
             return self.address
         if name == 'CommunityPool':
             return to_canonical_address(
-                self.get_contract(MainnetImaContract.PROXY_FOR_MAINNET)
+                self.get_contract(MainnetImaContract.MESSAGE_PROXY_FOR_MAINNET)
                     .functions.communityPool().call()
             )
         return to_canonical_address(
@@ -110,8 +109,9 @@ associated with the IMA"""
         if self._contract_manager is None:
             self._contract_manager = self.web3.eth.contract(
                 address=to_canonical_address(
-                    self.get_contract(MainnetImaContract.PROXY_FOR_MAINNET)
-                        .functions.contractManagerOfSkaleManager().call()
+                    self.get_contract(
+                            MainnetImaContract.MESSAGE_PROXY_FOR_MAINNET
+                        ).functions.contractManagerOfSkaleManager().call()
                 ),
                 abi=CONTRACT_MANAGER_ABI
             )
@@ -189,7 +189,7 @@ class SchainImaProject(ImaProject[SchainImaContract]):
         if alias_or_address == PREDEPLOYED_ALIAS:
             return self.create_instance(
                 SchainImaInstance.PREDEPLOYED[
-                    SchainImaContract.PROXY_FOR_SCHAIN
+                    SchainImaContract.MESSAGE_PROXY_FOR_SCHAIN
                 ]
             )
         return cast(SchainImaInstance, super().get_instance(alias_or_address))

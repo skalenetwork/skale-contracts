@@ -2,7 +2,7 @@ import { METADATA_FILENAME, REPOSITORY_URL } from "./domain/constants";
 import {
     MetadataIsNotDownloaded
 } from "./domain/errors/metadata/metadataIsNotDownloaded";
-import { SkaleProjectName } from "./project";
+import { SkaleProjectName } from "./projects/factory";
 
 import axios from "axios";
 

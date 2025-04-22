@@ -1,8 +1,7 @@
+import { SkaleProjectName, createProject } from "./projects/factory";
 import { Adapter } from "./adapter";
 import { RetryAdapter } from "./retryAdapter";
 import { SkaleContracts } from "./skaleContracts";
-import { SkaleProjectName } from "./project";
-import { createProject } from "./projects/factory";
 
 
 export class Network<ContractType> {

@@ -5,7 +5,7 @@ import { Instance } from "../../../instance";
 
 export class MainnetImaProject<ContractType> extends
     ImaProject<ContractType> {
-    mainContractName = MainnetImaContract.PROXY_FOR_MAINNET;
+    mainContractName = MainnetImaContract.MESSAGE_PROXY_FOR_MAINNET;
 
     getAbiFilename (version: string) {
         return `${this.metadata.name}-${version}-abi.json`;
