@@ -1,20 +1,23 @@
 import {
-    ContractAddress,
-    ContractName
+    ContractAddress
 } from "../../domain/types";
 import { Instance } from "../../instance";
 
-
+export enum SkaleAllocatorContract {
+    ALLOCATOR = "Allocator",
+    ESCROW = "Escrow",
+}
+export type SkaleAllocatorContractName = `${SkaleAllocatorContract}`;
 export class SkaleAllocatorInstance<ContractType> extends
     Instance<ContractType> {
     getContractAddress (
-        name: ContractName,
+        name: SkaleAllocatorContractName,
         args?: unknown[]
     ): Promise<ContractAddress> {
-        if (name === "Allocator") {
+        if (name === SkaleAllocatorContract.ALLOCATOR) {
             return Promise.resolve(this.mainContractAddress);
         }
-        if (name === "Escrow") {
+        if (name === SkaleAllocatorContract.ESCROW) {
             const firstArgument = 0;
             const beneficiary = args?.at(firstArgument) as string;
             if (!this.project.network.adapter.isAddress(beneficiary)) {
@@ -22,7 +25,9 @@ export class SkaleAllocatorInstance<ContractType> extends
             }
             return this.getEscrow(beneficiary);
         }
-        throw new Error(`Contract ${name} is not found`);
+        throw new Error(
+            `Contract name ${name} does not exist in skale-allocator`
+        );
     }
 
     // Private

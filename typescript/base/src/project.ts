@@ -15,6 +15,7 @@ import {
 import { ProjectMetadata } from "./metadata";
 import { REPOSITORY_URL } from "./domain/constants";
 
+
 const alternativeVersionsGenerator =
     function *alternativeVersionsGenerator (version: string) {
         const semVersion = semver.parse(version);

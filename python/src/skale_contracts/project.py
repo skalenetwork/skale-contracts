@@ -4,12 +4,15 @@
 
 from __future__ import annotations
 from abc import ABC, abstractmethod
+from enum import StrEnum
 from itertools import count
-from typing import TYPE_CHECKING, Generator
+from typing import TYPE_CHECKING, Generator, Generic
 
 from eth_utils.address import to_canonical_address
 import requests
 from semver.version import Version as SemVersion
+
+from .types import ContractName
 
 from .constants import REPOSITORY_URL, NETWORK_TIMEOUT
 from .instance import Instance, InstanceData
@@ -31,7 +34,7 @@ def alternative_versions_generator(version: str) -> Generator[str, None, None]:
                 )
 
 
-class Project(ABC):
+class Project(Generic[ContractName], ABC):
     """Represents set of smart contracts known as project"""
 
     def __init__(self, network: Network) -> None:
@@ -40,7 +43,7 @@ class Project(ABC):
 
     @staticmethod
     @abstractmethod
-    def name() -> str:
+    def name() -> StrEnum:
         """Name of the project"""
 
     @property
@@ -53,7 +56,7 @@ class Project(ABC):
         """Folder name with instances json files"""
         return self.name()
 
-    def get_instance(self, alias_or_address: str) -> Instance:
+    def get_instance(self, alias_or_address: str) -> Instance[ContractName]:
         """Create instance object based on alias or address"""
         if self.network.web3.is_address(alias_or_address):
             address = to_canonical_address(alias_or_address)
@@ -106,7 +109,7 @@ class Project(ABC):
         raise ValueError('Network is unknown')
 
     @abstractmethod
-    def create_instance(self, address: Address) -> Instance:
+    def create_instance(self, address: Address) -> Instance[ContractName]:
         """Create instance object based on known address"""
 
     def get_abi_urls(self, version: str) -> list[str]:

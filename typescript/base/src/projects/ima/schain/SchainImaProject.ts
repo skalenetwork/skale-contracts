@@ -3,27 +3,40 @@ import {
     ContractAddressMap,
     MainContractAddress
 } from "../../../domain/types";
+import {
+    SchainImaContract,
+    SchainImaContractName,
+    SchainImaInstance
+} from "./SchainImaInstance";
+
 import { ImaProject } from "../ImaProject";
 import { Instance } from "../../../instance";
-import { PREDEPLOYED_ALIAS } from "../../../domain/constants";
-import { SchainImaInstance } from "./SchainImaInstance";
+import {
+    PREDEPLOYED_ALIAS
+} from "../../../domain/constants";
 
 export class SchainImaProject<ContractType> extends
     ImaProject<ContractType> {
-    mainContractName = "MessageProxyForSchain";
+    mainContractName = SchainImaContract.MESSAGE_PROXY_FOR_SCHAIN;
 
     getAbiFilename (version: string) {
         return `${this.metadata.name}-${version}-abi.json`;
     }
 
     getInstance (
-        aliasOrAddress: string | MainContractAddress | ContractAddressMap
+        aliasOrAddress:
+            | SchainImaContractName
+            | MainContractAddress
+            | ContractAddressMap
+            | typeof PREDEPLOYED_ALIAS
     ) {
         if (aliasOrAddress === PREDEPLOYED_ALIAS) {
             return this.createInstance(SchainImaInstance.PREDEPLOYED.
                 get(this.mainContractName)! as ContractAddress);
         }
-        return super.getInstance(aliasOrAddress);
+        return (
+            super.getInstance(aliasOrAddress) as SchainImaInstance<ContractType>
+        );
     }
 
     createInstance (address: MainContractAddress | ContractAddressMap)

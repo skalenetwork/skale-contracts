@@ -1,15 +1,18 @@
 """Module connects IMA to the SKALE contracts library"""
 
 from __future__ import annotations
-from typing import TYPE_CHECKING
+from enum import StrEnum
+from functools import cached_property
+from typing import TYPE_CHECKING, cast
 from eth_utils.address import to_canonical_address
 
+from skale_contracts.types import ContractName
 from skale_contracts.constants import PREDEPLOYED_ALIAS
 from skale_contracts.instance import Instance, DEFAULT_GET_VERSION_FUNCTION
 from skale_contracts.project import Project
+from skale_contracts.project_factory import SkaleProject
 
 from .skale_manager import CONTRACT_MANAGER_ABI
-
 
 if TYPE_CHECKING:
     from eth_typing import Address, ChecksumAddress
@@ -20,9 +23,41 @@ MESSAGE_PROXY_ABI = [
 ]
 
 
-class ImaInstance(Instance):
+class SchainImaContract(StrEnum):
+    """Defines contract names for schain-ima project"""
+    TOKEN_MANAGER_ETH = "TokenManagerEth"
+    TOKEN_MANAGER_ERC20 = "TokenManagerERC20"
+    TOKEN_MANAGER_ERC721 = "TokenManagerERC721"
+    TOKEN_MANAGER_ERC1155 = "TokenManagerERC1155"
+    TOKEN_MANAGER_ERC721_WITH_META = "TokenManagerERC721WithMetadata"
+    MESSAGE_PROXY_FOR_SCHAIN = "MessageProxyForSchain"
+    COMMUNITY_LOCKER = "CommunityLocker"
+    TOKEN_MANAGER_LINKER = "TokenManagerLinker"
+    ETH_ERC20 = "EthErc20"
+    KEY_STORAGE = "KeyStorage"
+
+
+class MainnetImaContract(StrEnum):
+    """Defines contract names for mainnet-ima project"""
+    MESSAGE_PROXY_FOR_MAINNET = "MessageProxyForMainnet"
+    COMMUNITY_POOL = "CommunityPool"
+    LINKER = "Linker"
+    DEPOSIT_BOX_ETH = "DepositBoxEth"
+    DEPOSIT_BOX_ERC20 = "DepositBoxERC20"
+    DEPOSIT_BOX_ERC721 = "DepositBoxERC721"
+    DEPOSIT_BOX_ERC1155 = "DepositBoxERC1155"
+    DEPOSIT_BOX_ERC721_WITH_META = "DepositBoxERC721WithMetadata"
+
+
+class ImaInstance(Instance[ContractName]):
     """Represents instance of IMA"""
-    def __init__(self, project: Project, address: Address) -> None:
+
+    def __init__(
+            self,
+            project: Project[ContractName],
+            address: Address
+    ) -> None:
+
         super().__init__(project, address)
         self.message_proxy = self.web3.eth.contract(
             address=address,
@@ -30,7 +65,7 @@ class ImaInstance(Instance):
         )
 
 
-class ImaProject(Project):
+class ImaProject(Project[ContractName]):
     """Represents IMA project"""
 
     @property
@@ -38,22 +73,31 @@ class ImaProject(Project):
         return 'https://github.com/skalenetwork/ima/'
 
 
-class MainnetImaInstance(ImaInstance):
+class MainnetImaInstance(ImaInstance[MainnetImaContract]):
     """Represents IMA instance on mainnet"""
 
-    def __init__(self, project: Project, address: Address) -> None:
+    def __init__(
+            self,
+            project: MainnetImaProject,
+            address: Address
+    ) -> None:
+
         super().__init__(project, address)
         self._contract_manager: Contract | None = None
 
     def get_contract_address(
             self,
-            name: str, *args: str | Address | ChecksumAddress
+            name: MainnetImaContract, *args: str | Address | ChecksumAddress
     ) -> Address:
+        if name not in MainnetImaContract:
+            raise ValueError(
+                "Contract", name, "does not exist for", self._project.name()
+            )
         if name == 'MessageProxyForMainnet':
             return self.address
         if name == 'CommunityPool':
             return to_canonical_address(
-                self.get_contract("MessageProxyForMainnet")
+                self.get_contract(MainnetImaContract.MESSAGE_PROXY_FOR_MAINNET)
                     .functions.communityPool().call()
             )
         return to_canonical_address(
@@ -67,29 +111,37 @@ associated with the IMA"""
         if self._contract_manager is None:
             self._contract_manager = self.web3.eth.contract(
                 address=to_canonical_address(
-                    self.get_contract("MessageProxyForMainnet")
-                        .functions.contractManagerOfSkaleManager().call()
+                    self.get_contract(
+                            MainnetImaContract.MESSAGE_PROXY_FOR_MAINNET
+                        ).functions.contractManagerOfSkaleManager().call()
                 ),
                 abi=CONTRACT_MANAGER_ABI
             )
         return self._contract_manager
 
+    @cached_property
+    def contract_names(self) -> set[MainnetImaContract]:
+        return set(MainnetImaContract)
 
-class MainnetImaProject(ImaProject):
+
+class MainnetImaProject(ImaProject[MainnetImaContract]):
     """Represents mainnet part of IMA project"""
 
     @staticmethod
-    def name() -> str:
-        return 'mainnet-ima'
+    def name() -> SkaleProject:
+        return SkaleProject.MAINNET_IMA
 
-    def create_instance(self, address: Address) -> Instance:
+    def create_instance(self, address: Address) -> MainnetImaInstance:
         return MainnetImaInstance(self, address)
+
+    def get_instance(self, alias_or_address: str) -> MainnetImaInstance:
+        return cast(MainnetImaInstance, super().get_instance(alias_or_address))
 
     def get_abi_filename(self, version: str) -> str:
         return f'mainnet-ima-{version}-abi.json'
 
 
-class SchainImaInstance(ImaInstance):
+class SchainImaInstance(ImaInstance[SchainImaContract]):
     """Represents IMA instance on schain"""
 
     PREDEPLOYED: dict[str, Address] = {
@@ -120,29 +172,39 @@ class SchainImaInstance(ImaInstance):
 
     def get_contract_address(
             self,
-            name: str,
+            name: SchainImaContract,
             *args: str | Address | ChecksumAddress
     ) -> Address:
         if name in self.PREDEPLOYED:
             return self.PREDEPLOYED[name]
         raise RuntimeError(f"Can't get address of {name} contract")
 
+    @cached_property
+    def contract_names(self) -> set[SchainImaContract]:
+        return set(SchainImaContract)
 
-class SchainImaProject(ImaProject):
+
+class SchainImaProject(ImaProject[SchainImaContract]):
     """Represents schain part of IMA project"""
 
     @staticmethod
-    def name() -> str:
-        return 'schain-ima'
+    def name() -> SkaleProject:
+        return SkaleProject.SCHAIN_IMA
 
-    def get_instance(self, alias_or_address: str) -> Instance:
+    def get_instance(
+            self,
+            alias_or_address: str
+    ) -> Instance[SchainImaContract]:
+
         if alias_or_address == PREDEPLOYED_ALIAS:
             return self.create_instance(
-                SchainImaInstance.PREDEPLOYED['MessageProxyForSchain']
+                SchainImaInstance.PREDEPLOYED[
+                    SchainImaContract.MESSAGE_PROXY_FOR_SCHAIN
+                ]
             )
-        return super().get_instance(alias_or_address)
+        return cast(SchainImaInstance, super().get_instance(alias_or_address))
 
-    def create_instance(self, address: Address) -> Instance:
+    def create_instance(self, address: Address) -> SchainImaInstance:
         return SchainImaInstance(self, address)
 
     def get_abi_filename(self, version: str) -> str:

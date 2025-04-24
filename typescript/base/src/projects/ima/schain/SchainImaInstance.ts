@@ -1,6 +1,19 @@
 import { ContractAddress } from "../../../domain/types";
 import { ImaInstance } from "../ImaInstance";
 
+export enum SchainImaContract {
+    TOKEN_MANAGER_ETH = "TokenManagerEth",
+    TOKEN_MANAGER_ERC20 = "TokenManagerERC20",
+    TOKEN_MANAGER_ERC721 = "TokenManagerERC721",
+    TOKEN_MANAGER_ERC1155 = "TokenManagerERC1155",
+    TOKEN_MANAGER_ERC721_WITH_META = "TokenManagerERC721WithMetadata",
+    MESSAGE_PROXY_FOR_SCHAIN = "MessageProxyForSchain",
+    COMMUNITY_LOCKER = "CommunityLocker",
+    TOKEN_MANAGER_LINKER = "TokenManagerLinker",
+    ETH_ERC20 = "EthErc20",
+    KEY_STORAGE = "KeyStorage"
+}
+export type SchainImaContractName = `${SchainImaContract}`;
 
 export class SchainImaInstance<ContractType> extends
     ImaInstance<ContractType> {
@@ -51,7 +64,7 @@ export class SchainImaInstance<ContractType> extends
         ]
     ]);
 
-    getContractAddress (name: string): Promise<ContractAddress> {
+    getContractAddress (name: SchainImaContractName): Promise<ContractAddress> {
         if (name in this.addressContainer) {
             return Promise.resolve(this.addressContainer[name]);
         }
@@ -59,6 +72,6 @@ export class SchainImaInstance<ContractType> extends
             return Promise.resolve(SchainImaInstance.PREDEPLOYED.
                 get(name) as ContractAddress);
         }
-        throw new Error(`Can't get address of ${name} contract`);
+        throw new Error(`Contract name ${name} does not exist in schain-ima`);
     }
 }

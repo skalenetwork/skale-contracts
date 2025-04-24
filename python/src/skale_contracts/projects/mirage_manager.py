@@ -1,19 +1,36 @@
 """Module connects mirage-manager project to the SKALE contracts library"""
 
 from __future__ import annotations
-from typing import TYPE_CHECKING
+from enum import StrEnum
+from functools import cached_property
+from typing import TYPE_CHECKING, cast
 from eth_utils.address import to_canonical_address
 
 from skale_contracts.instance import Instance
 from skale_contracts.project import Project
+from skale_contracts.project_factory import SkaleProject
 
 if TYPE_CHECKING:
     from eth_typing import Address, ChecksumAddress
 
 
-class MirageManagerInstance(Instance):
+class MirageManagerContract(StrEnum):
+    """Defines contract names for mirage-manager project"""
+    COMMITTEE = "Committee"
+    DKG = "DKG"
+    NODES = "Nodes"
+    MIRAGE_ACCESS_MANAGER = "MirageAccessManager"
+    STATUS = "Status"
+    STAKING = "Staking"
+
+
+class MirageManagerInstance(Instance[MirageManagerContract]):
     """Represents instance of mirage-manager"""
-    def __init__(self, project: Project, address: Address) -> None:
+    def __init__(
+            self,
+            project: MirageManagerProject,
+            address: Address
+    ) -> None:
         super().__init__(project, address)
         self.committee_address = address
 
@@ -24,50 +41,61 @@ class MirageManagerInstance(Instance):
 
     def get_contract_address(
             self,
-            name: str,
+            name: MirageManagerContract,
             *args: str | Address | ChecksumAddress
     ) -> Address:
+        if name not in MirageManagerContract:
+            raise ValueError(
+                "Contract", name, "does not exist for", self._project.name()
+            )
         match name:
-            case "Nodes":
+            case MirageManagerContract.NODES:
                 return to_canonical_address(
                     self.committee.functions.nodes().call()
                 )
-            case "Status":
+            case MirageManagerContract.STATUS:
                 return to_canonical_address(
                     self.committee.functions.status().call()
                 )
-            case "DKG":
+            case MirageManagerContract.DKG:
                 return to_canonical_address(
                     self.committee.functions.dkg().call()
                 )
-            case "MirageAccessManager":
+            case MirageManagerContract.MIRAGE_ACCESS_MANAGER:
                 return to_canonical_address(
                     self.committee.functions.authority().call()
                 )
-            case "Staking":
+            case MirageManagerContract.STAKING:
                 return to_canonical_address(
                     self.committee.functions.staking().call()
                 )
-            case "Committee":
+            case MirageManagerContract.COMMITTEE:
                 return self.committee_address
-        raise ValueError(
-            "Contract", name, "does not exist for", self._project.name()
-        )
+
+    @cached_property
+    def contract_names(self) -> set[MirageManagerContract]:
+        return set(MirageManagerContract)
 
 
-class MirageManagerProject(Project):
+class MirageManagerProject(Project[MirageManagerContract]):
     """Represents mirage-manager project"""
 
     @staticmethod
-    def name() -> str:
-        return 'mirage-manager'
+    def name() -> SkaleProject:
+        return SkaleProject.MIRAGE_MANAGER
 
     @property
     def github_repo(self) -> str:
         return 'https://github.com/skalenetwork/mirage-manager/'
 
-    def create_instance(self, address: Address) -> Instance:
+    def create_instance(self, address: Address) -> MirageManagerInstance:
         return MirageManagerInstance(self, address)
 
+    def get_instance(self, alias_or_address: str) -> MirageManagerInstance:
+        return cast(
+            MirageManagerInstance,
+            super().get_instance(alias_or_address)
+        )
+
     def get_abi_filename(self, version: str) -> str:
-        return f'mirage-manager-{version}-abi.json'
+        return f'{self.name()}-{version}-abi.json'

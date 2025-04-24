@@ -10,73 +10,58 @@ import { SchainImaProject } from "./ima/schain/SchainImaProject";
 import { SkaleAllocatorProject } from "./skale-allocator/skaleAllocatorProject";
 import { SkaleManagerProject } from "./skale-manager/skaleManagerProject";
 
+export enum SkaleProject {
+    MAINNET_IMA = "mainnet-ima",
+    SCHAIN_IMA = "schain-ima",
+    PAYMASTER = "paymaster",
+    SKALE_ALLOCATOR = "skale-allocator",
+    SKALE_MANAGER = "skale-manager",
+    MIRAGE_MANAGER = "mirage-manager"
+}
+export type SkaleProjectName = `${SkaleProject}`;
 
-export const projects = {
-    "mainnetIma": {
-        "name": "mainnet-ima",
-        "path": "mainnet-ima"
-    },
-    "mirageManager": {
-        "name": "mirage-manager",
-        "path": "mirage-manager"
-    },
-    "paymaster": {
-        "name": "paymaster",
-        "path": "paymaster"
-    },
-    "schainIma": {
-        "name": "schain-ima",
-        "path": "schain-ima"
-    },
-    "skaleAllocator": {
-        "name": "skale-allocator",
-        "path": "skale-allocator"
-    },
-    "skaleManager": {
-        "name": "skale-manager",
-        "path": "skale-manager"
+export const createProject = function createProject<ContractType> (
+    network: Network<ContractType>,
+    name: SkaleProjectName
+): Project<ContractType> {
+    const metadata = {
+        name,
+        "path": name
+    };
+    switch (name) {
+    case SkaleProject.MAINNET_IMA:
+        return new MainnetImaProject<ContractType>(
+            network,
+            metadata
+        );
+    case SkaleProject.PAYMASTER:
+        return new PaymasterProject<ContractType>(
+            network,
+            metadata
+        );
+    case SkaleProject.SCHAIN_IMA:
+        return new SchainImaProject<ContractType>(
+            network,
+            metadata
+        );
+    case SkaleProject.SKALE_ALLOCATOR:
+        return new SkaleAllocatorProject<ContractType>(
+            network,
+            metadata
+        );
+    case SkaleProject.SKALE_MANAGER:
+        return new SkaleManagerProject<ContractType>(
+            network,
+            metadata
+        );
+    case SkaleProject.MIRAGE_MANAGER:
+        return new MirageManagerProject<ContractType>(
+            network,
+            metadata
+        );
+    default:
+        throw new ProjectNotFoundError(
+            `Project with name ${name} is unknown`
+        );
     }
 };
-
-export const createProject =
-    function createProject<ContractType> (
-        network: Network<ContractType>,
-        name: string
-    ): Project<ContractType> {
-        switch (name) {
-        case projects.skaleManager.name:
-            return new SkaleManagerProject<ContractType>(
-                network,
-                projects.skaleManager
-            );
-        case projects.mainnetIma.name:
-            return new MainnetImaProject<ContractType>(
-                network,
-                projects.mainnetIma
-            );
-        case projects.schainIma.name:
-            return new SchainImaProject<ContractType>(
-                network,
-                projects.schainIma
-            );
-        case projects.skaleAllocator.name:
-            return new SkaleAllocatorProject<ContractType>(
-                network,
-                projects.skaleAllocator
-            );
-        case projects.paymaster.name:
-            return new PaymasterProject<ContractType>(
-                network,
-                projects.paymaster
-            );
-        case projects.mirageManager.name:
-            return new MirageManagerProject<ContractType>(
-                network,
-                projects.mirageManager
-            );
-        default:
-            throw new ProjectNotFoundError(
-                `Project with name ${name} is unknown`
-            );
-        }
-    };

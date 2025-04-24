@@ -1,6 +1,7 @@
 """Module for work with networks"""
 
 from __future__ import annotations
+from enum import StrEnum
 from typing import cast, TYPE_CHECKING
 from web3 import Web3
 from web3.providers.base import BaseProvider
@@ -11,6 +12,7 @@ from .project_factory import create_project
 if TYPE_CHECKING:
     from .project import Project
     from .skale_contracts import SkaleContracts
+    from .project_factory import SkaleProject
 
 
 class Network:
@@ -23,7 +25,7 @@ class Network:
         self.web3 = Web3(provider)
         self._skale_contracts = skale_contracts
 
-    def get_project(self, name: str) -> Project:
+    def get_project(self, name: SkaleProject) -> Project[StrEnum]:
         """Get Project object by it's name"""
         return create_project(self, name)
 
