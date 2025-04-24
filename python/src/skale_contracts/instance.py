@@ -10,7 +10,7 @@ from eth_typing import ChecksumAddress
 from parver import Version as PyVersion
 from semver.version import Version as SemVersion
 from .types import ContractName
-
+from web3.exceptions import BadResponseFormat
 
 if TYPE_CHECKING:
     from eth_typing import Address
@@ -122,7 +122,7 @@ class Instance(Generic[ContractName], ABC):
         )
         try:
             return cast(str, contract.functions.version().call())
-        except Exception:
+        except BadResponseFormat:
             if self.initial_version is not None:
                 return self.initial_version
             raise
