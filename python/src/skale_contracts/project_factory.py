@@ -34,11 +34,17 @@ projects_dict: dict[StrEnum, type[Project[StrEnum]]] = {}
 projects_module = importlib.import_module(".projects", "skale_contracts")
 
 for _, project_type in inspect.getmembers(projects_module, inspect.isclass):
-    if (
-        issubclass(project_type, Project) and
-        isinstance(project_type.name(), SkaleProject) and
-        project_type.name() not in projects_dict
-    ):
+    if issubclass(project_type, Project):
+        if not isinstance(project_type.name(), SkaleProject):
+            raise ValueError(
+                f'Name of {project_type} is not registered in factory.py'
+            )
+
+        if project_type.name() in projects_dict:
+            raise ValueError(
+                f'Found duplicate project name {project_type.name()}'
+            )
+
         projects_dict[project_type.name()] = project_type
 
 
