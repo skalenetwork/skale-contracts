@@ -9,8 +9,9 @@ from attr import dataclass
 from eth_typing import ChecksumAddress
 from parver import Version as PyVersion
 from semver.version import Version as SemVersion
-from .types import ContractName
 from web3.exceptions import BadResponseFormat
+
+from .types import ContractName
 
 if TYPE_CHECKING:
     from eth_typing import Address
