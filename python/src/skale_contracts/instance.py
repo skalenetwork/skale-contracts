@@ -2,13 +2,13 @@
 
 from __future__ import annotations
 from abc import ABC, abstractmethod
+from functools import cached_property
 import json
 from typing import TYPE_CHECKING, Generic, Optional, cast
 from attr import dataclass
 from eth_typing import ChecksumAddress
 from parver import Version as PyVersion
 from semver.version import Version as SemVersion
-
 from .types import ContractName
 
 
@@ -99,6 +99,11 @@ class Instance(Generic[ContractName], ABC):
     ) -> Address:
         """Get address of the contract by it's name"""
 
+    @cached_property
+    @abstractmethod
+    def contract_names(self) -> set[ContractName]:
+        """Get all contract names of the instance"""
+
     def get_contract(
             self,
             name: ContractName,
@@ -117,7 +122,7 @@ class Instance(Generic[ContractName], ABC):
         )
         try:
             return cast(str, contract.functions.version().call())
-        except ValueError:
+        except Exception:
             if self.initial_version is not None:
                 return self.initial_version
             raise

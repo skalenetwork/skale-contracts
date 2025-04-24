@@ -2,11 +2,13 @@
 
 from __future__ import annotations
 from enum import StrEnum
+from functools import cached_property
 from typing import TYPE_CHECKING, cast
 from eth_utils.address import to_canonical_address
 
 from skale_contracts.instance import Instance
-from skale_contracts.project import Project, SkaleProject
+from skale_contracts.project import Project
+from skale_contracts.project_factory import SkaleProject
 
 if TYPE_CHECKING:
     from eth_typing import Address, ChecksumAddress
@@ -69,6 +71,10 @@ class MirageManagerInstance(Instance[MirageManagerContract]):
                 )
             case MirageManagerContract.COMMITTEE:
                 return self.committee_address
+
+    @cached_property
+    def contract_names(self) -> set[MirageManagerContract]:
+        return set(MirageManagerContract)
 
 
 class MirageManagerProject(Project[MirageManagerContract]):

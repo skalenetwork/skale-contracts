@@ -10,8 +10,9 @@ from .project_factory import create_project
 
 
 if TYPE_CHECKING:
-    from .project import Project, SkaleProject
+    from .project import Project
     from .skale_contracts import SkaleContracts
+    from .project_factory import SkaleProject
 
 
 class Network:

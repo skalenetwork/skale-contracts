@@ -2,12 +2,14 @@
 
 from __future__ import annotations
 from enum import StrEnum
+from functools import cached_property
 from typing import TYPE_CHECKING, cast
 from eth_utils.address import to_canonical_address
 
 from skale_contracts.constants import PREDEPLOYED_ALIAS
 from skale_contracts.instance import Instance
-from skale_contracts.project import Project, SkaleProject
+from skale_contracts.project import Project
+from skale_contracts.project_factory import SkaleProject
 
 if TYPE_CHECKING:
     from eth_typing import Address, ChecksumAddress
@@ -20,6 +22,14 @@ class MarionetteContract(StrEnum):
 
 class MarionetteInstance(Instance[MarionetteContract]):
     """Represents instance of marionette"""
+
+    def __init__(
+            self,
+            project: Project[MarionetteContract],
+            address: Address
+    ) -> None:
+        super().__init__(project, address)
+        self.initial_version = "1.0.0-stable.0"
 
     PREDEPLOYED: dict[str, Address] = {
         name: to_canonical_address(address) for name, address in {
@@ -35,6 +45,10 @@ class MarionetteInstance(Instance[MarionetteContract]):
         if name in self.PREDEPLOYED:
             return self.PREDEPLOYED[name]
         raise RuntimeError(f"Can't get address of {name} contract")
+
+    @cached_property
+    def contract_names(self) -> set[MarionetteContract]:
+        return set(MarionetteContract)
 
 
 class MarionetteProject(Project[MarionetteContract]):

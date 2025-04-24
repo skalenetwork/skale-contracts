@@ -2,11 +2,13 @@
 
 from __future__ import annotations
 from enum import StrEnum
+from functools import cached_property
 from typing import TYPE_CHECKING, cast
 from eth_utils.address import to_canonical_address
 
 from skale_contracts.instance import Instance, DEFAULT_GET_VERSION_FUNCTION
-from skale_contracts.project import Project, SkaleProject
+from skale_contracts.project import Project
+from skale_contracts.project_factory import SkaleProject
 
 
 if TYPE_CHECKING:
@@ -119,10 +121,24 @@ class SkaleManagerInstance(Instance[SkaleManagerContract]):
             ).call()
         )
 
+    def get_contract(
+            self,
+            name: SkaleManagerContract,
+            *args: str | Address | ChecksumAddress
+    ) -> Contract:
+        if name == SkaleManagerContract.BOUNTY:
+            # In abi file, there's no 'bounty', only 'bounty_v2'
+            return super().get_contract(SkaleManagerContract.BOUNTY_V2, *args)
+        return super().get_contract(name, *args)
+
     def _actual_name(self, name: str) -> str:
         if name in self.custom_names:
             return self.custom_names[name]
         return name
+
+    @cached_property
+    def contract_names(self) -> set[SkaleManagerContract]:
+        return set(SkaleManagerContract)
 
 
 class SkaleManagerProject(Project[SkaleManagerContract]):

@@ -22,22 +22,6 @@ if TYPE_CHECKING:
     from .network import Network
 
 
-class SkaleProject(StrEnum):
-    """Defines project names"""
-    MIRAGE_MANAGER = "mirage-manager"
-    MAINNET_IMA = "mainnet-ima"
-    SCHAIN_IMA = "schain-ima"
-    PAYMASTER = "paymaster"
-    SKALE_ALLOCATOR = "skale-allocator"
-    SKALE_MANAGER = "skale-manager"
-    MARIONETTE = "marionette"
-    FILESTORAGE = "filestorage"
-    ETHERBASE = "etherbase"
-    ERC1820 = "erc1820"
-    CONTEXT_CONTRACT = "context-contract"
-    CONFIG_CONTROLLER = "config-controller"
-
-
 def alternative_versions_generator(version: str) -> Generator[str, None, None]:
     """Provides versions that have compatible ABI"""
     sem_version = SemVersion.parse(version)
@@ -59,7 +43,7 @@ class Project(Generic[ContractName], ABC):
 
     @staticmethod
     @abstractmethod
-    def name() -> SkaleProject:
+    def name() -> StrEnum:
         """Name of the project"""
 
     @property
