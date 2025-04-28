@@ -20,5 +20,8 @@
         { "name": "domain-terms", "path": "dictionary/domain-terms.txt"},
         { "name": "names", "path": "dictionary/names.txt"},
         { "name": "solidity", "path": "dictionary/solidity.txt"}
+    ],
+    "words": [
+        "PYTHONPATH"
     ]
 }

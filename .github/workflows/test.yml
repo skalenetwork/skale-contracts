@@ -162,10 +162,11 @@ jobs:
 
   python:
     runs-on: ubuntu-latest
-
+    name: Python ${{ matrix.python-version }} / Web3 ${{ matrix.web3-version }}
     strategy:
       matrix:
         python-version: [3.11, 3.12]
+        web3-version: ['6.0', '7.0']
 
     defaults:
       run:
@@ -199,6 +200,9 @@ jobs:
           VERSION: ${{ env.VERSION }}
       run: ./scripts/build_package.sh
 
+    - name: Install web3
+      run: pip install "web3~=${{matrix.web3-version}}"
+
     - name: Install the package
       run: pip3 install -e .
 
@@ -208,7 +212,13 @@ jobs:
     - name: Run static checks
       run: scripts/full_check.sh
 
+    - name: Log Web3 version
+      run: python3 -c "import web3; print('Using Web3 version --> ', web3.__version__)"
+
     - name: Run tests
-      env:
-          ENDPOINT: ${{env.ENDPOINT}}
-      run: ENDPOINT="https://mainnet.infura.io/v3/${{ secrets.INFURA_API_TOKEN }}" pytest -v
+      run: ENDPOINT="https://mainnet.infura.io/v3/${{ secrets.INFURA_API_TOKEN }}" pytest --cov=./ --cov-report=xml -v
+
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v5
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
