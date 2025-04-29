@@ -162,12 +162,10 @@ jobs:
 
   python:
     runs-on: ubuntu-latest
-    name: Python ${{ matrix.python-version }} / Web3 ${{ matrix.web3-version }}
     strategy:
       fail-fast: false
       matrix:
         python-version: [3.11, 3.12]
-        web3-version: ['6.0', '7.0']
 
     defaults:
       run:
@@ -200,9 +198,6 @@ jobs:
           PYTHONPATH: ./
           VERSION: ${{ env.VERSION }}
       run: ./scripts/build_package.sh
-
-    - name: Install web3
-      run: pip install "web3~=${{matrix.web3-version}}"
 
     - name: Install the package
       run: pip3 install -e .

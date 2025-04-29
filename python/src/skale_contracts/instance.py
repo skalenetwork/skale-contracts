@@ -4,16 +4,14 @@ from __future__ import annotations
 from abc import ABC, abstractmethod
 from functools import cached_property
 import json
-from typing import TYPE_CHECKING, Generic, Optional, Type, cast
+from typing import TYPE_CHECKING, Generic, Optional, cast
 from attr import dataclass
 from eth_typing import ChecksumAddress
 from parver import Version as PyVersion
 from semver.version import Version as SemVersion
-from web3.exceptions import BadResponseFormat
-import web3
+from web3.exceptions import BadResponseFormat, Web3RPCError
 from .types import ContractName
 
-Web3RPCError: Type[Exception] = ValueError
 
 if TYPE_CHECKING:
     from eth_typing import Address
@@ -21,12 +19,6 @@ if TYPE_CHECKING:
     from web3.contract.contract import Contract
     from .abi import SkaleAbi
     from .project import Project
-else:
-    # Web3 v6 uses ValueError as default exception
-    # Web3 v7 introduces Web3RPCError and does not use ValueError
-    if web3.__version__.startswith("7"):
-        from web3.exceptions import Web3RPCError as Web3Error
-        Web3RPCError = Web3Error
 
 
 DEFAULT_GET_VERSION_FUNCTION = {
@@ -131,7 +123,7 @@ class Instance(Generic[ContractName], ABC):
         )
         try:
             return cast(str, contract.functions.version().call())
-        # BadResponseFormat can be triggered depending on the RPC error response
+        # BadResponseFormat can be triggered depending on the RPC response
         except (BadResponseFormat, Web3RPCError):
             if self.initial_version is not None:
                 return self.initial_version
