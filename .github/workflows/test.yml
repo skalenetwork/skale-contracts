@@ -164,6 +164,7 @@ jobs:
     runs-on: ubuntu-latest
     name: Python ${{ matrix.python-version }} / Web3 ${{ matrix.web3-version }}
     strategy:
+      fail-fast: false
       matrix:
         python-version: [3.11, 3.12]
         web3-version: ['6.0', '7.0']
