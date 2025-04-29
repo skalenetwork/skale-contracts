@@ -1,4 +1,4 @@
-"""Module with fixtured for tests"""
+"""Module with fixtures for tests"""
 
 import pytest
 from web3 import HTTPProvider, Web3
