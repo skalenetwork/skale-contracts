@@ -13,13 +13,7 @@ from web3.exceptions import BadResponseFormat
 import web3
 from .types import ContractName
 
-# Web3 v6 uses ValueError as default exception
-# Web3 v7 introduces Web3RPCError and does not use ValueError
 Web3RPCError: Type[Exception] = ValueError
-if web3.__version__.startswith("7"):
-    from web3.exceptions import Web3RPCError as Web3Error
-    Web3RPCError = Web3Error
-
 
 if TYPE_CHECKING:
     from eth_typing import Address
@@ -27,6 +21,12 @@ if TYPE_CHECKING:
     from web3.contract.contract import Contract
     from .abi import SkaleAbi
     from .project import Project
+else:
+    # Web3 v6 uses ValueError as default exception
+    # Web3 v7 introduces Web3RPCError and does not use ValueError
+    if web3.__version__.startswith("7"):
+        from web3.exceptions import Web3RPCError as Web3Error
+        Web3RPCError = Web3Error
 
 
 DEFAULT_GET_VERSION_FUNCTION = {
