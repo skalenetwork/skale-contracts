@@ -208,9 +208,6 @@ jobs:
     - name: Run static checks
       run: scripts/full_check.sh
 
-    - name: Log Web3 version
-      run: python3 -c "import web3; print('Using Web3 version --> ', web3.__version__)"
-
     - name: Run tests
       run: ENDPOINT="https://mainnet.infura.io/v3/${{ secrets.INFURA_API_TOKEN }}" pytest --cov=./ --cov-report=xml -v
 
