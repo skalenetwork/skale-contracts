@@ -1,5 +1,3 @@
 [run]
 omit =
-    src/skale_contracts/__init__.py
-    src/skale_contracts/projects/__init__.py
     tests/*

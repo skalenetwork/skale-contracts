@@ -4,6 +4,7 @@ on: [push, pull_request]
 
 env:
   NODE_VERSION: 18
+  ENDPOINT: "https://mainnet.infura.io/v3/${{ secrets.INFURA_API_TOKEN }}"
 
 jobs:
   spelling:
@@ -209,7 +210,7 @@ jobs:
       run: scripts/full_check.sh
 
     - name: Run tests
-      run: ENDPOINT="https://mainnet.infura.io/v3/${{ secrets.INFURA_API_TOKEN }}" pytest --cov=./ --cov-report=xml -v
+      run: pytest --cov=./ --cov-report=xml -v
 
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v5

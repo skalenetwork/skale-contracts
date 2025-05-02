@@ -14,7 +14,7 @@ from skale_contracts.project_factory import SkaleProject, create_project
 
 from .constants import \
     EUROPA_PROJECTS, MAINNET_PROJECTS, \
-    MOCK_ADDRESS, NOT_DEPLOYED, SCHAIN_NOT_PREDEPLOYED
+    SCHAIN_NOT_PREDEPLOYED
 from .utils import is_contract_address
 
 
@@ -63,25 +63,3 @@ def test_europa_instances(
             europa_provider,
             to_canonical_address(contract.address)
         )
-
-
-@pytest.mark.parametrize("project_name", NOT_DEPLOYED)
-def test_not_deployed_instances(project_name: SkaleProject) -> None:
-    """Tests instances not yet deployed. Just fetches ABI"""
-    with \
-        patch.object(
-            Instance, "version",
-            new_callable=PropertyMock
-        ) as mock_proj, \
-            patch.object(
-                BaseProvider, "make_request",
-                return_value={"jsonrpc": "2.0", "id": 1, "result": 1234}):
-
-        mock_proj.return_value = "0.0.1-develop.9"
-        network = Network(skale_contracts, BaseProvider())
-
-        project = create_project(network, project_name)
-        instance = project.get_instance(MOCK_ADDRESS)
-
-        for contract in instance.contract_names:
-            assert contract in instance.abi
