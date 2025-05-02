@@ -1,13 +1,10 @@
 """Module with unit tests for skale-contract projects"""
 
-from unittest.mock import patch, PropertyMock
 import pytest
 from eth_utils.address import to_canonical_address
-from web3 import BaseProvider, HTTPProvider
+from web3 import HTTPProvider
 
 from skale_contracts.constants import PREDEPLOYED_ALIAS
-from skale_contracts.instance import Instance
-from skale_contracts.network import Network
 from skale_contracts.projects.skale_allocator import SkaleAllocatorContract
 from skale_contracts import skale_contracts
 from skale_contracts.project_factory import SkaleProject, create_project
