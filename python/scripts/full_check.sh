@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# cSpell:words pylint mypy
+# cSpell:words pylint mypy PYTHONPATH
 
 set -e
 
