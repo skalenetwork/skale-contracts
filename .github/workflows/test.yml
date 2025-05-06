@@ -4,6 +4,7 @@ on: [push, pull_request]
 
 env:
   NODE_VERSION: 18
+  ENDPOINT: "https://mainnet.infura.io/v3/${{ secrets.INFURA_API_TOKEN }}"
 
 jobs:
   spelling:
@@ -162,8 +163,8 @@ jobs:
 
   python:
     runs-on: ubuntu-latest
-
     strategy:
+      fail-fast: false
       matrix:
         python-version: [3.11, 3.12]
 
@@ -203,7 +204,16 @@ jobs:
       run: pip3 install -e .
 
     - name: Install tools
-      run: pip3 install -r test/requirements.txt
+      run: pip3 install -r tests/requirements.txt
 
     - name: Run static checks
       run: scripts/full_check.sh
+
+    - name: Run tests
+      run: pytest --cov=./ --cov-report=xml -v
+
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v5
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
+        flags: python

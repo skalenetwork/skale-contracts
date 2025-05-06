@@ -9,9 +9,9 @@ from attr import dataclass
 from eth_typing import ChecksumAddress
 from parver import Version as PyVersion
 from semver.version import Version as SemVersion
-from web3.exceptions import BadResponseFormat
-
+from web3.exceptions import BadResponseFormat, Web3RPCError
 from .types import ContractName
+
 
 if TYPE_CHECKING:
     from eth_typing import Address
@@ -123,7 +123,8 @@ class Instance(Generic[ContractName], ABC):
         )
         try:
             return cast(str, contract.functions.version().call())
-        except BadResponseFormat:
+        # BadResponseFormat can be triggered depending on the RPC response
+        except (BadResponseFormat, Web3RPCError):
             if self.initial_version is not None:
                 return self.initial_version
             raise

@@ -2,3 +2,6 @@ flake8
 mypy
 pylint
 types-requests
+pytest
+pytest-cov
+dotenv
