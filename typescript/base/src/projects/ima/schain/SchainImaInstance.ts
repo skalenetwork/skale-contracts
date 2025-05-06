@@ -17,6 +17,8 @@ export type SchainImaContractName = `${SchainImaContract}`;
 
 export class SchainImaInstance<ContractType> extends
     ImaInstance<ContractType> {
+    contractNames = Object.values(SchainImaContract) as SchainImaContractName[];
+
     static PREDEPLOYED = new Map<string, string>([
         [
             "CommunityLocker",

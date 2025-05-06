@@ -13,3 +13,6 @@ src/debug.ts
 
 .editorconfig
 .gitattributes
+.env
+
+coverage/

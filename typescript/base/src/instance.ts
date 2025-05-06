@@ -89,6 +89,8 @@ export abstract class Instance<ContractType> {
         return this.project.network.adapter;
     }
 
+    abstract get contractNames (): string[];
+
     abstract getContractAddress(
         name: ContractName,
         args?: unknown[]
@@ -156,9 +158,3 @@ export abstract class Instance<ContractType> {
         return this.abi;
     }
 }
-
-
-export const contractExists = <T extends Record<string, string>>(
-    enumObj: T,
-    value: string
-): value is T[keyof T] => Object.values(enumObj).includes(value as T[keyof T]);

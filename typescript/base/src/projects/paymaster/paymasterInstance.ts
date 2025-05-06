@@ -11,6 +11,8 @@ export enum PaymasterContract {
 export type PaymasterContractName = `${PaymasterContract}`;
 export class PaymasterInstance<ContractType> extends
     Instance<ContractType> {
+    contractNames = Object.values(PaymasterContract) as PaymasterContractName[];
+
     async getContractAddress (
         name: PaymasterContractName
     ): Promise<ContractAddress> {
