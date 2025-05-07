@@ -1,16 +1,20 @@
 import { ContractAddressMap, MainContractAddress } from "../../domain/types";
+import {
+    SkaleAllocatorContractName,
+    SkaleAllocatorInstance
+} from "./skaleAllocatorInstance";
 import { Instance } from "../../instance";
 import { Project } from "../../project";
-import { SkaleAllocatorInstance } from "./skaleAllocatorInstance";
+
 
 export class SkaleAllocatorProject<ContractType> extends
-    Project<ContractType> {
+    Project<ContractType, SkaleAllocatorContractName> {
     githubRepo = "https://github.com/skalenetwork/skale-allocator/";
 
     mainContractName = "SkaleAllocator";
 
     createInstance (address: MainContractAddress | ContractAddressMap)
-        : Instance<ContractType> {
+        : Instance<ContractType, SkaleAllocatorContractName> {
         return new SkaleAllocatorInstance(
             this,
             address

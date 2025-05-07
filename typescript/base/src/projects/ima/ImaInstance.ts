@@ -18,8 +18,8 @@ const messageProxyAbi = [
     }
 ];
 
-export abstract class ImaInstance<ContractType> extends
-    Instance<ContractType> {
+export abstract class ImaInstance<ContractType, ContractName extends string>
+    extends Instance<ContractType, ContractName> {
     async queryVersion () {
         return await this.callMessageProxy(
             "version",

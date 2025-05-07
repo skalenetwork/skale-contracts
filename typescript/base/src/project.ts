@@ -32,7 +32,7 @@ const alternativeVersionsGenerator =
         }
     };
 
-export abstract class Project<ContractType> {
+export abstract class Project<ContractType, ContractName extends string> {
     protected metadata: ProjectMetadata;
 
     network: Network<ContractType>;
@@ -100,7 +100,7 @@ export abstract class Project<ContractType> {
     }
 
     abstract createInstance(address: MainContractAddress | ContractAddressMap):
-        Instance<ContractType>;
+        Instance<ContractType, ContractName>;
 
     public isContractAddressMap = (
         obj: unknown

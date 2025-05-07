@@ -1,16 +1,19 @@
 import { ContractAddressMap, MainContractAddress } from "../../domain/types";
+import {
+    MirageManagerContractName,
+    MirageManagerInstance
+} from "./mirageManagerInstance";
 import { Instance } from "../../instance";
-import { MirageManagerInstance } from "./mirageManagerInstance";
 import { Project } from "../../project";
 
 export class MirageManagerProject<ContractType> extends
-    Project<ContractType> {
+    Project<ContractType, MirageManagerContractName> {
     githubRepo = "https://github.com/skalenetwork/mirage-manager/";
 
     mainContractName = "Committee";
 
     createInstance (address: MainContractAddress | ContractAddressMap)
-        : Instance<ContractType> {
+        : Instance<ContractType, MirageManagerContractName> {
         return new MirageManagerInstance(
             this,
             address

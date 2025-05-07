@@ -1,13 +1,23 @@
+import { MainnetImaContractName } from "./ima/mainnet/MainnetImaInstance";
 import { MainnetImaProject } from "./ima/mainnet/MainnetImaProject";
+import {
+    MirageManagerContractName
+} from "./mirage-manager/mirageManagerInstance";
 import { MirageManagerProject } from "./mirage-manager/mirageManagerProject";
 import { Network } from "../network";
+import { PaymasterContractName } from "./paymaster/paymasterInstance";
 import { PaymasterProject } from "./paymaster/paymasterProject";
 import { Project } from "../project";
 import {
     ProjectNotFoundError
 } from "../domain/errors/project/projectNotFoundError";
+import { SchainImaContractName } from "./ima/schain/SchainImaInstance";
 import { SchainImaProject } from "./ima/schain/SchainImaProject";
+import {
+    SkaleAllocatorContractName
+} from "./skale-allocator/skaleAllocatorInstance";
 import { SkaleAllocatorProject } from "./skale-allocator/skaleAllocatorProject";
+import { SkaleManagerContractName } from "./skale-manager/skaleManagerInstance";
 import { SkaleManagerProject } from "./skale-manager/skaleManagerProject";
 
 export enum SkaleProject {
@@ -20,10 +30,19 @@ export enum SkaleProject {
 }
 export type SkaleProjectName = `${SkaleProject}`;
 
+export type SkaleContractNames =
+    PaymasterContractName |
+    MainnetImaContractName |
+    SchainImaContractName |
+    SkaleManagerContractName |
+    MirageManagerContractName |
+    SkaleManagerContractName |
+    SkaleAllocatorContractName;
+
 export const createProject = function createProject<ContractType> (
     network: Network<ContractType>,
     name: SkaleProjectName
-): Project<ContractType> {
+): Project<ContractType, SkaleContractNames> {
     const metadata = {
         name,
         "path": name

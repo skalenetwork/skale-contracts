@@ -9,7 +9,10 @@ export enum SkaleAllocatorContract {
 }
 export type SkaleAllocatorContractName = `${SkaleAllocatorContract}`;
 export class SkaleAllocatorInstance<ContractType> extends
-    Instance<ContractType> {
+    Instance<ContractType, SkaleAllocatorContractName> {
+    contractNames =
+        Object.values(SkaleAllocatorContract);
+
     getContractAddress (
         name: SkaleAllocatorContractName,
         args?: unknown[]
