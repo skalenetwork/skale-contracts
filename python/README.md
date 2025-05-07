@@ -1,3 +1,5 @@
+<!-- cspell:ignore pytest -->
+
 # SKALE Contracts Python
 
 ## Description
@@ -17,32 +19,43 @@ The library simplifies development of dApps that interact with smart contracts i
 pip install skale-contracts
 ```
 
-## Setup repo localy
+## Setup repo locally
 
 1. Clone the repo
 ```bash
 git clone --recurse-submodules https://github.com/skalenetwork/skale-contracts.git && cd skale-contracts
 ```
 
-2. Install python dev & test dependencies
+2. Install dependencies
 ```bash
-cd python && pip install -e . && pip3 install -r tests/requirements.txt
+cd python && pip install -e . && pip3 install -r scripts/requirements.txt && pip3 install -r tests/requirements.txt
 ```
 
-### Runing tests (python)
+### Running tests (python)
 
 1. set ENDPOINT environment variable using either option:
-    - run `export ENDPOINT="http://my.mainnet.endpoint/my-api-key"`
-    - run `echo 'ENDPOINT="http://my.mainnet.endpoint/my-api-key"' > .env`
+    ```bash
+    export ENDPOINT="http://my.mainnet.endpoint/my-api-key"
+    ```
+    or
+    ```bash
+    echo 'ENDPOINT="http://my.mainnet.endpoint/my-api-key"' > .env
+    ```
 
 2. run tests
 ```bash
 pytest -v
 ```
-3. run tests with coverage report
+3. run tests with coverage report (optional)
 ```bash
 pytest --cov=./ --cov-report=xml -v
 ```
+
+The tests require reliable network connection as they will fetch information like:
+    - stable versions of skale projects
+    - deployed versions of skale projects
+    - ABIs of smart-contracts
+    - perform read operations to some deployed smart-contracts on Mainnet and SKALE's Europa-chain
 
 ## Glossary
 
@@ -76,7 +89,7 @@ The library provides a master object `skale_contracts`.
 
 This object is used to provide the desired [network](#network), [project](#project) and [instance](#instance) using it's [alias](#alias) or direct address.
 
-By instanciating a particular instance, it can be queried for information (address, ABI or Contract object) about a particular contract by it's name.
+By instantiating a particular instance, it can be queried for information (address, ABI or Contract object) about a particular contract by it's name.
 
 ### Usage Example
 
@@ -97,9 +110,10 @@ instance = project.get_instance('production')
 # returns all contract names that can be queried using this instance
 all_contract_names = instance.get_contract_names()
 
+# get specific contract object
 skale_manager_contract = instance.getContract(SkaleManagerContract.SKALE_MANAGER)
 
-# will query the version set in the smart-contract
+# will query the smart-contract. In this case, queries the version set in SkaleManager.sol
 version = skale_manager_contract.functions.version().call()
 
 ```
