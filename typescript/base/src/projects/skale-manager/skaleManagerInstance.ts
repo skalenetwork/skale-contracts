@@ -129,10 +129,8 @@ export class SkaleManagerInstance<ContractType> extends
         if (name === SkaleManagerContract.BOUNTY) {
             // Required because the ABI has the name as BOUNTY_V2
             // Even thought ContractManager stores address at BOUNTY
-            return super.getContract(
-                SkaleManagerContract.BOUNTY_V2,
-                args
-            );
+            // eslint-disable-next-line no-param-reassign
+            name = SkaleManagerContract.BOUNTY_V2;
         }
         return super.getContract(
             name,
