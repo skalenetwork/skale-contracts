@@ -2,7 +2,6 @@ import * as semver from "semver";
 import {
     ContractAddress,
     ContractAddressMap,
-    ContractName,
     MainContractAddress,
     SkaleABIFile
 } from "./domain/types";
@@ -62,8 +61,8 @@ const processPep440 = (pyVersion: Pep440Version) => {
     return stringify(pyVersion)!;
 };
 
-export abstract class Instance<ContractType> {
-    protected project: Project<ContractType>;
+export abstract class Instance<ContractType, ContractName extends string> {
+    protected project: Project<ContractType, ContractName>;
 
     addressContainer: ContractAddressMap;
 
@@ -72,7 +71,7 @@ export abstract class Instance<ContractType> {
     version: string | undefined;
 
     constructor (
-        project: Project<ContractType>,
+        project: Project<ContractType, ContractName>,
         address: MainContractAddress | ContractAddressMap
     ) {
         this.project = project;
@@ -88,6 +87,8 @@ export abstract class Instance<ContractType> {
     get adapter () {
         return this.project.network.adapter;
     }
+
+    abstract get contractNames(): ContractName[];
 
     abstract getContractAddress(
         name: ContractName,
@@ -156,9 +157,3 @@ export abstract class Instance<ContractType> {
         return this.abi;
     }
 }
-
-
-export const contractExists = <T extends Record<string, string>>(
-    enumObj: T,
-    value: string
-): value is T[keyof T] => Object.values(enumObj).includes(value as T[keyof T]);

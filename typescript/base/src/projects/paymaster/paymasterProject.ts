@@ -1,16 +1,20 @@
 import { ContractAddressMap, MainContractAddress } from "../../domain/types";
-import { PaymasterContract, PaymasterInstance } from "./paymasterInstance";
+import {
+    PaymasterContract,
+    PaymasterContractName,
+    PaymasterInstance
+} from "./paymasterInstance";
 import { Instance } from "../../instance";
 import { Project } from "../../project";
 
 export class PaymasterProject<ContractType> extends
-    Project<ContractType> {
+    Project<ContractType, PaymasterContractName> {
     githubRepo = "https://github.com/skalenetwork/paymaster/";
 
     mainContractName = PaymasterContract.PAYMASTER;
 
     createInstance (address: MainContractAddress | ContractAddressMap)
-        : Instance<ContractType> {
+        : Instance<ContractType, PaymasterContractName> {
         return new PaymasterInstance(
             this,
             address

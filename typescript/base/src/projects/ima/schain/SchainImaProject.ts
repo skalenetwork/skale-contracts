@@ -16,7 +16,7 @@ import {
 } from "../../../domain/constants";
 
 export class SchainImaProject<ContractType> extends
-    ImaProject<ContractType> {
+    ImaProject<ContractType, SchainImaContractName> {
     mainContractName = SchainImaContract.MESSAGE_PROXY_FOR_SCHAIN;
 
     getAbiFilename (version: string) {
@@ -40,7 +40,7 @@ export class SchainImaProject<ContractType> extends
     }
 
     createInstance (address: MainContractAddress | ContractAddressMap)
-        : Instance<ContractType> {
+        : Instance<ContractType, SchainImaContractName> {
         return new SchainImaInstance(
             this,
             address

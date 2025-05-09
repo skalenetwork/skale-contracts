@@ -3,7 +3,7 @@ import {
     ContractName,
     MainContractAddress
 } from "../../domain/types";
-import { Instance, contractExists } from "../../instance";
+import { Instance } from "../../instance";
 
 export enum SkaleManagerContract {
     CONTRACT_MANAGER = "ContractManager",
@@ -69,7 +69,10 @@ const skaleManagerAbi = [
 ];
 
 export class SkaleManagerInstance<ContractType> extends
-    Instance<ContractType> {
+    Instance<ContractType, SkaleManagerContractName> {
+    contractNames =
+        Object.values(SkaleManagerContract) as SkaleManagerContractName[];
+
     customNames = new Map<string, string>([
         [
             "BountyV2",
@@ -92,8 +95,7 @@ export class SkaleManagerInstance<ContractType> extends
         name: SkaleManagerContractName
     ): Promise<ContractAddress> {
         if (
-            !contractExists(
-                SkaleManagerContract,
+            !this.contractNames.includes(
                 name
             )
         ) {
@@ -118,6 +120,22 @@ export class SkaleManagerInstance<ContractType> extends
                 "functionName": "getContract"
             }
         ) as MainContractAddress;
+    }
+
+    getContract (
+        name: SkaleManagerContractName,
+        args?: unknown[]
+    ): Promise<ContractType> {
+        let contractName = name;
+        if (name === SkaleManagerContract.BOUNTY) {
+            // Required because the ABI has the name as BOUNTY_V2
+            // Even thought ContractManager stores address at BOUNTY
+            contractName = SkaleManagerContract.BOUNTY_V2;
+        }
+        return super.getContract(
+            contractName,
+            args
+        );
     }
 
     // Private

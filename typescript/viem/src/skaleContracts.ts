@@ -6,9 +6,12 @@ import {
 import {
     SkaleContracts as BaseSkaleContracts
 } from "@skalenetwork/skale-contracts";
+import {
+    SkaleContractNames
+} from '@skalenetwork/skale-contracts/lib/projects/factory';
 
 
-export type Instance = BaseInstance<ViemContract>;
+export type Instance = BaseInstance<ViemContract, SkaleContractNames>;
 
 export class SkaleContracts extends BaseSkaleContracts<ViemContract> {
     getNetworkByProvider(
