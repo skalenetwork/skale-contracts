@@ -1,4 +1,4 @@
-import { Account, Chain,PublicClient, RpcSchema, Transport, createPublicClient, http } from "viem";
+import { Chain, createPublicClient, http } from "viem";
 import { EUROPA_ENDPOINT, MAINNET_ENDPOINT } from "@skalenetwork/skale-contracts/tests/setup";
 import { describe, test } from "vitest";
 import { loadRequirements, testAllocator, testInstancesForProvider } from "@skalenetwork/skale-contracts/tests/common";
