@@ -7,9 +7,7 @@ import {
 } from "@skalenetwork/skale-contracts";
 import { Ethers5Adapter } from "./ethers5Adapter";
 import { Provider } from "@ethersproject/providers";
-import {
-    SkaleContractNames
-} from "@skalenetwork/skale-contracts/lib/projects/factory";
+import { SkaleContractNames } from "@skalenetwork/skale-contracts/lib/projects/factory";
 
 export type Instance = BaseInstance<BaseContract, SkaleContractNames>;
 

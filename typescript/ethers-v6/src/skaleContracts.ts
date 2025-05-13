@@ -6,12 +6,9 @@ import {
     SkaleContracts as BaseSkaleContracts
 } from "@skalenetwork/skale-contracts";
 import { Ethers6Adapter } from "./ethers6Adapter";
-import {
-    SkaleContractNames
-} from "@skalenetwork/skale-contracts/lib/projects/factory";
 
 
-export type Instance = BaseInstance<BaseContract, SkaleContractNames>;
+export type Instance = BaseInstance<BaseContract, string>;
 
 export class SkaleContracts extends BaseSkaleContracts<BaseContract> {
     getNetworkByChainId (chainId: number) {
