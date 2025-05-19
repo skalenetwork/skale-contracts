@@ -5,7 +5,7 @@
   "devDependencies": {
     "@skalenetwork/skale-contracts": "portal:../base/",
     "@types/node": "^22.10.2",
-    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/eslint-plugin": "^8.32.1",
     "@typescript-eslint/parser": "^8.15.0",
     "eslint": "^8.45.0",
     "typescript": "^5.7.2"
