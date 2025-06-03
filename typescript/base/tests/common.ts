@@ -14,13 +14,6 @@ import {
 
 const MIN_CONTRACT_CODE_SIZE = 2;
 
-interface SkaleContractsLike<ContractType>
-    extends SkaleContracts<ContractType> {
-    getNetworkByProvider(
-        adapter: Adapter<ContractType>
-    ): Promise<Network<ContractType>>
-}
-
 export const checkInstance = async function checkInstance<ContractType> (
     instance: Instance<ContractType, SkaleContractNames>,
     adapter: Adapter<ContractType>,
@@ -48,7 +41,7 @@ const loadInstance = async function loadInstance<ContractType> (
 
 export const loadRequirements = async function loadRequirements<ContractType> (
     adapter: Adapter<ContractType>,
-    skaleContracts: SkaleContractsLike<ContractType>,
+    skaleContracts: SkaleContracts<ContractType>,
     projectName: SkaleProject
 ) {
     const network = await skaleContracts.getNetworkByAdapter(
@@ -99,7 +92,7 @@ export const testInstancesForProvider =
 async function testInstancesForProvider<ContractType> (
     adapter: Adapter<ContractType>,
     getContractAddress: (contract: ContractType) => string | Promise<string>,
-    skaleContracts: SkaleContractsLike<ContractType>
+    skaleContracts: SkaleContracts<ContractType>
 ) {
     let projects = SCHAIN_PROJECTS;
     const chainId = (await adapter.getChainId()).toString();
