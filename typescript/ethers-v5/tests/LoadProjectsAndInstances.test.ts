@@ -3,6 +3,7 @@ import { EUROPA_ENDPOINT, MAINNET_ENDPOINT } from "@skalenetwork/skale-contracts
 import { describe, test } from "vitest";
 import { loadRequirements, testAllocator, testInstancesForProvider } from "@skalenetwork/skale-contracts/tests/common";
 import { Ethers5Adapter } from "../src/ethers5Adapter";
+import { RetryAdapter } from "@skalenetwork/skale-contracts/src/retryAdapter";
 import { SkaleProject } from "@skalenetwork/skale-contracts/src/projects/factory";
 import { skaleContracts } from "../src"
 
@@ -18,15 +19,16 @@ describe(
                     MAINNET_ENDPOINT
                 )
             );
+            const retryAdapter = new RetryAdapter(adapter);
 
-            await testInstancesForProvider(adapter, getContractAddress, skaleContracts);
+            await testInstancesForProvider(retryAdapter, getContractAddress, skaleContracts);
             test(`Loading ${SkaleProject.SKALE_ALLOCATOR}`, async () => {
                 const instance = await loadRequirements(
-                    adapter,
+                    retryAdapter,
                     skaleContracts,
                     SkaleProject.SKALE_ALLOCATOR
                 );
-                await testAllocator(instance, getContractAddress, adapter);
+                await testAllocator(instance, getContractAddress, retryAdapter);
             });
         });
 

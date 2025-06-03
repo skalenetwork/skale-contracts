@@ -3,6 +3,7 @@ import { EUROPA_ENDPOINT, MAINNET_ENDPOINT } from "@skalenetwork/skale-contracts
 import { ViemAdapter, ViemContract } from "../src/viemAdapter";
 import { describe, test } from "vitest";
 import { loadRequirements, testAllocator, testInstancesForProvider } from "@skalenetwork/skale-contracts/tests/common";
+import { RetryAdapter } from "@skalenetwork/skale-contracts/src/retryAdapter";
 import { SkaleProject } from "@skalenetwork/skale-contracts/src/projects/factory";
 import { mainnet } from "viem/chains";
 import { skaleContracts } from "../src";
@@ -24,16 +25,16 @@ describe(
     () => {
         describe("Testing instances on Mainnet", async () => {
             const adapter = createAdapter(MAINNET_ENDPOINT, mainnet);
-            await adapter.getChainId();
-            await testInstancesForProvider(adapter, getContractAddress, skaleContracts);
+            const retryAdapter = new RetryAdapter(adapter);
+            await testInstancesForProvider(retryAdapter, getContractAddress, skaleContracts);
 
             test(`Loading ${SkaleProject.SKALE_ALLOCATOR}`, async () => {
                 const instance = await loadRequirements<ViemContract>(
-                    adapter,
+                    retryAdapter,
                     skaleContracts,
                     SkaleProject.SKALE_ALLOCATOR
                 );
-                await testAllocator<ViemContract>(instance, getContractAddress, adapter);
+                await testAllocator<ViemContract>(instance, getContractAddress, retryAdapter);
             });
         });
 
