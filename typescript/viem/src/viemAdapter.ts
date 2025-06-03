@@ -46,6 +46,11 @@ export class ViemAdapter implements Adapter<ViemContract> {
         return BigInt(chainId);
     }
 
+    async getCode(input: `0x${string}`): Promise<string>{
+        const code = await this.client.getCode({ address: input });
+        return code as string;
+    }
+
     // eslint-disable-next-line class-methods-use-this
     isAddress(value: string): value is Address {
         return isAddress(value);

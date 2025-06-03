@@ -49,6 +49,11 @@ export class Ethers5Adapter implements Adapter<BaseContract> {
         return BigInt(chainId);
     }
 
+    async getCode(address: string | Promise<string>): Promise<string> {
+        const code = await this.provider.getCode(address);
+        return code;
+    }
+
     // eslint-disable-next-line class-methods-use-this
     isAddress (value: string): value is ContractAddress {
         return ethers.utils.isAddress(value);

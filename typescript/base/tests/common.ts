@@ -1,3 +1,4 @@
+import { Adapter, SkaleContracts } from "../lib";
 import {
     MAINNET_PROJECTS,
     SCHAIN_NOT_PREDEPLOYED,
@@ -10,34 +11,24 @@ import { Network } from "../lib/network";
 import {
     SkaleAllocatorContract
 } from "../lib/projects/skale-allocator/skaleAllocatorInstance";
-import { SkaleContracts } from "../lib";
 
 const MIN_CONTRACT_CODE_SIZE = 2;
 
-interface NetworkLike {
-    chainId: bigint | number;
-}
-interface ProviderLike {
-    getCode(
-        address: string
-    ): Promise<string | undefined>;
-    getNetwork?(): Promise<NetworkLike>;
-    getChainId?(): Promise<bigint | number>;
-}
-
 interface SkaleContractsLike<ContractType>
     extends SkaleContracts<ContractType> {
-    getNetworkByProvider(provider: ProviderLike): Promise<Network<ContractType>>
+    getNetworkByProvider(
+        adapter: Adapter<ContractType>
+    ): Promise<Network<ContractType>>
 }
 
 export const checkInstance = async function checkInstance<ContractType> (
     instance: Instance<ContractType, SkaleContractNames>,
-    provider: ProviderLike,
+    adapter: Adapter<ContractType>,
     addressGetter: (contract: ContractType) => string | Promise<string>
 ) {
     const codeChecks = instance.contractNames.map(async (contractName) => {
         const contract = await instance.getContract(contractName);
-        const code = await provider.getCode(await addressGetter(contract));
+        const code = await adapter.getCode(await addressGetter(contract));
         expect(code).toBeTruthy();
         expect(code?.length).to.be.greaterThan(MIN_CONTRACT_CODE_SIZE);
     });
@@ -56,12 +47,12 @@ const loadInstance = async function loadInstance<ContractType> (
 
 
 export const loadRequirements = async function loadRequirements<ContractType> (
-    provider: ProviderLike,
+    adapter: Adapter<ContractType>,
     skaleContracts: SkaleContractsLike<ContractType>,
     projectName: SkaleProject
 ) {
-    const network = await skaleContracts.getNetworkByProvider(
-        provider
+    const network = await skaleContracts.getNetworkByAdapter(
+        adapter
     );
     let alias = "production";
     if (
@@ -81,12 +72,12 @@ export const loadRequirements = async function loadRequirements<ContractType> (
 export const testAllocator = async function testAllocator<ContractType> (
     instance: Instance<ContractType, SkaleContractNames>,
     addressGetter: (contract: ContractType) => string | Promise<string>,
-    provider: ProviderLike
+    adapter: Adapter<ContractType>
 ) {
     const allocator = await instance.getContract(
         SkaleAllocatorContract.ALLOCATOR
     );
-    const codeAllocator = await provider.getCode(
+    const codeAllocator = await adapter.getCode(
         await addressGetter(allocator)
     );
     expect(codeAllocator).toBeTruthy();
@@ -97,32 +88,21 @@ export const testAllocator = async function testAllocator<ContractType> (
         [await addressGetter(allocator)]
     );
 
-    const codeEscrow = await provider.getCode(await addressGetter(escrow));
+    const codeEscrow = await adapter.getCode(await addressGetter(escrow));
     expect(codeAllocator).toBeTruthy();
     expect(codeEscrow?.length).to.be.greaterThan(MIN_CONTRACT_CODE_SIZE);
 };
 
 const MAINNET_CHAIN_ID = 1;
 
-const getChainId = async function getChainId (provider: ProviderLike) {
-    if (provider.getNetwork) {
-        return (await provider.getNetwork()).chainId;
-    } else if (provider.getChainId) {
-        const chainId = provider.getChainId();
-        return chainId;
-    }
-
-    throw new Error("Cannot get chainId for this provider.");
-};
-
 export const testInstancesForProvider =
 async function testInstancesForProvider<ContractType> (
-    provider: ProviderLike,
+    adapter: Adapter<ContractType>,
     getContractAddress: (contract: ContractType) => string | Promise<string>,
     skaleContracts: SkaleContractsLike<ContractType>
 ) {
     let projects = SCHAIN_PROJECTS;
-    const chainId = (await getChainId(provider)).toString();
+    const chainId = (await adapter.getChainId()).toString();
     // eslint-disable-next-line function-call-argument-newline
     if (parseInt(chainId, 10) === MAINNET_CHAIN_ID) {
         projects = MAINNET_PROJECTS;
@@ -135,13 +115,13 @@ async function testInstancesForProvider<ContractType> (
         "Loading %s",
         async (...[projectName]) => {
             const instance = await loadRequirements<ContractType>(
-                provider,
+                adapter,
                 skaleContracts,
                 projectName
             );
             await checkInstance(
                 instance,
-                provider,
+                adapter,
                 getContractAddress
             );
         }

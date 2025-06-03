@@ -47,6 +47,13 @@ export class RetryAdapter<ContractType> implements Adapter<ContractType> {
         );
     }
 
+    getCode (address: unknown): Promise<string> {
+        return this.retry(
+            this.adapter.getCode(address),
+            this.retries
+        );
+    }
+
     isAddress (value: string): value is ContractAddress {
         return this.adapter.isAddress(value);
     }

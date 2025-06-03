@@ -4,7 +4,7 @@ import {
     ContractData,
     FunctionCall
 } from "@skalenetwork/skale-contracts";
-import { BaseContract, Provider, ethers } from "ethers";
+import { AddressLike, BaseContract, Provider, ethers } from "ethers";
 import {
     ContractAddress
 } from "@skalenetwork/skale-contracts/lib/domain/types";
@@ -46,6 +46,11 @@ export class Ethers6Adapter implements Adapter<BaseContract> {
     async getChainId (): Promise<bigint> {
         const { chainId } = await this.provider.getNetwork();
         return BigInt(chainId);
+    }
+
+    async getCode(address: AddressLike): Promise<string> {
+        const code = await this.provider.getCode(address);
+        return code;
     }
 
     // eslint-disable-next-line class-methods-use-this
