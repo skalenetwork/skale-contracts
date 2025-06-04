@@ -95,9 +95,11 @@ async function testInstancesForProvider<ContractType> (
     skaleContracts: SkaleContracts<ContractType>
 ) {
     let projects = SCHAIN_PROJECTS;
-    const chainId = (await adapter.getChainId()).toString();
-    // eslint-disable-next-line function-call-argument-newline
-    if (parseInt(chainId, 10) === MAINNET_CHAIN_ID) {
+    const chainId = parseInt(
+        (await adapter.getChainId()).toString(),
+        10
+    );
+    if (chainId === MAINNET_CHAIN_ID) {
         projects = MAINNET_PROJECTS;
     }
     test.each(
