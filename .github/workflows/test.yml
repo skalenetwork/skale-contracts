@@ -93,6 +93,15 @@ jobs:
     - name: Run static checks
       run: yarn fullCheck
 
+    - name: Run tests
+      run: yarn test-coverage
+
+    - name: Upload Coverage
+      uses: codecov/codecov-action@v5
+      with:
+        token: ${{ secrets. CODECOV_TOKEN }}
+        flags: typescript/ethers-v5
+
   ethers-v6:
     runs-on: ubuntu-latest
 
@@ -127,6 +136,15 @@ jobs:
     - name: Run static checks
       run: yarn fullCheck
 
+    - name: Run tests
+      run: yarn test-coverage
+
+    - name: Upload Coverage
+      uses: codecov/codecov-action@v5
+      with:
+        token: ${{ secrets. CODECOV_TOKEN }}
+        flags: typescript/ethers-v6
+
   viem:
     runs-on: ubuntu-latest
 
@@ -160,6 +178,15 @@ jobs:
 
     - name: Run static checks
       run: yarn fullCheck
+
+    - name: Run tests
+      run: yarn test-coverage
+
+    - name: Upload Coverage
+      uses: codecov/codecov-action@v5
+      with:
+        token: ${{ secrets. CODECOV_TOKEN }}
+        flags: typescript/viem
 
   python:
     runs-on: ubuntu-latest
