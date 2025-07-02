@@ -13,15 +13,15 @@ export const EUROPA_ENDPOINT =
 
 export const SCHAIN_PROJECTS = [
     SkaleProject.SCHAIN_IMA,
-    SkaleProject.PAYMASTER
+    SkaleProject.PAYMASTER,
 ];
 
 // In development
 export const NOT_DEPLOYED = [SkaleProject.MIRAGE_MANAGER];
 
 export const MAINNET_PROJECTS = Object.values(SkaleProject).filter(
-    (project) => !SCHAIN_PROJECTS.includes(project) &&
-            !NOT_DEPLOYED.includes(project)
+    (project) =>
+        !SCHAIN_PROJECTS.includes(project) && !NOT_DEPLOYED.includes(project),
 );
 
 export const SCHAIN_NOT_PREDEPLOYED = [SkaleProject.PAYMASTER];

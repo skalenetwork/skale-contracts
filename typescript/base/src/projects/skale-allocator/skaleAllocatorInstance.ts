@@ -1,6 +1,4 @@
-import {
-    ContractAddress
-} from "../../domain/types";
+import { ContractAddress } from "../../domain/types";
 import { Instance } from "../../instance";
 
 export enum SkaleAllocatorContract {
@@ -8,14 +6,15 @@ export enum SkaleAllocatorContract {
     ESCROW = "Escrow",
 }
 export type SkaleAllocatorContractName = `${SkaleAllocatorContract}`;
-export class SkaleAllocatorInstance<ContractType> extends
-    Instance<ContractType, SkaleAllocatorContractName> {
-    contractNames =
-        Object.values(SkaleAllocatorContract);
+export class SkaleAllocatorInstance<ContractType> extends Instance<
+    ContractType,
+    SkaleAllocatorContractName
+> {
+    contractNames = Object.values(SkaleAllocatorContract);
 
-    getContractAddress (
+    getContractAddress(
         name: SkaleAllocatorContractName,
-        args?: unknown[]
+        args?: unknown[],
     ): Promise<ContractAddress> {
         if (name === SkaleAllocatorContract.ALLOCATOR) {
             return Promise.resolve(this.mainContractAddress);
@@ -29,25 +28,25 @@ export class SkaleAllocatorInstance<ContractType> extends
             return this.getEscrow(beneficiary);
         }
         throw new Error(
-            `Contract name ${name} does not exist in skale-allocator`
+            `Contract name ${name} does not exist in skale-allocator`,
         );
     }
 
     // Private
 
-    private async getEscrow (beneficiary: string) {
+    private async getEscrow(beneficiary: string) {
         const allocatorAddress = await this.getContractAddress("Allocator");
         const allocatorAbi = await this.getContractAbi("Allocator");
 
-        return await this.project.network.adapter.makeCall(
+        return (await this.project.network.adapter.makeCall(
             {
-                "abi": allocatorAbi,
-                "address": allocatorAddress
+                abi: allocatorAbi,
+                address: allocatorAddress,
             },
             {
-                "args": [beneficiary],
-                "functionName": "getEscrowAddress"
-            }
-        ) as ContractAddress;
+                args: [beneficiary],
+                functionName: "getEscrowAddress",
+            },
+        )) as ContractAddress;
     }
 }

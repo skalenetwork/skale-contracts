@@ -14,46 +14,44 @@ export enum MainnetImaContract {
 }
 export type MainnetImaContractName = `${MainnetImaContract}`;
 
-
 const contractManagerAbi = [
     {
-        "constant": true,
-        "inputs": [
+        constant: true,
+        inputs: [
             {
-                "name": "name",
-                "type": "string"
-            }
+                name: "name",
+                type: "string",
+            },
         ],
-        "name": "getContract",
-        "outputs": [
+        name: "getContract",
+        outputs: [
             {
-                "name": "contractAddress",
-                "type": "address"
-            }
+                name: "contractAddress",
+                type: "address",
+            },
         ],
-        "payable": false,
-        "stateMutability": "view",
-        "type": "function"
-    }
+        payable: false,
+        stateMutability: "view",
+        type: "function",
+    },
 ];
 
-export class MainnetImaInstance<ContractType> extends
-    ImaInstance<ContractType, MainnetImaContractName> {
+export class MainnetImaInstance<ContractType> extends ImaInstance<
+    ContractType,
+    MainnetImaContractName
+> {
     private contractManager: ContractData | undefined;
 
-    contractNames =
-        Object.values(MainnetImaContract) as MainnetImaContractName[];
+    contractNames = Object.values(
+        MainnetImaContract,
+    ) as MainnetImaContractName[];
 
-    async getContractAddress (
-        name: MainnetImaContractName
+    async getContractAddress(
+        name: MainnetImaContractName,
     ): Promise<ContractAddress> {
-        if (
-            !this.contractNames.includes(
-                name
-            )
-        ) {
+        if (!this.contractNames.includes(name)) {
             throw new Error(
-                `Contract name ${name} does not exist in mainnet-ima`
+                `Contract name ${name} does not exist in mainnet-ima`,
             );
         }
         if (name === MainnetImaContract.MESSAGE_PROXY_FOR_MAINNET) {
@@ -61,50 +59,48 @@ export class MainnetImaInstance<ContractType> extends
         } else if (name === MainnetImaContract.COMMUNITY_POOL) {
             return this.project.network.adapter.makeCall(
                 {
-                    "abi": await this.getContractAbi(
-                        MainnetImaContract.MESSAGE_PROXY_FOR_MAINNET
+                    abi: await this.getContractAbi(
+                        MainnetImaContract.MESSAGE_PROXY_FOR_MAINNET,
                     ),
-                    "address":
-                        await this.getContractAddress(
-                            MainnetImaContract.MESSAGE_PROXY_FOR_MAINNET
-                        )
+                    address: await this.getContractAddress(
+                        MainnetImaContract.MESSAGE_PROXY_FOR_MAINNET,
+                    ),
                 },
                 {
-                    "args": [],
-                    "functionName": "communityPool"
-                }
+                    args: [],
+                    functionName: "communityPool",
+                },
             ) as Promise<ContractAddress>;
         }
         return this.project.network.adapter.makeCall(
             await this.getContractManager(),
             {
-                "args": [name],
-                "functionName": "getContract"
-            }
+                args: [name],
+                functionName: "getContract",
+            },
         ) as Promise<ContractAddress>;
     }
 
     // Private
 
-    private async getContractManager () {
+    private async getContractManager() {
         if (typeof this.contractManager === "undefined") {
             const contractManagerAddress =
-                await this.project.network.adapter.makeCall(
+                (await this.project.network.adapter.makeCall(
                     {
-                        "abi":
-                            await this.getContractAbi(
-                                MainnetImaContract.MESSAGE_PROXY_FOR_MAINNET
-                            ),
-                        "address": this.mainContractAddress
+                        abi: await this.getContractAbi(
+                            MainnetImaContract.MESSAGE_PROXY_FOR_MAINNET,
+                        ),
+                        address: this.mainContractAddress,
                     },
                     {
-                        "args": [],
-                        "functionName": "contractManagerOfSkaleManager"
-                    }
-                ) as string;
+                        args: [],
+                        functionName: "contractManagerOfSkaleManager",
+                    },
+                )) as string;
             this.contractManager = {
-                "abi": contractManagerAbi,
-                "address": contractManagerAddress
+                abi: contractManagerAbi,
+                address: contractManagerAddress,
             };
         }
         return this.contractManager;

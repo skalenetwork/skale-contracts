@@ -1,7 +1,4 @@
-import {
-    ContractAddress,
-    MainContractAddress
-} from "../../domain/types";
+import { ContractAddress, MainContractAddress } from "../../domain/types";
 import { Instance } from "../../instance";
 
 export enum MirageManagerContract {
@@ -10,56 +7,55 @@ export enum MirageManagerContract {
     NODES = "Nodes",
     MIRAGE_ACCESS_MANAGER = "MirageAccessManager",
     STATUS = "Status",
-    STAKING = "Staking"
+    STAKING = "Staking",
 }
 
 export type MirageManagerContractName = `${MirageManagerContract}`;
 
-export class MirageManagerInstance<ContractType> extends
-    Instance<ContractType, MirageManagerContractName> {
-    contractNames =
-        Object.values(MirageManagerContract) as MirageManagerContractName[];
+export class MirageManagerInstance<ContractType> extends Instance<
+    ContractType,
+    MirageManagerContractName
+> {
+    contractNames = Object.values(
+        MirageManagerContract,
+    ) as MirageManagerContractName[];
 
-    async getContractAddress (
-        name: MirageManagerContractName
+    async getContractAddress(
+        name: MirageManagerContractName,
     ): Promise<ContractAddress> {
-        if (
-            !this.contractNames.includes(
-                name
-            )
-        ) {
+        if (!this.contractNames.includes(name)) {
             throw new Error(
-                `Contract name ${name} does not exist in mirage-manager`
+                `Contract name ${name} does not exist in mirage-manager`,
             );
         }
 
         if (name === "MirageAccessManager") {
-            return await this.callCommittee(
+            return (await this.callCommittee(
                 "authority",
-                []
-            ) as MainContractAddress;
+                [],
+            )) as MainContractAddress;
         }
 
         if (name === "Committee") {
             return this.mainContractAddress;
         }
 
-        return await this.callCommittee(
+        return (await this.callCommittee(
             name.toLowerCase(),
-            []
-        ) as MainContractAddress;
+            [],
+        )) as MainContractAddress;
     }
 
-    private async callCommittee (functionName: string, args: unknown[]) {
+    private async callCommittee(functionName: string, args: unknown[]) {
         return this.project.network.adapter.makeCall(
             {
-                "abi": await this.getContractAbi(this.project.mainContractName),
-                "address": this.mainContractAddress
+                abi: await this.getContractAbi(this.project.mainContractName),
+                address: this.mainContractAddress,
             },
             {
                 args,
-                functionName
-            }
+                functionName,
+            },
         );
     }
 }

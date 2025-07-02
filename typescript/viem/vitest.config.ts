@@ -1,17 +1,17 @@
 import { defineConfig } from "vitest/config";
 
 export default defineConfig({
-    "test": {
+    test: {
         coverage: {
             allowExternal: true,
-            exclude:[
+            exclude: [
                 "./vitest.config.ts",
                 ".eslintrc.cjs",
                 "lib/**",
-                "**/base/tests/**"
+                "**/base/tests/**",
             ],
-            reporter: ['text', 'html', 'lcov']
+            reporter: ["text", "html", "lcov"],
         },
-        testTimeout: 30000
-    }
+        testTimeout: 30000,
+    },
 });

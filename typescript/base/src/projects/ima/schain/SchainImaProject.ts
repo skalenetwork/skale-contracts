@@ -1,49 +1,50 @@
 import {
     ContractAddress,
     ContractAddressMap,
-    MainContractAddress
+    MainContractAddress,
 } from "../../../domain/types";
 import {
     SchainImaContract,
     SchainImaContractName,
-    SchainImaInstance
+    SchainImaInstance,
 } from "./SchainImaInstance";
 
 import { ImaProject } from "../ImaProject";
 import { Instance } from "../../../instance";
-import {
-    PREDEPLOYED_ALIAS
-} from "../../../domain/constants";
+import { PREDEPLOYED_ALIAS } from "../../../domain/constants";
 
-export class SchainImaProject<ContractType> extends
-    ImaProject<ContractType, SchainImaContractName> {
+export class SchainImaProject<ContractType> extends ImaProject<
+    ContractType,
+    SchainImaContractName
+> {
     mainContractName = SchainImaContract.MESSAGE_PROXY_FOR_SCHAIN;
 
-    getAbiFilename (version: string) {
+    getAbiFilename(version: string) {
         return `${this.metadata.name}-${version}-abi.json`;
     }
 
-    getInstance (
+    getInstance(
         aliasOrAddress:
             | SchainImaContractName
             | MainContractAddress
             | ContractAddressMap
-            | typeof PREDEPLOYED_ALIAS
+            | typeof PREDEPLOYED_ALIAS,
     ) {
         if (aliasOrAddress === PREDEPLOYED_ALIAS) {
-            return this.createInstance(SchainImaInstance.PREDEPLOYED.
-                get(this.mainContractName)! as ContractAddress);
+            return this.createInstance(
+                SchainImaInstance.PREDEPLOYED.get(
+                    this.mainContractName,
+                )! as ContractAddress,
+            );
         }
-        return (
-            super.getInstance(aliasOrAddress) as SchainImaInstance<ContractType>
-        );
+        return super.getInstance(
+            aliasOrAddress,
+        ) as SchainImaInstance<ContractType>;
     }
 
-    createInstance (address: MainContractAddress | ContractAddressMap)
-        : Instance<ContractType, SchainImaContractName> {
-        return new SchainImaInstance(
-            this,
-            address
-        );
+    createInstance(
+        address: MainContractAddress | ContractAddressMap,
+    ): Instance<ContractType, SchainImaContractName> {
+        return new SchainImaInstance(this, address);
     }
 }

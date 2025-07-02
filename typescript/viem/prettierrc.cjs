@@ -1,4 +1,4 @@
 /* eslint-env node */
 module.exports = {
-    extends: ["../base/.eslintrc.cjs"],
+    extends: ["../base/.prettierrc.cjs"],
 };
