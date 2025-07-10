@@ -11,6 +11,11 @@
             "path": "holesky"
         },
         {
+            "chainId": 560048,
+            "name": "Hoodi",
+            "path": "hoodi"
+        },
+        {
             "chainId": 151,
             "name": "local",
             "path": "local"
