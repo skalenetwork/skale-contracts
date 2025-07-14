@@ -23,7 +23,7 @@ MAINNET_PROJECTS = [
 ]
 
 NOT_DEPLOYED = [
-    SkaleProject.MIRAGE_MANAGER
+    SkaleProject.FAIR_MANAGER
 ]
 
 EUROPA_PROJECTS = [
