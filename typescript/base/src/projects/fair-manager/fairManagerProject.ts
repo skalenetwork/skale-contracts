@@ -1,20 +1,20 @@
 import { ContractAddressMap, MainContractAddress } from "../../domain/types";
 import {
-    MirageManagerContractName,
-    MirageManagerInstance
-} from "./mirageManagerInstance";
+    FairManagerContractName,
+    FairManagerInstance
+} from "./fairManagerInstance";
 import { Instance } from "../../instance";
 import { Project } from "../../project";
 
-export class MirageManagerProject<ContractType> extends
-    Project<ContractType, MirageManagerContractName> {
-    githubRepo = "https://github.com/skalenetwork/mirage-manager/";
+export class FairManagerProject<ContractType> extends
+    Project<ContractType, FairManagerContractName> {
+    githubRepo = "https://github.com/skalenetwork/fair-manager/";
 
     mainContractName = "Committee";
 
     createInstance (address: MainContractAddress | ContractAddressMap)
-        : Instance<ContractType, MirageManagerContractName> {
-        return new MirageManagerInstance(
+        : Instance<ContractType, FairManagerContractName> {
+        return new FairManagerInstance(
             this,
             address
         );

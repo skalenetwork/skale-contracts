@@ -1,4 +1,4 @@
-"""Module connects mirage-manager project to the SKALE contracts library"""
+"""Module connects fair-manager project to the SKALE contracts library"""
 
 from __future__ import annotations
 from enum import StrEnum
@@ -14,21 +14,21 @@ if TYPE_CHECKING:
     from eth_typing import Address, ChecksumAddress
 
 
-class MirageManagerContract(StrEnum):
-    """Defines contract names for mirage-manager project"""
+class FairManagerContract(StrEnum):
+    """Defines contract names for fair-manager project"""
     COMMITTEE = "Committee"
     DKG = "DKG"
     NODES = "Nodes"
-    MIRAGE_ACCESS_MANAGER = "MirageAccessManager"
+    FAIR_ACCESS_MANAGER = "FairAccessManager"
     STATUS = "Status"
     STAKING = "Staking"
 
 
-class MirageManagerInstance(Instance[MirageManagerContract]):
-    """Represents instance of mirage-manager"""
+class FairManagerInstance(Instance[FairManagerContract]):
+    """Represents instance of fair-manager"""
     def __init__(
             self,
-            project: MirageManagerProject,
+            project: FairManagerProject,
             address: Address
     ) -> None:
         super().__init__(project, address)
@@ -41,59 +41,59 @@ class MirageManagerInstance(Instance[MirageManagerContract]):
 
     def get_contract_address(
             self,
-            name: MirageManagerContract,
+            name: FairManagerContract,
             *args: str | Address | ChecksumAddress
     ) -> Address:
-        if name not in MirageManagerContract:
+        if name not in FairManagerContract:
             raise ValueError(
                 "Contract", name, "does not exist for", self._project.name()
             )
         match name:
-            case MirageManagerContract.NODES:
+            case FairManagerContract.NODES:
                 return to_canonical_address(
                     self.committee.functions.nodes().call()
                 )
-            case MirageManagerContract.STATUS:
+            case FairManagerContract.STATUS:
                 return to_canonical_address(
                     self.committee.functions.status().call()
                 )
-            case MirageManagerContract.DKG:
+            case FairManagerContract.DKG:
                 return to_canonical_address(
                     self.committee.functions.dkg().call()
                 )
-            case MirageManagerContract.MIRAGE_ACCESS_MANAGER:
+            case FairManagerContract.FAIR_ACCESS_MANAGER:
                 return to_canonical_address(
                     self.committee.functions.authority().call()
                 )
-            case MirageManagerContract.STAKING:
+            case FairManagerContract.STAKING:
                 return to_canonical_address(
                     self.committee.functions.staking().call()
                 )
-            case MirageManagerContract.COMMITTEE:
+            case FairManagerContract.COMMITTEE:
                 return self.committee_address
 
     @cached_property
-    def contract_names(self) -> set[MirageManagerContract]:
-        return set(MirageManagerContract)
+    def contract_names(self) -> set[FairManagerContract]:
+        return set(FairManagerContract)
 
 
-class MirageManagerProject(Project[MirageManagerContract]):
-    """Represents mirage-manager project"""
+class FairManagerProject(Project[FairManagerContract]):
+    """Represents fair-manager project"""
 
     @staticmethod
     def name() -> SkaleProject:
-        return SkaleProject.MIRAGE_MANAGER
+        return SkaleProject.FAIR_MANAGER
 
     @property
     def github_repo(self) -> str:
-        return 'https://github.com/skalenetwork/mirage-manager/'
+        return 'https://github.com/skalenetwork/fair-manager/'
 
-    def create_instance(self, address: Address) -> MirageManagerInstance:
-        return MirageManagerInstance(self, address)
+    def create_instance(self, address: Address) -> FairManagerInstance:
+        return FairManagerInstance(self, address)
 
-    def get_instance(self, alias_or_address: str) -> MirageManagerInstance:
+    def get_instance(self, alias_or_address: str) -> FairManagerInstance:
         return cast(
-            MirageManagerInstance,
+            FairManagerInstance,
             super().get_instance(alias_or_address)
         )
 

@@ -1,9 +1,9 @@
+import {
+    FairManagerContractName
+} from "./fair-manager/fairManagerInstance";
+import { FairManagerProject } from "./fair-manager/fairManagerProject";
 import { MainnetImaContractName } from "./ima/mainnet/MainnetImaInstance";
 import { MainnetImaProject } from "./ima/mainnet/MainnetImaProject";
-import {
-    MirageManagerContractName
-} from "./mirage-manager/mirageManagerInstance";
-import { MirageManagerProject } from "./mirage-manager/mirageManagerProject";
 import { Network } from "../network";
 import { PaymasterContractName } from "./paymaster/paymasterInstance";
 import { PaymasterProject } from "./paymaster/paymasterProject";
@@ -26,7 +26,7 @@ export enum SkaleProject {
     PAYMASTER = "paymaster",
     SKALE_ALLOCATOR = "skale-allocator",
     SKALE_MANAGER = "skale-manager",
-    MIRAGE_MANAGER = "mirage-manager"
+    FAIR_MANAGER = "fair-manager"
 }
 export type SkaleProjectName = `${SkaleProject}`;
 
@@ -35,7 +35,7 @@ export type SkaleContractNames =
     MainnetImaContractName |
     SchainImaContractName |
     SkaleManagerContractName |
-    MirageManagerContractName |
+    FairManagerContractName |
     SkaleManagerContractName |
     SkaleAllocatorContractName;
 
@@ -73,8 +73,8 @@ export const createProject = function createProject<ContractType> (
             network,
             metadata
         );
-    case SkaleProject.MIRAGE_MANAGER:
-        return new MirageManagerProject<ContractType>(
+    case SkaleProject.FAIR_MANAGER:
+        return new FairManagerProject<ContractType>(
             network,
             metadata
         );

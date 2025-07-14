@@ -4,24 +4,24 @@ import {
 } from "../../domain/types";
 import { Instance } from "../../instance";
 
-export enum MirageManagerContract {
+export enum FairManagerContract {
     COMMITTEE = "Committee",
     DKG = "DKG",
     NODES = "Nodes",
-    MIRAGE_ACCESS_MANAGER = "MirageAccessManager",
+    FAIR_ACCESS_MANAGER = "FairAccessManager",
     STATUS = "Status",
     STAKING = "Staking"
 }
 
-export type MirageManagerContractName = `${MirageManagerContract}`;
+export type FairManagerContractName = `${FairManagerContract}`;
 
-export class MirageManagerInstance<ContractType> extends
-    Instance<ContractType, MirageManagerContractName> {
+export class FairManagerInstance<ContractType> extends
+    Instance<ContractType, FairManagerContractName> {
     contractNames =
-        Object.values(MirageManagerContract) as MirageManagerContractName[];
+        Object.values(FairManagerContract) as FairManagerContractName[];
 
     async getContractAddress (
-        name: MirageManagerContractName
+        name: FairManagerContractName
     ): Promise<ContractAddress> {
         if (
             !this.contractNames.includes(
@@ -29,11 +29,11 @@ export class MirageManagerInstance<ContractType> extends
             )
         ) {
             throw new Error(
-                `Contract name ${name} does not exist in mirage-manager`
+                `Contract name ${name} does not exist in fair-manager`
             );
         }
 
-        if (name === "MirageAccessManager") {
+        if (name === "FairAccessManager") {
             return await this.callCommittee(
                 "authority",
                 []

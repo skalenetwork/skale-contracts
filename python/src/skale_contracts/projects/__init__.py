@@ -11,8 +11,8 @@ from .ima import \
     SchainImaProject as SchainIma
 from .skale_manager import SkaleManagerProject as SkaleManager
 from .skale_allocator import SkaleAllocatorProject as SkaleAllocator
-from .mirage_manager import MirageManagerProject as MirageManager
+from .fair_manager import FairManagerProject as FairManager
 
 __all__ = ['ConfigController', 'Context', 'Etherbase', 'Erc1820',
-           'FileStorage', 'MainnetIma', 'Marionette', 'Paymaster',
-           'SchainIma', 'SkaleAllocator', 'SkaleManager', 'MirageManager']
+           'FairManager', 'FileStorage', 'MainnetIma', 'Marionette',
+           'Paymaster', 'SchainIma', 'SkaleAllocator', 'SkaleManager']

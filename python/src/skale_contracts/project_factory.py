@@ -14,7 +14,7 @@ if TYPE_CHECKING:
 
 class SkaleProject(StrEnum):
     """Defines project names"""
-    MIRAGE_MANAGER = "mirage-manager"
+    FAIR_MANAGER = "fair-manager"
     MAINNET_IMA = "mainnet-ima"
     SCHAIN_IMA = "schain-ima"
     PAYMASTER = "paymaster"
