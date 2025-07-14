@@ -14,5 +14,5 @@ from .skale_allocator import SkaleAllocatorProject as SkaleAllocator
 from .fair_manager import FairManagerProject as FairManager
 
 __all__ = ['ConfigController', 'Context', 'Etherbase', 'Erc1820',
-           'FileStorage', 'MainnetIma', 'Marionette', 'Paymaster',
-           'SchainIma', 'SkaleAllocator', 'SkaleManager', 'FairManager']
+           'FairManager', 'FileStorage', 'MainnetIma', 'Marionette',
+           'Paymaster', 'SchainIma', 'SkaleAllocator', 'SkaleManager']
