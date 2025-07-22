@@ -3,7 +3,7 @@ name: Test
 on: [push, pull_request]
 
 env:
-  NODE_VERSION: 20
+  NODE_VERSION: 22
   ENDPOINT: "https://mainnet.infura.io/v3/${{ secrets.INFURA_API_TOKEN }}"
 
 jobs:
