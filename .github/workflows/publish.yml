@@ -11,7 +11,7 @@ on:
       - 'custom-release-*'
 
 env:
-  NODE_VERSION: 18
+  NODE_VERSION: 22
   PYTHON_VERSION: 3.11
 
 jobs:
@@ -23,7 +23,7 @@ jobs:
         working-directory: typescript/base
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
 
     - name: Set up Node
       uses: actions/setup-node@v4
@@ -76,7 +76,7 @@ jobs:
         working-directory: typescript/ethers-v5
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
 
     - name: Set up Node
       uses: actions/setup-node@v4
@@ -133,7 +133,7 @@ jobs:
         working-directory: typescript/ethers-v6
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
 
     - name: Set up Node
       uses: actions/setup-node@v4
@@ -190,7 +190,7 @@ jobs:
         working-directory: typescript/viem
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
 
     - name: Set up Node
       uses: actions/setup-node@v4
@@ -244,7 +244,7 @@ jobs:
         working-directory: python
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
 
     - name: Set up Python
       uses: actions/setup-python@v4
