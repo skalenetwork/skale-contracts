@@ -3,7 +3,7 @@ name: Test
 on: [push, pull_request]
 
 env:
-  NODE_VERSION: 18
+  NODE_VERSION: 20
   ENDPOINT: "https://mainnet.infura.io/v3/${{ secrets.INFURA_API_TOKEN }}"
 
 jobs:
@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
       with:
         submodules: "true"
 
@@ -35,14 +35,14 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [18, 20, 22]
+        node-version: [20, 22, 24]
 
     defaults:
       run:
         working-directory: typescript/base
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
 
     - name: Set up Node
       uses: actions/setup-node@v4
@@ -64,14 +64,14 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [18, 20, 22]
+        node-version: [20, 22, 24]
 
     defaults:
       run:
         working-directory: typescript/ethers-v5
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
 
     - name: Set up Node
       uses: actions/setup-node@v4
@@ -107,14 +107,14 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [18, 20, 22]
+        node-version: [20, 22, 24]
 
     defaults:
       run:
         working-directory: typescript/ethers-v6
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
 
     - name: Set up Node
       uses: actions/setup-node@v4
@@ -150,14 +150,14 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [18, 20, 22]
+        node-version: [20, 22, 24]
 
     defaults:
       run:
         working-directory: typescript/viem
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
 
     - name: Set up Node
       uses: actions/setup-node@v4
@@ -200,7 +200,7 @@ jobs:
         working-directory: python
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
 
     - name: Set up Python
       uses: actions/setup-python@v4
