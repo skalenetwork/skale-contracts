@@ -7,8 +7,9 @@ import { Instance } from "../../instance";
 export enum FairManagerContract {
     COMMITTEE = "Committee",
     DKG = "DKG",
-    NODES = "Nodes",
     FAIR_ACCESS_MANAGER = "FairAccessManager",
+    NODES = "Nodes",
+    REWARD_WALLET = "RewardWallet",
     STATUS = "Status",
     STAKING = "Staking"
 }
@@ -21,7 +22,8 @@ export class FairManagerInstance<ContractType> extends
         Object.values(FairManagerContract) as FairManagerContractName[];
 
     async getContractAddress (
-        name: FairManagerContractName
+        name: FairManagerContractName,
+        args?: unknown[]
     ): Promise<ContractAddress> {
         if (
             !this.contractNames.includes(
@@ -44,10 +46,45 @@ export class FairManagerInstance<ContractType> extends
             return this.mainContractAddress;
         }
 
+        if (name === "RewardWallet") {
+            return this.getRewardWalletAddress(args);
+        }
+
         return await this.callCommittee(
             name.toLowerCase(),
             []
         ) as MainContractAddress;
+    }
+
+    private async getRewardWalletAddress (
+        args?: unknown[]
+    ): Promise<ContractAddress> {
+        if (!args || !args.length) {
+            throw new Error(
+                "RewardWallet requires a NodeId bigint compatible argument"
+            );
+        }
+        const NODE_ID_INDEX = 0;
+        // Smart contract getter ensures a valid address is returned
+        return await this.callStaking(
+            "getRewardWallet",
+            [args.at(NODE_ID_INDEX)]
+        ) as ContractAddress;
+    }
+
+
+    private async callStaking (functionName: string, args: unknown[]) {
+        const stakingAddress = await this.getContractAddress("Staking");
+        return this.project.network.adapter.makeCall(
+            {
+                "abi": await this.getContractAbi(stakingAddress),
+                "address": this.mainContractAddress
+            },
+            {
+                args,
+                functionName
+            }
+        );
     }
 
     private async callCommittee (functionName: string, args: unknown[]) {
