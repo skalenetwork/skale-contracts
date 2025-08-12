@@ -24,6 +24,11 @@
             "chainId": 2046399126,
             "name": "elated-tan-skat",
             "path": "elated-tan-skat"
+        },
+        {
+            "chainId": 935,
+            "name": "fair-testnet",
+            "path": "fair-testnet"
         }
     ]
 }
