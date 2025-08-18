@@ -57,7 +57,7 @@ class FairManagerInstance(Instance[FairManagerContract]):
             case FairManagerContract.COMMITTEE:
                 return self.committee_address
             case FairManagerContract.REWARD_WALLET:
-                return self._get_reward_wallet_address(*args)
+                return self._get_reward_wallet_address(int(args[0]) if args else 0)
             case _:
                 return to_canonical_address(
                     self.committee.functions[name.lower()].call()
@@ -69,16 +69,16 @@ class FairManagerInstance(Instance[FairManagerContract]):
 
     def _get_reward_wallet_address(
             self,
-            *args: str | Address | ChecksumAddress | int
+            node_id: int
     ) -> Address:
         """Returns the address of the reward wallet for a given node ID"""
-        if not args or not args[0]:
+        if  not isinstance(node_id, int) or node_id <= 0:
             raise ValueError(
-                "RewardWallet requires a valid NodeId argument"
+                "RewardWallet requires a valid NodeId argument: Integer > 0"
             )
         return to_canonical_address(self.get_contract(
             FairManagerContract.STAKING
-        ).functions.getRewardWallet(args[0]).call())
+        ).functions.getRewardWallet(node_id).call())
 
 
 class FairManagerProject(Project[FairManagerContract]):

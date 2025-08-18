@@ -1,4 +1,5 @@
 import {
+    BigNumberish,
     ContractAddress,
     MainContractAddress
 } from "../../domain/types";
@@ -47,7 +48,7 @@ export class FairManagerInstance<ContractType> extends
         }
 
         if (name === "RewardWallet") {
-            return this.getRewardWalletAddress(args);
+            return this.getRewardWalletAddress(args?.pop() as BigNumberish);
         }
 
         return await this.callCommittee(
@@ -57,18 +58,17 @@ export class FairManagerInstance<ContractType> extends
     }
 
     private async getRewardWalletAddress (
-        args?: unknown[]
+        nodeId: BigNumberish
     ): Promise<ContractAddress> {
-        if (!args || !args.length) {
+        if (!nodeId) {
             throw new Error(
-                "RewardWallet requires a NodeId bigint compatible argument"
+                "RewardWallet requires only a NodeId bigint compatible argument"
             );
         }
-        const NODE_ID_INDEX = 0;
         // Smart contract getter ensures a valid address is returned
         return await this.callStaking(
             "getRewardWallet",
-            [args.at(NODE_ID_INDEX)]
+            [nodeId]
         ) as ContractAddress;
     }
 

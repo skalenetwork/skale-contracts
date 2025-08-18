@@ -1,5 +1,6 @@
 export type ContractAddress = `0x${string}`;
 export type ContractName = string;
+export type BigNumberish = Uint8Array | bigint | string | number;
 export type MainContractAddress = ContractAddress;
 export type ContractAddressMap = {
     [contractName: ContractName]: ContractAddress
