@@ -18,8 +18,9 @@ class FairManagerContract(StrEnum):
     """Defines contract names for fair-manager project"""
     COMMITTEE = "Committee"
     DKG = "DKG"
-    NODES = "Nodes"
     FAIR_ACCESS_MANAGER = "FairAccessManager"
+    NODES = "Nodes"
+    REWARD_WALLET = "RewardWallet"
     STATUS = "Status"
     STAKING = "Staking"
 
@@ -42,39 +43,44 @@ class FairManagerInstance(Instance[FairManagerContract]):
     def get_contract_address(
             self,
             name: FairManagerContract,
-            *args: str | Address | ChecksumAddress
+            *args: str | Address | ChecksumAddress | int
     ) -> Address:
         if name not in FairManagerContract:
             raise ValueError(
                 "Contract", name, "does not exist for", self._project.name()
             )
         match name:
-            case FairManagerContract.NODES:
-                return to_canonical_address(
-                    self.committee.functions.nodes().call()
-                )
-            case FairManagerContract.STATUS:
-                return to_canonical_address(
-                    self.committee.functions.status().call()
-                )
-            case FairManagerContract.DKG:
-                return to_canonical_address(
-                    self.committee.functions.dkg().call()
-                )
             case FairManagerContract.FAIR_ACCESS_MANAGER:
                 return to_canonical_address(
                     self.committee.functions.authority().call()
                 )
-            case FairManagerContract.STAKING:
-                return to_canonical_address(
-                    self.committee.functions.staking().call()
-                )
             case FairManagerContract.COMMITTEE:
                 return self.committee_address
+            case FairManagerContract.REWARD_WALLET:
+                return self._get_reward_wallet_address(
+                    int(args[0]) if args else 0
+                )
+            case _:
+                return to_canonical_address(
+                    self.committee.functions[name.lower()].call()
+                )
 
     @cached_property
     def contract_names(self) -> set[FairManagerContract]:
         return set(FairManagerContract)
+
+    def _get_reward_wallet_address(
+            self,
+            node_id: int
+    ) -> Address:
+        """Returns the address of the reward wallet for a given node ID"""
+        if not isinstance(node_id, int) or node_id <= 0:
+            raise ValueError(
+                "RewardWallet requires a valid NodeId argument: Integer > 0"
+            )
+        return to_canonical_address(self.get_contract(
+            FairManagerContract.STAKING
+        ).functions.getRewardWallet(node_id).call())
 
 
 class FairManagerProject(Project[FairManagerContract]):

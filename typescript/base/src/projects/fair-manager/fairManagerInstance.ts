@@ -7,12 +7,13 @@ import { Instance } from "../../instance";
 export enum FairManagerContract {
     COMMITTEE = "Committee",
     DKG = "DKG",
-    NODES = "Nodes",
     FAIR_ACCESS_MANAGER = "FairAccessManager",
+    NODES = "Nodes",
+    REWARD_WALLET = "RewardWallet",
     STATUS = "Status",
     STAKING = "Staking"
 }
-
+const ZERO_ID = 0n;
 export type FairManagerContractName = `${FairManagerContract}`;
 
 export class FairManagerInstance<ContractType> extends
@@ -21,7 +22,8 @@ export class FairManagerInstance<ContractType> extends
         Object.values(FairManagerContract) as FairManagerContractName[];
 
     async getContractAddress (
-        name: FairManagerContractName
+        name: FairManagerContractName,
+        args?: unknown[]
     ): Promise<ContractAddress> {
         if (
             !this.contractNames.includes(
@@ -44,10 +46,45 @@ export class FairManagerInstance<ContractType> extends
             return this.mainContractAddress;
         }
 
+        if (name === "RewardWallet") {
+            return this.getRewardWalletAddress(args?.pop() as bigint);
+        }
+
         return await this.callCommittee(
             name.toLowerCase(),
             []
         ) as MainContractAddress;
+    }
+
+    private async getRewardWalletAddress (
+        nodeId: bigint
+    ): Promise<ContractAddress> {
+        // Throws if not BigInt compatible at runtime
+        if (!nodeId || BigInt(nodeId) < ZERO_ID) {
+            throw new Error(
+                "RewardWallet requires a positive BigInt as an argument"
+            );
+        }
+        // Smart contract getter ensures a valid address is returned
+        return await this.callStaking(
+            "getRewardWallet",
+            [BigInt(nodeId)]
+        ) as ContractAddress;
+    }
+
+
+    private async callStaking (functionName: string, args: unknown[]) {
+        const stakingAddress = await this.getContractAddress("Staking");
+        return this.project.network.adapter.makeCall(
+            {
+                "abi": await this.getContractAbi(stakingAddress),
+                "address": this.mainContractAddress
+            },
+            {
+                args,
+                functionName
+            }
+        );
     }
 
     private async callCommittee (functionName: string, args: unknown[]) {
