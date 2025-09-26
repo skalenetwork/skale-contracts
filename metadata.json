@@ -27,11 +27,6 @@
         },
         {
             "chainId": 935,
-            "name": "fair-testnet",
-            "path": "fair-testnet"
-        },
-        {
-            "chainId": 935,
             "name": "fair-testnet2",
             "path": "fair-testnet2"
         }
