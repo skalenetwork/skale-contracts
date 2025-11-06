@@ -49,6 +49,7 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'yarn'
+        cache-dependency-path: 'typescript/base/yarn.lock'
 
     - name: Ensure Yarn cache folder exists
       run: mkdir -p "$(yarn config get cacheFolder)"
@@ -78,6 +79,7 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'yarn'
+        cache-dependency-path: 'typescript/ethers-v5/yarn.lock'
 
     - name: Ensure Yarn cache folder exists
       run: mkdir -p "$(yarn config get cacheFolder)"
@@ -121,6 +123,7 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'yarn'
+        cache-dependency-path: 'typescript/ethers-v6/yarn.lock'
 
     - name: Ensure Yarn cache folder exists
       run: mkdir -p "$(yarn config get cacheFolder)"
@@ -164,6 +167,7 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'yarn'
+        cache-dependency-path: 'typescript/viem/yarn.lock'
 
     - name: Ensure Yarn cache folder exists
       run: mkdir -p "$(yarn config get cacheFolder)"
