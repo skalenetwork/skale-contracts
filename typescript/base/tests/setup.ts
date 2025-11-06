@@ -17,7 +17,11 @@ export const SCHAIN_PROJECTS = [
 ];
 
 // In development
-export const NOT_DEPLOYED = [SkaleProject.FAIR_MANAGER];
+export const NOT_DEPLOYED = [
+    SkaleProject.FAIR_MANAGER,
+    SkaleProject.SCHAIN_CREDIT_STATION,
+    SkaleProject.MAINNET_CREDIT_STATION
+];
 
 export const MAINNET_PROJECTS = Object.values(SkaleProject).filter(
     (project) => !SCHAIN_PROJECTS.includes(project) &&

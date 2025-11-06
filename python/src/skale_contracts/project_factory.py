@@ -17,6 +17,8 @@ class SkaleProject(StrEnum):
     FAIR_MANAGER = "fair-manager"
     MAINNET_IMA = "mainnet-ima"
     SCHAIN_IMA = "schain-ima"
+    MAINNET_CREDIT_STATION = "mainnet-credit-station"
+    SCHAIN_CREDIT_STATION = "schain-credit-station"
     PAYMASTER = "paymaster"
     SKALE_ALLOCATOR = "skale-allocator"
     SKALE_MANAGER = "skale-manager"

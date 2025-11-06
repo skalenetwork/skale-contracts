@@ -23,7 +23,9 @@ MAINNET_PROJECTS = [
 ]
 
 NOT_DEPLOYED = [
-    SkaleProject.FAIR_MANAGER
+    SkaleProject.FAIR_MANAGER,
+    SkaleProject.SCHAIN_CREDIT_STATION,
+    SkaleProject.MAINNET_CREDIT_STATION
 ]
 
 EUROPA_PROJECTS = [
