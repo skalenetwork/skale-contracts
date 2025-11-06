@@ -2,7 +2,7 @@ import { ContractAddressMap, MainContractAddress } from "../../../domain/types";
 import {
     SchainCreditStationContractName,
     SchainCreditStationInstance
-} from "./SchainCreditStationIstance";
+} from "./SchainCreditStationInstance";
 import { CreditStationInstance } from "../CreditStationInstance";
 import { CreditStationProject } from "../CreditStationProject";
 

@@ -5,7 +5,7 @@ import {
 import { FairManagerProject } from "./fair-manager/fairManagerProject";
 import {
     MainnetCreditStationContractName
-} from "./credit-station/mainnet/MainnetCreditStationIstance";
+} from "./credit-station/mainnet/MainnetCreditStationInstance";
 import {
     MainnetCreditStationProject
 } from "./credit-station/mainnet/MainnetCreditStationProject";
@@ -21,7 +21,7 @@ import {
 } from "../domain/errors/project/projectNotFoundError";
 import {
     SchainCreditStationContractName
-} from "./credit-station/schain/SchainCreditStationIstance";
+} from "./credit-station/schain/SchainCreditStationInstance";
 import {
     SchainCreditStationProject
 } from "./credit-station/schain/SchainCreditStationProject";

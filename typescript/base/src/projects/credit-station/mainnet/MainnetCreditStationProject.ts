@@ -4,7 +4,7 @@ import { ContractAddressMap, MainContractAddress } from "../../../domain/types";
 import {
     MainnetCreditStationContractName,
     MainnetCreditStationInstance
-} from "./MainnetCreditStationIstance";
+} from "./MainnetCreditStationInstance";
 import { CreditStationInstance } from "../CreditStationInstance";
 import { CreditStationProject } from "../CreditStationProject";
 
