@@ -150,6 +150,7 @@ class MainnetCreditStationProject(
     def name() -> SkaleProject:
         return SkaleProject.MAINNET_CREDIT_STATION
 
+
 class SchainCreditStationProject(
     CreditStationProject[SchainCreditStationContract]
 ):
