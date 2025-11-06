@@ -85,10 +85,6 @@ class CreditStationProject(Project[ContractName]):
     def get_abi_filename(self, version: str) -> str:
         return f'{self.name()}-{version}-abi.json'
 
-    @staticmethod
-    def name() -> SkaleProject:
-        return SkaleProject.CREDIT_STATION
-
 
 class MainnetCreditStationInstance(
     CreditStationInstance[MainnetCreditStationContract]
@@ -150,6 +146,9 @@ class MainnetCreditStationProject(
             super().get_instance(alias_or_address)
         )
 
+    @staticmethod
+    def name() -> SkaleProject:
+        return SkaleProject.MAINNET_CREDIT_STATION
 
 class SchainCreditStationProject(
     CreditStationProject[SchainCreditStationContract]
@@ -170,3 +169,7 @@ class SchainCreditStationProject(
             SchainCreditStationInstance,
             super().get_instance(alias_or_address)
         )
+
+    @staticmethod
+    def name() -> SkaleProject:
+        return SkaleProject.SCHAIN_CREDIT_STATION
