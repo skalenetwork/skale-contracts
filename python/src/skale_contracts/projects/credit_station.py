@@ -4,24 +4,38 @@ from __future__ import annotations
 from enum import StrEnum
 from functools import cached_property
 from typing import TYPE_CHECKING, cast
+from eth_utils.address import to_canonical_address
 
 from skale_contracts.types import ContractName
 from skale_contracts.instance import Instance
 from skale_contracts.project import Project
 from skale_contracts.project_factory import SkaleProject
 
+
 if TYPE_CHECKING:
     from eth_typing import Address, ChecksumAddress
 
 
+GET_AUTHORITY_FUNCTION = {
+    "type": "function",
+    "name": "authority",
+    "stateMutability": "view",
+    "payable": False,
+    "inputs": [],
+    "outputs": [{"type": "address", "name": ""}]
+}
+
+
 class MainnetCreditStationContract(StrEnum):
-    """Defines contract names for main credit-station project"""
+    """Defines contract names for mainnet credit-station project"""
     CREDIT_STATION = "CreditStation"
+    ACCESS_MANAGER = "CreditStationAccessManager"
 
 
 class SchainCreditStationContract(StrEnum):
-    """Defines contract names for main credit-station project"""
+    """Defines contract names for schain credit-station project"""
     LEDGER = "Ledger"
+    ACCESS_MANAGER = "CreditStationAccessManager"
 
 
 class CreditStationInstance(Instance[ContractName]):
@@ -38,7 +52,27 @@ class CreditStationInstance(Instance[ContractName]):
             self,
             name: ContractName, *args: str | Address | ChecksumAddress
     ) -> Address:
-        return self.address
+        if name in (
+            MainnetCreditStationContract.ACCESS_MANAGER,
+            SchainCreditStationContract.ACCESS_MANAGER
+        ):
+            return self._get_authority()
+
+        if name in self.contract_names:
+            return self.address
+
+        raise ValueError(
+            "Contract", name, "does not exist for", self._project.name()
+        )
+
+    # Private
+
+    def _get_authority(self) -> Address:
+        contract = self.web3.eth.contract(
+            address=self.address,
+            abi=[GET_AUTHORITY_FUNCTION]
+        )
+        return to_canonical_address(contract.functions.authority().call())
 
 
 class CreditStationProject(Project[ContractName]):
