@@ -29,13 +29,13 @@ GET_AUTHORITY_FUNCTION = {
 class MainnetCreditStationContract(StrEnum):
     """Defines contract names for mainnet credit-station project"""
     CREDIT_STATION = "CreditStation"
-    ACCESS_MANAGER = "CreditStationAccessManager"
+    CREDIT_STATION_ACCESS_MANAGER = "CreditStationAccessManager"
 
 
 class SchainCreditStationContract(StrEnum):
     """Defines contract names for schain credit-station project"""
     LEDGER = "Ledger"
-    ACCESS_MANAGER = "CreditStationAccessManager"
+    CREDIT_STATION_ACCESS_MANAGER = "CreditStationAccessManager"
 
 
 class CreditStationInstance(Instance[ContractName]):
@@ -53,8 +53,8 @@ class CreditStationInstance(Instance[ContractName]):
             name: ContractName, *args: str | Address | ChecksumAddress
     ) -> Address:
         if name in (
-            MainnetCreditStationContract.ACCESS_MANAGER,
-            SchainCreditStationContract.ACCESS_MANAGER
+            MainnetCreditStationContract.CREDIT_STATION_ACCESS_MANAGER,
+            SchainCreditStationContract.CREDIT_STATION_ACCESS_MANAGER
         ):
             return self._get_authority()
 
