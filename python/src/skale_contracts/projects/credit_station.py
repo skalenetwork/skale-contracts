@@ -83,7 +83,7 @@ class CreditStationProject(Project[ContractName]):
         return 'https://github.com/skalenetwork/credit-station/'
 
     def get_abi_filename(self, version: str) -> str:
-        return f'{self.name()}-{version}-abi.json'
+        return f'credit-station-{version}-abi.json'
 
 
 class MainnetCreditStationInstance(
