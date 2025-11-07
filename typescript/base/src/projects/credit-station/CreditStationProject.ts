@@ -6,7 +6,9 @@ export abstract class CreditStationProject<
 > extends Project<ContractType, ContractName> {
     githubRepo = "https://github.com/skalenetwork/credit-station/";
 
+    private commonABIFilename = "credit-station";
+
     getAbiFilename (version: string) {
-        return `${this.metadata.name}-${version}-abi.json`;
+        return `${this.commonABIFilename}-${version}-abi.json`;
     }
 }
