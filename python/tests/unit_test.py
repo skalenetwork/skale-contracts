@@ -54,7 +54,7 @@ def test_mainnet_instances(
     # Assert files were cached
     assert_cached_files_created(
         alias, skale_contracts, project.name(),
-        network.as_listed().path, alias
+        network.as_listed().path, instance.version
     )
 
 
@@ -80,7 +80,7 @@ def test_europa_instances(
     # Assert files were cached
     assert_cached_files_created(
         alias, skale_contracts, project.name(),
-        network.as_listed().path, alias
+        network.as_listed().path, instance.version
     )
 
 

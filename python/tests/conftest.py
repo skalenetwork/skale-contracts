@@ -1,5 +1,7 @@
 """Module with fixtures for tests"""
 
+# cspell:words autouse testsfailed
+
 from pathlib import Path
 from typing import Generator
 import pytest
