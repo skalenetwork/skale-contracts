@@ -16,7 +16,9 @@ class SkaleContracts:
         cache_dir: str | None = None,
         cleanup_cache: bool = False,
     ) -> None:
-        self.cache = DiskCache(cache_dir, cleanup_cache) if cache_dir else MemoryCache()
+        self.cache = DiskCache(cache_dir, cleanup_cache) \
+            if cache_dir else MemoryCache()
+
         self.metadata = Metadata(self.cache)
 
     def get_network_by_provider(self, provider: BaseProvider) -> Network:

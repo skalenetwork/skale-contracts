@@ -13,7 +13,6 @@ from .constants import REPOSITORY_URL, METADATA_FILENAME, NETWORK_TIMEOUT
 @dataclass
 class NetworkMetadata:
     """Contains metadata of a network"""
-
     name: str
     chain_id: int
     path: str
@@ -62,7 +61,10 @@ class Metadata:
         metadata = MetadataFile.from_json(metadata_str)
         self.networks = metadata.networks
 
-    def get_network_by_chain_id(self, chain_id: int) -> Optional[NetworkMetadata]:
+    def get_network_by_chain_id(
+        self,
+        chain_id: int
+    ) -> Optional[NetworkMetadata]:
         """Get network metadata by it's chain id.
         Returns None if there is no such network in the metadata.
         """

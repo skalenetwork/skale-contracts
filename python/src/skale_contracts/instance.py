@@ -47,7 +47,11 @@ class InstanceData:
 class Instance(Generic[ContractName], ABC):
     """Represents deployed instance of a smart contracts project"""
 
-    def __init__(self, project: Project[ContractName], address: Address) -> None:
+    def __init__(
+        self,
+        project: Project[ContractName],
+        address: Address
+    ) -> None:
         self._project = project
         self._version: Optional[str] = None
         self._abi: Optional[SkaleAbi] = None
@@ -73,9 +77,13 @@ class Instance(Generic[ContractName], ABC):
                 py_version = PyVersion.parse(raw_version)
                 sem_version = SemVersion(*py_version.release)
                 if py_version.pre_tag == 'a':
-                    sem_version = sem_version.replace(prerelease=f'develop.{py_version.pre}')
+                    sem_version = sem_version.replace(
+                        prerelease=f'develop.{py_version.pre}'
+                    )
                 elif py_version.pre_tag == 'b':
-                    sem_version = sem_version.replace(prerelease=f'beta.{py_version.pre}')
+                    sem_version = sem_version.replace(
+                        prerelease=f'beta.{py_version.pre}'
+                    )
                 self._version = str(sem_version)
         return self._version
 
@@ -83,7 +91,16 @@ class Instance(Generic[ContractName], ABC):
     def abi(self) -> SkaleAbi:
         """Get abi file of the project instance"""
         if self._abi is None:
-            self._abi = json.loads(self._project.download_abi_file(self.version))
+            cached_abi = self._project.get_cached_abi_file(
+                self._project.name(), self.version
+            )
+            if cached_abi:
+                self._abi = json.loads(cached_abi)
+            else:
+                self._abi = json.loads(
+                    self._project.download_abi_file(self.version)
+                )
+        assert self._abi is not None
         return self._abi
 
     @abstractmethod
@@ -97,7 +114,11 @@ class Instance(Generic[ContractName], ABC):
     def contract_names(self) -> set[ContractName]:
         """Get all contract names of the instance"""
 
-    def get_contract(self, name: ContractName, *args: str | Address | ChecksumAddress) -> Contract:
+    def get_contract(
+        self,
+        name: ContractName,
+        *args: str | Address | ChecksumAddress
+    ) -> Contract:
         """Get Contract object of the contract by it's name"""
         address = self.get_contract_address(name, *args)
         return self.web3.eth.contract(address=address, abi=self.abi[name])
@@ -105,7 +126,10 @@ class Instance(Generic[ContractName], ABC):
     # protected
 
     def _get_version(self) -> str:
-        contract = self.web3.eth.contract(address=self.address, abi=[DEFAULT_GET_VERSION_FUNCTION])
+        contract = self.web3.eth.contract(
+            address=self.address,
+            abi=[DEFAULT_GET_VERSION_FUNCTION]
+        )
         try:
             return cast(str, contract.functions.version().call())
         # BadResponseFormat can be triggered depending on the RPC response
