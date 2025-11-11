@@ -6,6 +6,11 @@
             "path": "mainnet"
         },
         {
+            "chainId": 8453,
+            "name": "Base-mainnet",
+            "path": "base-mainnet"
+        },
+        {
             "chainId": 17000,
             "name": "Holesky",
             "path": "holesky"
@@ -14,6 +19,11 @@
             "chainId": 560048,
             "name": "Hoodi",
             "path": "hoodi"
+        },
+        {
+            "chainId": 84532,
+            "name": "Base-sepolia-testnet",
+            "path": "base-sepolia-testnet"
         },
         {
             "chainId": 151,
