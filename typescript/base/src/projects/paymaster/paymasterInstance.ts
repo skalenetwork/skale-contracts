@@ -9,8 +9,18 @@ export enum PaymasterContract {
     FAST_FORWARD_PAYMASTER = "FastForwardPaymaster"
 }
 export type PaymasterContractName = `${PaymasterContract}`;
-export class PaymasterInstance<ContractType> extends
-    Instance<ContractType, PaymasterContractName> {
+
+
+export interface PaymasterDefaultTypesMap<ContractType>
+    extends Record<PaymasterContractName, ContractType> {}
+
+export class PaymasterInstance<
+    ContractType,
+    TypesMap extends Record<
+        PaymasterContractName,
+        ContractType
+    > = PaymasterDefaultTypesMap<ContractType>
+> extends Instance<ContractType, PaymasterContractName, TypesMap> {
     contractNames = Object.values(PaymasterContract);
 
     async getContractAddress (

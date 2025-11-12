@@ -13,8 +13,20 @@ export enum SchainCreditStationContract {
 
 export type SchainCreditStationContractName = `${SchainCreditStationContract}`;
 
-export class SchainCreditStationInstance<ContractType> extends
-    CreditStationInstance<ContractType, SchainCreditStationContractName> {
+
+export interface SchainCreditStationDefaultTypesMap<ContractType>
+    extends Record<SchainCreditStationContractName, ContractType> {}
+export class SchainCreditStationInstance<
+    ContractType,
+    TypesMap extends Record<
+        SchainCreditStationContractName,
+        ContractType
+    > = SchainCreditStationDefaultTypesMap<ContractType>
+> extends CreditStationInstance<
+    ContractType,
+    SchainCreditStationContractName,
+    TypesMap
+> {
     contractNames = Object.values(
         SchainCreditStationContract
     ) as SchainCreditStationContractName[];

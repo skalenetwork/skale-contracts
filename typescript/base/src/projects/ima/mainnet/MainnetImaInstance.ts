@@ -14,7 +14,8 @@ export enum MainnetImaContract {
 }
 export type MainnetImaContractName = `${MainnetImaContract}`;
 
-
+export interface MainnetImaDefaultTypesMap<ContractType>
+    extends Record<MainnetImaContractName, ContractType> {}
 const contractManagerAbi = [
     {
         "constant": true,
@@ -37,8 +38,13 @@ const contractManagerAbi = [
     }
 ];
 
-export class MainnetImaInstance<ContractType> extends
-    ImaInstance<ContractType, MainnetImaContractName> {
+export class MainnetImaInstance<
+    ContractType,
+    TypesMap extends Record<
+        MainnetImaContractName,
+        ContractType
+    > = MainnetImaDefaultTypesMap<ContractType>
+> extends ImaInstance<ContractType, MainnetImaContractName, TypesMap> {
     private contractManager: ContractData | undefined;
 
     contractNames =

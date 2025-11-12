@@ -58,12 +58,40 @@ export type SkaleContractNames =
     SchainCreditStationContractName |
     MainnetCreditStationContractName;
 
-type ProjectConstructor<ContractType> = new (
+// Map each project name to its specific contract name type
+type ProjectContractNameMap = {
+    [SkaleProject.MAINNET_IMA]: MainnetImaContractName;
+    [SkaleProject.PAYMASTER]: PaymasterContractName;
+    [SkaleProject.SCHAIN_IMA]: SchainImaContractName;
+    [SkaleProject.SKALE_ALLOCATOR]: SkaleAllocatorContractName;
+    [SkaleProject.SKALE_MANAGER]: SkaleManagerContractName;
+    [SkaleProject.FAIR_MANAGER]: FairManagerContractName;
+    [SkaleProject.MAINNET_CREDIT_STATION]: MainnetCreditStationContractName;
+    [SkaleProject.SCHAIN_CREDIT_STATION]: SchainCreditStationContractName;
+};
+
+// Map each project name to its specific project class type
+type ProjectClassMap<ContractType> = {
+    [SkaleProject.MAINNET_IMA]: MainnetImaProject<ContractType>;
+    [SkaleProject.PAYMASTER]: PaymasterProject<ContractType>;
+    [SkaleProject.SCHAIN_IMA]: SchainImaProject<ContractType>;
+    [SkaleProject.SKALE_ALLOCATOR]: SkaleAllocatorProject<ContractType>;
+    [SkaleProject.SKALE_MANAGER]: SkaleManagerProject<ContractType>;
+    [SkaleProject.FAIR_MANAGER]: FairManagerProject<ContractType>;
+    [SkaleProject.MAINNET_CREDIT_STATION]:
+        MainnetCreditStationProject<ContractType>;
+    [SkaleProject.SCHAIN_CREDIT_STATION]:
+        SchainCreditStationProject<ContractType>;
+};
+
+type ProjectConstructor<ContractType, ContractName extends string> = new (
     network: Network<ContractType>,
     metadata: { name: SkaleProjectName; path: SkaleProjectName }
-) => Project<ContractType, SkaleContractNames>;
+) => Project<ContractType, ContractName>;
 
-const projectMap: Record<SkaleProject, ProjectConstructor<unknown>> = {
+const projectMap: {
+    [K in SkaleProject]: ProjectConstructor<unknown, ProjectContractNameMap[K]>
+} = {
     [SkaleProject.MAINNET_IMA]: MainnetImaProject,
     [SkaleProject.PAYMASTER]: PaymasterProject,
     [SkaleProject.SCHAIN_IMA]: SchainImaProject,
@@ -74,10 +102,23 @@ const projectMap: Record<SkaleProject, ProjectConstructor<unknown>> = {
     [SkaleProject.SCHAIN_CREDIT_STATION]: SchainCreditStationProject
 };
 
-export const createProject = function createProject<ContractType> (
+// Type helper to infer the correct return type based on project name
+// This returns the specific project class type (e.g., PaymasterProject)
+// rather than the general Project type
+type InferProjectType<
+    ContractType,
+    Name extends SkaleProjectName
+> = Name extends SkaleProject
+    ? ProjectClassMap<ContractType>[Name]
+    : Project<ContractType, SkaleContractNames>;
+
+export const createProject = function createProject<
+    ContractType,
+    Name extends SkaleProjectName = SkaleProjectName
+> (
     network: Network<ContractType>,
-    name: SkaleProjectName
-): Project<ContractType, SkaleContractNames> {
+    name: Name
+): InferProjectType<ContractType, Name> {
     const metadata = {
         name,
         "path": name
@@ -91,5 +132,5 @@ export const createProject = function createProject<ContractType> (
     return new ProjectClass(
         network,
         metadata
-    ) as Project<ContractType, SkaleContractNames>;
+    ) as InferProjectType<ContractType, Name>;
 };

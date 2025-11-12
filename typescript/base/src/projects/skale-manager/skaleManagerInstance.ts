@@ -38,6 +38,10 @@ export enum SkaleManagerContract {
 }
 export type SkaleManagerContractName = `${SkaleManagerContract}`;
 
+export interface SkaleManagerDefaultTypesMap<ContractType>
+    extends Record<SkaleManagerContractName, ContractType> {}
+
+
 const skaleManagerAbi = [
     {
         "inputs": [],
@@ -68,8 +72,11 @@ const skaleManagerAbi = [
     }
 ];
 
-export class SkaleManagerInstance<ContractType> extends
-    Instance<ContractType, SkaleManagerContractName> {
+export class SkaleManagerInstance<
+    ContractType,
+    TypesMap extends Record<SkaleManagerContractName, ContractType> =
+        SkaleManagerDefaultTypesMap<ContractType>
+> extends Instance<ContractType, SkaleManagerContractName, TypesMap> {
     contractNames =
         Object.values(SkaleManagerContract) as SkaleManagerContractName[];
 
