@@ -59,11 +59,12 @@ export class FairManagerInstance<ContractType> extends
     private async getRewardWalletAddress (
         nodeId: bigint
     ): Promise<ContractAddress> {
-        // Throws if not BigInt compatible at runtime
+        // If no nodeId is provided, return the reference wallet address
         if (!nodeId || BigInt(nodeId) < ZERO_ID) {
-            throw new Error(
-                "RewardWallet requires a positive BigInt as an argument"
-            );
+            return await this.callStaking(
+                "rewardWalletBeacon",
+                []
+            ) as ContractAddress;
         }
         // Smart contract getter ensures a valid address is returned
         return await this.callStaking(
