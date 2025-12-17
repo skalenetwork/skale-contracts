@@ -104,7 +104,7 @@ pip install skale-contracts
 Bellow is a list of the main projects supported by skale-contracts in all libraries:
 
 - [skale-manager](https://github.com/skalenetwork/skale-manager) - Core SKALE Network management contracts
-- [IMA](https://github.com/skalenetwork/IMA/) - Interchain Messaging Agent for cross-chain communication
+- [IMA](https://github.com/skalenetwork/IMA/) - Bridge contracts for cross-chain communication
 - [skale-allocator](https://github.com/skalenetwork/skale-allocator) - Token allocation and vesting
 - [paymaster](https://github.com/skalenetwork/paymaster) - Gas payment management
 - [fair-manager](https://github.com/skalenetwork/fair-manager) - Fair distribution management
@@ -116,7 +116,7 @@ Currently, only the Python implementation supports the following:
 - [marionette](https://github.com/skalenetwork/marionette) - SKALE chain remote access control
 - [filestorage](https://github.com/skalenetwork/filestorage) - Decentralized file storage on SKALE chains
 
-**NOTE:** If you face issues with integration, or require support for a specific support for a project or libary, reach out to the team in [Discord](https://discord.gg/skale).
+**NOTE:** If you face issues with integration, or require support for a specific support for a project or library, reach out to the team in [Discord](https://discord.gg/skale).
 
 ## Repository Structure
 
