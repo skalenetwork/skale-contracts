@@ -45,4 +45,5 @@ if [ -z "$BASE_PACKAGE" ]; then
 fi
 
 yarn config set npmAuthToken "$NODE_AUTH_TOKEN"
+yarn config set npmPublishRegistry "https://registry.npmjs.org"
 yarn npm publish --access public $TAG
