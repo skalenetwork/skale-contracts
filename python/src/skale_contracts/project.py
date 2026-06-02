@@ -4,7 +4,6 @@
 
 from __future__ import annotations
 from abc import ABC, abstractmethod
-from enum import StrEnum
 from itertools import count
 from typing import TYPE_CHECKING, Generator, Generic
 
@@ -20,6 +19,7 @@ from .instance import Instance, InstanceData
 if TYPE_CHECKING:
     from eth_typing import Address
     from .network import Network
+    from .project_factory import SkaleProject
 
 
 def alternative_versions_generator(version: str) -> Generator[str, None, None]:
@@ -43,7 +43,7 @@ class Project(Generic[ContractName], ABC):
 
     @staticmethod
     @abstractmethod
-    def name() -> StrEnum:
+    def name() -> SkaleProject:
         """Name of the project"""
 
     @property
@@ -62,15 +62,32 @@ class Project(Generic[ContractName], ABC):
             address = to_canonical_address(alias_or_address)
             return self.create_instance(address)
         alias = alias_or_address
+
+        instance_data = self._get_cached_instance_data(alias)
+        if instance_data is not None:
+            address = to_canonical_address(
+                list(InstanceData.from_json(instance_data).data.values())[0]
+            )
+            return self.create_instance(address)
+
         url = self.get_instance_data_url(alias)
         response = requests.get(url, timeout=NETWORK_TIMEOUT)
         if response.status_code == 200:
+            self._cache_instance_data(alias, response.text)
             data = InstanceData.from_json(response.text)
             if len(data.data.values()) != 1:
                 raise ValueError(f'Error during parsing data for {alias}')
             address = to_canonical_address(list(data.data.values())[0])
             return self.create_instance(address)
         raise ValueError(f"Can't download data for instance {alias}")
+
+    def get_cached_abi_file(
+        self,
+        project_name: SkaleProject,
+        version: str
+    ) -> str | None:
+        """Get cached file with ABI"""
+        return self.network.skale_contracts.cache.abi(project_name, version)
 
     def download_abi_file(self, version: str) -> str:
         """Download file with ABI"""
@@ -121,6 +138,28 @@ class Project(Generic[ContractName], ABC):
 
     # Private
 
+    def _get_cached_instance_data(self, alias: str) -> str | None:
+        return self.network.skale_contracts.cache.instance_data(
+            self.name(),
+            self.network.as_listed().path,
+            alias
+        )
+
+    def _cache_instance_data(self, alias: str, instance_data: str) -> None:
+        """Stores instance data in cache"""
+        self.network.skale_contracts.cache.cache_instance_data(
+            self.name(),
+            self.network.as_listed().path,
+            alias,
+            instance_data
+        )
+
+    def _cache_abi(self, version: str, abi_data: str) -> None:
+        """Stores abi data in cache"""
+        self.network.skale_contracts.cache.cache_abi(
+            self.name(), version, abi_data
+        )
+
     def _download_abi_file_by_version(
         self,
         version: str,
@@ -131,6 +170,7 @@ class Project(Generic[ContractName], ABC):
             if response.status_code != 200:
                 exceptions.append(f"Can't download abi file from {abi_url}")
             else:
+                self._cache_abi(version, response.text)
                 return response.text
         return None
 

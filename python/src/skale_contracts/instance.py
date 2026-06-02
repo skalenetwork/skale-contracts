@@ -22,19 +22,20 @@ if TYPE_CHECKING:
 
 
 DEFAULT_GET_VERSION_FUNCTION = {
-    "type": "function",
-    "name": "version",
-    "constant": True,
-    "stateMutability": "view",
-    "payable": False,
-    "inputs": [],
-    "outputs": [{"type": "string", "name": ""}]
+    'type': 'function',
+    'name': 'version',
+    'constant': True,
+    'stateMutability': 'view',
+    'payable': False,
+    'inputs': [],
+    'outputs': [{'type': 'string', 'name': ''}],
 }
 
 
 @dataclass
 class InstanceData:
     """Contains instance data"""
+
     data: dict[str, str]
 
     @classmethod
@@ -45,9 +46,12 @@ class InstanceData:
 
 class Instance(Generic[ContractName], ABC):
     """Represents deployed instance of a smart contracts project"""
-    def __init__(
-            self, project: Project[ContractName], address: Address) -> None:
 
+    def __init__(
+        self,
+        project: Project[ContractName],
+        address: Address
+    ) -> None:
         self._project = project
         self._version: Optional[str] = None
         self._abi: Optional[SkaleAbi] = None
@@ -87,16 +91,21 @@ class Instance(Generic[ContractName], ABC):
     def abi(self) -> SkaleAbi:
         """Get abi file of the project instance"""
         if self._abi is None:
-            self._abi = json.loads(
-                self._project.download_abi_file(self.version)
+            cached_abi = self._project.get_cached_abi_file(
+                self._project.name(), self.version
             )
+            if cached_abi:
+                self._abi = json.loads(cached_abi)
+            else:
+                self._abi = json.loads(
+                    self._project.download_abi_file(self.version)
+                )
+        assert self._abi is not None
         return self._abi
 
     @abstractmethod
     def get_contract_address(
-        self,
-        name: ContractName,
-        *args: str | Address | ChecksumAddress
+        self, name: ContractName, *args: str | Address | ChecksumAddress
     ) -> Address:
         """Get address of the contract by it's name"""
 
@@ -106,9 +115,9 @@ class Instance(Generic[ContractName], ABC):
         """Get all contract names of the instance"""
 
     def get_contract(
-            self,
-            name: ContractName,
-            *args: str | Address | ChecksumAddress
+        self,
+        name: ContractName,
+        *args: str | Address | ChecksumAddress
     ) -> Contract:
         """Get Contract object of the contract by it's name"""
         address = self.get_contract_address(name, *args)

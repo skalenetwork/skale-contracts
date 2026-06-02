@@ -6,6 +6,7 @@ import json
 from typing import Optional
 import requests
 
+from .cache import Cache
 from .constants import REPOSITORY_URL, METADATA_FILENAME, NETWORK_TIMEOUT
 
 
@@ -20,6 +21,7 @@ class NetworkMetadata:
 @dataclass
 class MetadataFile:
     """Represents file with metadata"""
+
     networks: list[NetworkMetadata]
 
     @classmethod
@@ -28,32 +30,40 @@ class MetadataFile:
         file = json.loads(data)
         networks = []
         for network in file['networks']:
-            networks.append(NetworkMetadata(
-                name=network['name'],
-                chain_id=network['chainId'],
-                path=network['path']))
+            networks.append(
+                NetworkMetadata(
+                    name=network['name'],
+                    chain_id=network['chainId'],
+                    path=network['path'],
+                )
+            )
         return cls(networks)
 
 
 class Metadata:
     """Class to manage SKALE contracts metadata"""
+
     networks: list[NetworkMetadata]
 
-    def __init__(self) -> None:
+    def __init__(self, cache: Cache) -> None:
+        self.cache = cache
         self.download()
 
     def download(self) -> None:
         """Download metadata"""
-        metadata_response = requests.get(
-            REPOSITORY_URL + METADATA_FILENAME,
-            timeout=NETWORK_TIMEOUT
-        )
-        metadata = MetadataFile.from_json(metadata_response.text)
+        metadata_str = self.cache.metadata()
+        if not metadata_str:
+            metadata_response = requests.get(
+                REPOSITORY_URL + METADATA_FILENAME, timeout=NETWORK_TIMEOUT
+            )
+            metadata_str = metadata_response.text
+            self.cache.cache_metadata(metadata_str)
+        metadata = MetadataFile.from_json(metadata_str)
         self.networks = metadata.networks
 
     def get_network_by_chain_id(
-            self,
-            chain_id: int
+        self,
+        chain_id: int
     ) -> Optional[NetworkMetadata]:
         """Get network metadata by it's chain id.
         Returns None if there is no such network in the metadata.

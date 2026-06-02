@@ -5,12 +5,21 @@ from web3.providers.base import BaseProvider
 
 from .metadata import Metadata
 from .network import Network, ListedNetwork
+from .cache import MemoryCache, DiskCache
 
 
 class SkaleContracts:
     """Entry point of the SKALE Contracts library"""
-    def __init__(self) -> None:
-        self.metadata = Metadata()
+
+    def __init__(
+        self,
+        cache_dir: str | None = None,
+        cleanup_cache: bool = False,
+    ) -> None:
+        self.cache = DiskCache(cache_dir, cleanup_cache) \
+            if cache_dir else MemoryCache()
+
+        self.metadata = Metadata(self.cache)
 
     def get_network_by_provider(self, provider: BaseProvider) -> Network:
         """Get network by provider"""

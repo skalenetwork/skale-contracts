@@ -95,12 +95,7 @@ class SkaleManagerInstance(Instance[SkaleManagerContract]):
             address=address,
             abi=SKALE_MANAGER_ABI
         )
-        contract_manager_address: Address = \
-            self.skale_manager.functions.contractManager().call()
-        self.contract_manager: Contract = self.web3.eth.contract(
-            address=contract_manager_address,
-            abi=CONTRACT_MANAGER_ABI
-        )
+        self.contract_manager: Contract | None = None
         self.custom_names = {
             'BountyV2': 'Bounty',
             'TimeHelpersWithDebug': 'TimeHelpers'
@@ -114,6 +109,15 @@ class SkaleManagerInstance(Instance[SkaleManagerContract]):
         if name not in SkaleManagerContract:
             raise ValueError(
                 "Contract", name, "does not exist for", self._project.name()
+            )
+
+        if self.contract_manager is None:
+            contract_manager_address: Address = \
+                self.skale_manager.functions.contractManager().call()
+
+            self.contract_manager = self.web3.eth.contract(
+                address=contract_manager_address,
+                abi=CONTRACT_MANAGER_ABI
             )
         return to_canonical_address(
             self.contract_manager.functions.getContract(
