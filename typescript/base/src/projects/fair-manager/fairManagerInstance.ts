@@ -16,8 +16,16 @@ export enum FairManagerContract {
 const ZERO_ID = 0n;
 export type FairManagerContractName = `${FairManagerContract}`;
 
-export class FairManagerInstance<ContractType> extends
-    Instance<ContractType, FairManagerContractName> {
+export interface FairManagerDefaultTypesMap<ContractType>
+    extends Record<FairManagerContractName, ContractType> {}
+
+export class FairManagerInstance<
+    ContractType,
+    TypesMap extends Record<
+        FairManagerContractName,
+        ContractType
+    > = FairManagerDefaultTypesMap<ContractType>
+> extends Instance<ContractType, FairManagerContractName, TypesMap> {
     contractNames =
         Object.values(FairManagerContract) as FairManagerContractName[];
 

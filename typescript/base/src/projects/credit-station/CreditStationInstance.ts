@@ -20,8 +20,12 @@ const GET_AUTHORITY_ABI = [
 ];
 export abstract class CreditStationInstance<
     ContractType,
-    ContractName extends string
-> extends Instance<ContractType, ContractName> {
+    ContractName extends string,
+    TypesMap extends Record<ContractName, ContractType> = Record<
+        ContractName,
+        ContractType
+    >
+> extends Instance<ContractType, ContractName, TypesMap> {
     getContractAddress (
         name: ContractName
     ): Promise<ContractAddress> {

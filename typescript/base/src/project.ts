@@ -49,14 +49,19 @@ export abstract class Project<ContractType, ContractName extends string> {
         this.metadata = metadata;
     }
 
-    getInstance (target: string | MainContractAddress | ContractAddressMap) {
+    getInstance <
+        TypesMap extends Record<ContractName, ContractType> = Record<
+            ContractName,
+            ContractType
+        >
+    > (target: string | MainContractAddress | ContractAddressMap) {
         if (
             this.network.adapter.isAddress(target) ||
             this.isContractAddressMap(target)
         ) {
-            return this.getInstanceByAddress(target);
+            return this.getInstanceByAddress<TypesMap>(target);
         }
-        return this.getInstanceByAlias(target);
+        return this.getInstanceByAlias<TypesMap>(target);
     }
 
     async downloadAbiFile (version: string) {
@@ -99,8 +104,13 @@ export abstract class Project<ContractType, ContractName extends string> {
         throw new NetworkNotFoundError("Network is unknown");
     }
 
-    abstract createInstance(address: MainContractAddress | ContractAddressMap):
-        Instance<ContractType, ContractName>;
+    abstract createInstance<
+        TypesMap extends Record<ContractName, ContractType> = Record<
+            ContractName,
+            ContractType
+        >
+    >(address: MainContractAddress | ContractAddressMap):
+        Instance<ContractType, ContractName, TypesMap>;
 
     public isContractAddressMap = (
         obj: unknown
@@ -122,17 +132,27 @@ export abstract class Project<ContractType, ContractName extends string> {
 
     // Private
 
-    private getInstanceByAddress (
+    private getInstanceByAddress <
+        TypesMap extends Record<ContractName, ContractType> = Record<
+            ContractName,
+            ContractType
+        >
+    > (
         address: MainContractAddress | ContractAddressMap
     ) {
-        return this.createInstance(address);
+        return this.createInstance<TypesMap>(address);
     }
 
-    private async getInstanceByAlias (alias: string) {
+    private async getInstanceByAlias <
+        TypesMap extends Record<ContractName, ContractType> = Record<
+            ContractName,
+            ContractType
+        >
+    > (alias: string) {
         const response = await axios.get(this.getInstanceDataUrl(alias));
         if (response.status === HttpStatusCode.Ok) {
             const [address] = Object.values(response.data as InstanceData);
-            return this.createInstance(address);
+            return this.createInstance<TypesMap>(address);
         }
         throw new InstanceNotFound(`Can't download data for instance ${alias}`);
     }
