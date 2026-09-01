@@ -10,7 +10,7 @@
     "ethers5-check": "yarn ./typescript/ethers-v5 fullCheck",
     "ethers6-check": "yarn ./typescript/ethers-v6 fullCheck",
     "viem-check": "yarn ./typescript/viem fullCheck",
-    "typescript-check": "yarn typescript-base-check && yarn ethers5-check && yarn ethers6-check",
+    "typescript-check": "yarn typescript-base-check && yarn ethers5-check && yarn ethers6-check && yarn viem-check",
     "fullCheck": "yarn cspell && yarn typescript-check && yarn python-check",
     "cspell": "npx cspell \"**/*\"",
     "hooks": "git config core.hooksPath .githooks || true",

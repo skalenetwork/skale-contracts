@@ -1,32 +1,36 @@
 import { Abi, Adapter, ContractData, FunctionCall } from '@skalenetwork/skale-contracts';
 import {
-    Account,
     Address,
-    Chain,
     GetContractReturnType,
     PublicClient,
-    RpcSchema,
-    Transport,
     Abi as ViemAbi,
+    WalletClient,
     getContract as getContractViem,
     isAddress
 } from 'viem';
 
-export type ViemContract = GetContractReturnType<ViemAbi, { public: PublicClient }, Address>;
+export type ViemContract = GetContractReturnType<
+    ViemAbi,
+    { public: PublicClient; wallet: WalletClient },
+    Address
+>;
 
 export class ViemAdapter implements Adapter<ViemContract> {
-    client: PublicClient<Transport, Chain, Account, RpcSchema>;
+    client: PublicClient;
 
-    constructor(client: PublicClient<Transport, Chain, Account, RpcSchema>) {
+    walletClient?: WalletClient;
+
+    constructor(client: PublicClient, walletClient?: WalletClient) {
         this.client = client;
+        this.walletClient = walletClient;
     }
 
     createContract(address: string, abi: Abi): ViemContract {
         return getContractViem({
             abi: abi as ViemAbi,
             address: address as Address,
-            client: this.client
-        });
+            client: { public: this.client, wallet: this.walletClient }
+        }) as ViemContract;
     }
 
     async makeCall(
@@ -46,9 +50,9 @@ export class ViemAdapter implements Adapter<ViemContract> {
         return BigInt(chainId);
     }
 
-    async getCode(input: `0x${string}`): Promise<string>{
-        const code = await this.client.getCode({ address: input });
-        return code as string;
+    async getCode(address: Address): Promise<string> {
+        const code = await this.client.getCode({ address });
+        return code ?? "0x";
     }
 
     // eslint-disable-next-line class-methods-use-this

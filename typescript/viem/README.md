@@ -69,3 +69,9 @@ const instance = await project.getInstance("production");
 const nodes = await instance.getContract("Nodes");
 const numberOfActiveNodes = await nodes.read.numberOfActiveNodes();
 ```
+
+To send transactions, provide a wallet client as the second argument and use `write` on received contracts:
+
+```typescript
+const network = await skaleContracts.getNetworkByProvider(client, walletClient);
+```

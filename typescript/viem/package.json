@@ -28,6 +28,6 @@
   },
   "types": "lib/index.d.ts",
   "dependencies": {
-    "viem": "^2.21.55"
+    "viem": "^2.56.1"
   }
 }
