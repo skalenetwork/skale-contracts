@@ -1,4 +1,4 @@
-import { Account, Chain, PublicClient, RpcSchema, Transport } from 'viem';
+import { PublicClient, WalletClient } from 'viem';
 import { ViemAdapter, ViemContract } from './viemAdapter';
 import {
     Instance as BaseInstance
@@ -14,10 +14,8 @@ import {
 export type Instance = BaseInstance<ViemContract, SkaleContractNames>;
 
 export class SkaleContracts extends BaseSkaleContracts<ViemContract> {
-    getNetworkByProvider(
-        client: PublicClient<Transport, Chain, Account, RpcSchema>
-    ) {
-        return this.getNetworkByAdapter(new ViemAdapter(client));
+    getNetworkByProvider(client: PublicClient, walletClient?: WalletClient) {
+        return this.getNetworkByAdapter(new ViemAdapter(client, walletClient));
     }
 }
 

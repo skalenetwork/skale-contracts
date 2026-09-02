@@ -6,10 +6,10 @@ from dotenv import load_dotenv
 from skale_contracts.project_factory import SkaleProject
 load_dotenv()
 
-MAINNET_ENDPOINT = os.environ['ENDPOINT'] or os.getenv('ENDPOINT') or None
-
-if MAINNET_ENDPOINT is None:
-    raise ValueError("ENDPOINT env variable for mainnet node is not set")
+MAINNET_ENDPOINT = os.getenv(
+    "ENDPOINT",
+    "https://ethereum-rpc.publicnode.com"
+)
 
 EUROPA_ENDPOINT = "https://mainnet.skalenodes.com/v1/elated-tan-skat"
 
