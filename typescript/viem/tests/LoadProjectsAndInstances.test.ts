@@ -1,4 +1,4 @@
-import { Account, Chain, PublicClient, RpcSchema, Transport, createPublicClient, http } from "viem";
+import { Chain, createPublicClient, http } from "viem";
 import { EUROPA_ENDPOINT, MAINNET_ENDPOINT } from "@skalenetwork/skale-contracts/tests/setup";
 import { ViemAdapter, ViemContract } from "../src/viemAdapter";
 import { describe, test } from "vitest";
@@ -11,14 +11,11 @@ const getContractAddress = (contract: ViemContract) =>
     contract.address;
 
 
-const createAdapter = (endpoint: string, chain?: Chain) => {
-    const baseClient = createPublicClient({
+const createAdapter = (endpoint: string, chain?: Chain) =>
+    new ViemAdapter(createPublicClient({
         chain,
-        transport: http(endpoint),
-    }) as PublicClient<Transport, Chain, Account, RpcSchema>;
-
-    return new ViemAdapter(baseClient);
-}
+        transport: http(endpoint)
+    }));
 
 describe(
     "Tests loading skale projects and instances",

@@ -3,10 +3,8 @@ import { SkaleProject } from "../src/projects/factory";
 
 dotenv.config();
 
-if (!process.env.ENDPOINT) {
-    throw new Error("Please set ENDPOINT for ethereum mainnet in .env file");
-}
-export const MAINNET_ENDPOINT = process.env.ENDPOINT;
+export const MAINNET_ENDPOINT =
+    process.env.ENDPOINT ?? "https://ethereum-rpc.publicnode.com";
 export const EUROPA_ENDPOINT =
     process.env.EUROPA_ENDPOINT ??
     "https://mainnet.skalenodes.com/v1/elated-tan-skat";

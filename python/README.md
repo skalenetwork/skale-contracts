@@ -33,7 +33,7 @@ cd python && pip install -e . && pip3 install -r scripts/requirements.txt && pip
 
 ### Running tests (python)
 
-1. set ENDPOINT environment variable using either option:
+1. optionally set ENDPOINT environment variable to override the default public mainnet node:
     ```bash
     export ENDPOINT="http://my.mainnet.endpoint/my-api-key"
     ```
