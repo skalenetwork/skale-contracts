@@ -17,6 +17,10 @@
   ],
   "main": "lib/index.js",
   "name": "@skalenetwork/skale-contracts-viem",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/skalenetwork/skale-contracts.git"
+  },
   "packageManager": "yarn@3.5.1",
   "scripts": {
     "compile": "npx tsc",
