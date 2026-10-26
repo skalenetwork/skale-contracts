@@ -57,9 +57,7 @@ jobs:
         echo "PRERELEASE=$PRERELEASE" >> $GITHUB_ENV
 
     - name: Publish NPM package
-      run: |
-        npm install -g npm@latest
-        ../scripts/publish_package.sh
+      run: ../scripts/publish_package.sh
       env:
         BRANCH: ${{ env.BRANCH }}
         BASE_PACKAGE: "true"
@@ -117,9 +115,7 @@ jobs:
         echo "PRERELEASE=$PRERELEASE" >> $GITHUB_ENV
 
     - name: Publish NPM package
-      run: |
-        npm install -g npm@latest
-        ../scripts/publish_package.sh
+      run: ../scripts/publish_package.sh
       env:
         BRANCH: ${{ env.BRANCH }}
 
@@ -176,9 +172,7 @@ jobs:
         echo "PRERELEASE=$PRERELEASE" >> $GITHUB_ENV
 
     - name: Publish NPM package
-      run: |
-        npm install -g npm@latest
-        ../scripts/publish_package.sh
+      run: ../scripts/publish_package.sh
       env:
         BRANCH: ${{ env.BRANCH }}
 
@@ -235,9 +229,7 @@ jobs:
         echo "PRERELEASE=$PRERELEASE" >> $GITHUB_ENV
 
     - name: Publish NPM package
-      run: |
-        npm install -g npm@latest
-        ../scripts/publish_package.sh
+      run: ../scripts/publish_package.sh
       env:
         BRANCH: ${{ env.BRANCH }}
 
