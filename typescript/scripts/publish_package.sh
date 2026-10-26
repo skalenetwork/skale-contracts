@@ -38,4 +38,4 @@ if [ -z "$BASE_PACKAGE" ]; then
     yarn add @skalenetwork/skale-contracts@$VERSION
 fi
 
-npm publish --access public $TAG
+yarn npm publish --access public $TAG --provenance

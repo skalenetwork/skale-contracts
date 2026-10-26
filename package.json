@@ -3,7 +3,7 @@
     "cspell": "^8.17.1"
   },
   "name": "development",
-  "packageManager": "yarn@3.5.1",
+  "packageManager": "yarn@4.18.1",
   "scripts": {
     "python-check": "python/scripts/full_check.sh",
     "typescript-base-check": "yarn ./typescript/base fullCheck",
