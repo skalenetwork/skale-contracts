@@ -18,8 +18,7 @@ MOCK_ADDRESS = "0x000000000000000000000000000000000000dead"
 MAINNET_PROJECTS = [
     SkaleProject.MAINNET_IMA,
     SkaleProject.SKALE_ALLOCATOR,
-    SkaleProject.SKALE_MANAGER,
-    SkaleProject.ERC1820
+    SkaleProject.SKALE_MANAGER
 ]
 
 NOT_DEPLOYED = [
@@ -28,10 +27,17 @@ NOT_DEPLOYED = [
     SkaleProject.MAINNET_CREDIT_STATION
 ]
 
+# ABI is not available anymore
+# https://github.com/skalenetwork/skale-contracts/issues/510
+DISABLED = [
+    SkaleProject.ERC1820
+]
+
 EUROPA_PROJECTS = [
     project for project in SkaleProject if (
         project not in set(MAINNET_PROJECTS) and
-        project not in set(NOT_DEPLOYED)
+        project not in set(NOT_DEPLOYED) and
+        project not in set(DISABLED)
     )
 ]
 
