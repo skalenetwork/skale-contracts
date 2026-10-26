@@ -1,6 +1,7 @@
 """Module connects fair-manager project to the SKALE contracts library"""
 
 from __future__ import annotations
+from abc import ABC
 from enum import StrEnum
 from functools import cached_property
 from typing import TYPE_CHECKING, cast
@@ -38,7 +39,7 @@ class SchainCreditStationContract(StrEnum):
     CREDIT_STATION_ACCESS_MANAGER = "CreditStationAccessManager"
 
 
-class CreditStationInstance(Instance[ContractName]):
+class CreditStationInstance(Instance[ContractName], ABC):
     """Represents instance of credit-station"""
 
     def __init__(
@@ -75,7 +76,7 @@ class CreditStationInstance(Instance[ContractName]):
         return to_canonical_address(contract.functions.authority().call())
 
 
-class CreditStationProject(Project[ContractName]):
+class CreditStationProject(Project[ContractName], ABC):
     """Represents a credit-station project"""
 
     @property
