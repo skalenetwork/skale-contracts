@@ -25,7 +25,6 @@ class SkaleProject(StrEnum):
     MARIONETTE = "marionette"
     FILESTORAGE = "filestorage"
     ETHERBASE = "etherbase"
-    ERC1820 = "erc1820"
     CONTEXT_CONTRACT = "context-contract"
     CONFIG_CONTROLLER = "config-controller"
 

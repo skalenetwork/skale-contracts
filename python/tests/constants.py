@@ -27,17 +27,10 @@ NOT_DEPLOYED = [
     SkaleProject.MAINNET_CREDIT_STATION
 ]
 
-# ABI is not available anymore
-# https://github.com/skalenetwork/skale-contracts/issues/510
-DISABLED = [
-    SkaleProject.ERC1820
-]
-
 EUROPA_PROJECTS = [
     project for project in SkaleProject if (
         project not in set(MAINNET_PROJECTS) and
-        project not in set(NOT_DEPLOYED) and
-        project not in set(DISABLED)
+        project not in set(NOT_DEPLOYED)
     )
 ]
 

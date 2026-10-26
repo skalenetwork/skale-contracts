@@ -34,8 +34,7 @@ def test_mainnet_instances(
 
     network = skale_contracts.get_network_by_provider(mainnet_provider)
     project = create_project(network, mainnet_project)
-    alias = "production" \
-        if mainnet_project != SkaleProject.ERC1820 else PREDEPLOYED_ALIAS
+    alias = "production"
 
     instance = project.get_instance(alias)
     for name in instance.contract_names:
@@ -110,8 +109,7 @@ def test_mainnet_instances_offline(
     mainnet_project: SkaleProject
 ) -> None:
     """Tests creation of mainnet instances offline"""
-    alias = "production" \
-        if mainnet_project != SkaleProject.ERC1820 else PREDEPLOYED_ALIAS
+    alias = "production"
     with patch('skale_contracts.project.requests.get') as mock_get:
         # Don't even try the network call
         mock_get.side_effect = \
