@@ -1,6 +1,7 @@
 """Module connects IMA to the SKALE contracts library"""
 
 from __future__ import annotations
+from abc import ABC
 from enum import StrEnum
 from functools import cached_property
 from typing import TYPE_CHECKING, cast
@@ -49,7 +50,7 @@ class MainnetImaContract(StrEnum):
     DEPOSIT_BOX_ERC721_WITH_META = "DepositBoxERC721WithMetadata"
 
 
-class ImaInstance(Instance[ContractName]):
+class ImaInstance(Instance[ContractName], ABC):
     """Represents instance of IMA"""
 
     def __init__(
@@ -65,7 +66,7 @@ class ImaInstance(Instance[ContractName]):
         )
 
 
-class ImaProject(Project[ContractName]):
+class ImaProject(Project[ContractName], ABC):
     """Represents IMA project"""
 
     @property

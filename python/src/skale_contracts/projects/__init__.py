@@ -2,7 +2,6 @@
 
 from .config_controller import ConfigControllerProject as ConfigController
 from .context import ContextProject as Context
-from .erc1820 import Erc1820Project as Erc1820
 from .etherbase import EtherbaseProject as Etherbase
 from .filestorage import FilestorageProject as FileStorage
 from .marionette import MarionetteProject as Marionette
@@ -20,7 +19,6 @@ __all__ = [
     "ConfigController",
     "Context",
     "Etherbase",
-    "Erc1820",
     "FairManager",
     "FileStorage",
     "MainnetIma",

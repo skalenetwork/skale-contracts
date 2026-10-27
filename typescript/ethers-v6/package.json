@@ -17,7 +17,11 @@
   ],
   "main": "lib/index.js",
   "name": "@skalenetwork/skale-contracts-ethers-v6",
-  "packageManager": "yarn@3.5.1",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/skalenetwork/skale-contracts.git"
+  },
+  "packageManager": "yarn@4.18.1",
   "scripts": {
     "compile": "npx tsc",
     "fullCheck": "yarn compile && yarn eslint",

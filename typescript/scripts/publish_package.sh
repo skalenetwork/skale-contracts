@@ -2,18 +2,12 @@
 
 set -e
 
-USAGE_MSG='Usage: BRANCH=[BRANCH] NODE_AUTH_TOKEN=[TOKEN] publish_package.sh'
+USAGE_MSG='Usage: BRANCH=[BRANCH] publish_package.sh'
 if [ -z "$BRANCH" ]
 then
     (>&2 echo 'You should provide a branch')
     echo "$USAGE_MSG"
     exit 1
-fi
-if [ -z "$NODE_AUTH_TOKEN" ]
-then
-    (>&2 echo 'You should provide a node auth token')
-    echo "$USAGE_MSG"
-    exit 2
 fi
 
 [ -z "$BASE_PACKAGE" ] && LAST_EXISTING=true
@@ -44,5 +38,4 @@ if [ -z "$BASE_PACKAGE" ]; then
     yarn add @skalenetwork/skale-contracts@$VERSION
 fi
 
-yarn config set npmAuthToken "$NODE_AUTH_TOKEN"
-yarn npm publish --access public $TAG
+yarn npm publish --access public $TAG --provenance
