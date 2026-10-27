@@ -20,6 +20,7 @@ permissions:
 
 jobs:
   typescript:
+    if: github.event_name != 'pull_request' || github.event.pull_request.merged == true
     runs-on: ubuntu-latest
 
     defaults:
@@ -241,6 +242,7 @@ jobs:
         commit: ${{ github.sha }}
 
   python:
+    if: github.event_name != 'pull_request' || github.event.pull_request.merged == true
     runs-on: ubuntu-latest
 
     defaults:
