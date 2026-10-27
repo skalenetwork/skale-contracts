@@ -35,6 +35,12 @@ mv package.json.new package.json
 # set reference to the base package
 if [ -z "$BASE_PACKAGE" ]; then
     yarn remove @skalenetwork/skale-contracts
+    # wait until the base package is available in the registry
+    for i in {1..60}; do
+        npm view @skalenetwork/skale-contracts@$VERSION version > /dev/null 2>&1 && break
+        echo "Waiting for @skalenetwork/skale-contracts@$VERSION"
+        sleep 10
+    done
     yarn add @skalenetwork/skale-contracts@$VERSION
 fi
 
