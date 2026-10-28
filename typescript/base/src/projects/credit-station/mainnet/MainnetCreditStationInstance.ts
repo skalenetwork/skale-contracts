@@ -14,8 +14,20 @@ export type MainnetCreditStationContractName =
     `${MainnetCreditStationContract}`;
 
 
-export class MainnetCreditStationInstance<ContractType> extends
-    CreditStationInstance<ContractType, MainnetCreditStationContractName> {
+export interface MainnetCreditStationDefaultTypesMap<ContractType>
+    extends Record<MainnetCreditStationContractName, ContractType> {}
+
+export class MainnetCreditStationInstance<
+    ContractType,
+    TypesMap extends Record<
+        MainnetCreditStationContractName,
+        ContractType
+    > = MainnetCreditStationDefaultTypesMap<ContractType>
+> extends CreditStationInstance<
+    ContractType,
+    MainnetCreditStationContractName,
+    TypesMap
+> {
     contractNames = Object.values(
         MainnetCreditStationContract
     ) as MainnetCreditStationContractName[];

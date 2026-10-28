@@ -8,8 +8,17 @@ export enum SkaleAllocatorContract {
     ESCROW = "Escrow",
 }
 export type SkaleAllocatorContractName = `${SkaleAllocatorContract}`;
-export class SkaleAllocatorInstance<ContractType> extends
-    Instance<ContractType, SkaleAllocatorContractName> {
+
+export interface SkaleAllocatorDefaultTypesMap<ContractType>
+    extends Record<SkaleAllocatorContractName, ContractType> {}
+
+export class SkaleAllocatorInstance<
+    ContractType,
+    TypesMap extends Record<
+        SkaleAllocatorContractName,
+        ContractType
+    > = SkaleAllocatorDefaultTypesMap<ContractType>
+> extends Instance<ContractType, SkaleAllocatorContractName, TypesMap> {
     contractNames =
         Object.values(SkaleAllocatorContract);
 

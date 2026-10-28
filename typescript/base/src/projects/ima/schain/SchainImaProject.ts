@@ -6,11 +6,11 @@ import {
 import {
     SchainImaContract,
     SchainImaContractName,
+    SchainImaDefaultTypesMap,
     SchainImaInstance
 } from "./SchainImaInstance";
 
 import { ImaProject } from "../ImaProject";
-import { Instance } from "../../../instance";
 import {
     PREDEPLOYED_ALIAS
 } from "../../../domain/constants";
@@ -23,7 +23,10 @@ export class SchainImaProject<ContractType> extends
         return `${this.metadata.name}-${version}-abi.json`;
     }
 
-    getInstance (
+    getInstance <
+        TypesMap extends Record<SchainImaContractName, ContractType>=
+            SchainImaDefaultTypesMap<ContractType>
+    > (
         aliasOrAddress:
             | SchainImaContractName
             | MainContractAddress
@@ -31,17 +34,25 @@ export class SchainImaProject<ContractType> extends
             | typeof PREDEPLOYED_ALIAS
     ) {
         if (aliasOrAddress === PREDEPLOYED_ALIAS) {
-            return this.createInstance(SchainImaInstance.PREDEPLOYED.
+            return this.createInstance<TypesMap>(SchainImaInstance.PREDEPLOYED.
                 get(this.mainContractName)! as ContractAddress);
         }
         return (
-            super.getInstance(aliasOrAddress) as SchainImaInstance<ContractType>
+            super.getInstance(aliasOrAddress) as SchainImaInstance<
+                ContractType,
+                TypesMap
+            >
         );
     }
 
-    createInstance (address: MainContractAddress | ContractAddressMap)
-        : Instance<ContractType, SchainImaContractName> {
-        return new SchainImaInstance(
+    createInstance <
+        TypesMap extends Record<
+            SchainImaContractName,
+            ContractType
+        > = SchainImaDefaultTypesMap<ContractType>
+    > (address: MainContractAddress | ContractAddressMap)
+        : SchainImaInstance<ContractType, TypesMap> {
+        return new SchainImaInstance<ContractType, TypesMap>(
             this,
             address
         );

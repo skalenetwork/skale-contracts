@@ -2,9 +2,9 @@ import { ContractAddressMap, MainContractAddress } from "../../domain/types";
 import {
     SkaleManagerContract,
     SkaleManagerContractName,
+    SkaleManagerDefaultTypesMap,
     SkaleManagerInstance
 } from "./skaleManagerInstance";
-import { Instance } from "../../instance";
 import { Project } from "../../project";
 
 export class SkaleManagerProject<ContractType> extends
@@ -13,12 +13,26 @@ export class SkaleManagerProject<ContractType> extends
 
     mainContractName = SkaleManagerContract.SKALE_MANAGER;
 
-    createInstance (address: MainContractAddress | ContractAddressMap)
-        : Instance<ContractType, SkaleManagerContractName> {
-        return new SkaleManagerInstance(
+    createInstance<
+        TypesMap extends Record<SkaleManagerContractName, ContractType>=
+            SkaleManagerDefaultTypesMap<ContractType>
+    > (address: MainContractAddress | ContractAddressMap)
+        : SkaleManagerInstance<ContractType, TypesMap> {
+        return new SkaleManagerInstance<ContractType, TypesMap>(
             this,
             address
         );
+    }
+
+    getInstance<
+        TypesMap extends Record<SkaleManagerContractName, ContractType>=
+            SkaleManagerDefaultTypesMap<ContractType>
+    > (
+        target: string | MainContractAddress | ContractAddressMap
+    ): SkaleManagerInstance<ContractType, TypesMap> {
+        return super.getInstance<TypesMap>(
+            target
+        ) as SkaleManagerInstance<ContractType, TypesMap>;
     }
 
     getAbiFilename (version: string) {

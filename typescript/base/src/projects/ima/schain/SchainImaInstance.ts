@@ -15,8 +15,16 @@ export enum SchainImaContract {
 }
 export type SchainImaContractName = `${SchainImaContract}`;
 
-export class SchainImaInstance<ContractType> extends
-    ImaInstance<ContractType, SchainImaContractName> {
+export interface SchainImaDefaultTypesMap<ContractType>
+    extends Record<SchainImaContractName, ContractType> {}
+
+export class SchainImaInstance<
+    ContractType,
+    TypesMap extends Record<
+        SchainImaContractName,
+        ContractType
+    > = SchainImaDefaultTypesMap<ContractType>
+> extends ImaInstance<ContractType, SchainImaContractName, TypesMap> {
     contractNames = Object.values(SchainImaContract) as SchainImaContractName[];
 
     static PREDEPLOYED = new Map<string, string>([

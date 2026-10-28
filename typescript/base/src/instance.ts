@@ -61,7 +61,14 @@ const processPep440 = (pyVersion: Pep440Version) => {
     return stringify(pyVersion)!;
 };
 
-export abstract class Instance<ContractType, ContractName extends string> {
+export abstract class Instance<
+    ContractType,
+    ContractName extends string,
+    TypesMap extends Record<ContractName, ContractType> = Record<
+        ContractName,
+        ContractType
+    >
+> {
     protected project: Project<ContractType, ContractName>;
 
     addressContainer: ContractAddressMap;
@@ -95,14 +102,17 @@ export abstract class Instance<ContractType, ContractName extends string> {
         args?: unknown[]
     ): Promise<ContractAddress>;
 
-    async getContract (name: ContractName, args?: unknown[]) {
+    async getContract<Name extends ContractName> (
+        name: Name,
+        args?: unknown[]
+    ): Promise<TypesMap[Name]> {
         return this.adapter.createContract(
             await this.getContractAddress(
                 name,
                 args
             ),
             await this.getContractAbi(name)
-        );
+        ) as TypesMap[Name];
     }
 
     // Protected
